@@ -1,5 +1,7 @@
-//source http://www.yolinux.com/TUTORIALS/C++Singleton.html
+#include <assert.h>
+#include <stdio.h>
 
+//source http://www.yolinux.com/TUTORIALS/C++Singleton.html
 #ifndef __SINGLETON_HPP_
 #define __SINGLETON_HPP_
 
