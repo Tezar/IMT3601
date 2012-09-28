@@ -103,7 +103,9 @@ int GameManagerClass::run()
 			false, false, false, 0);
 
 	if (!device)
+	{
 		return 1;
+	}
 
 	/*
 	Set the caption of the window to some nice text. Note that there is an
@@ -138,7 +140,8 @@ int GameManagerClass::run()
 	irr::u32 lastRun = timer->getTime();
 	irr::u32 toProcess = 0;
 	//run forrest run!
-	while(device->run()){
+	while(device->run())
+	{
 		irr::u32 now = timer->getTime();
 		toProcess += (now - lastRun);
 
@@ -168,14 +171,16 @@ int GameManagerClass::run()
 
 Scene * GameManagerClass::changeState(states_t newState)
 {
-	if(currentScene){
+	if(currentScene)
+	{
 		bool shouldDelete = currentScene->onExit();
 		if(shouldDelete) delete currentScene;
 	}
 
-	switch(newState){
-	case menu: currentScene = Menu::getInstance(); break;
-		//case game: currentScene = new Game; break;
+	switch(newState)
+	{
+		case menu: currentScene = Menu::getInstance(); break;
+			//case game: currentScene = new Game; break;
 	}
 
 	assert(currentScene);

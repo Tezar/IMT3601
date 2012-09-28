@@ -15,7 +15,6 @@ class GameManagerClass
 	/* stores active device for rendering */
 	IrrlichtDevice* device;
 
-
 public:
 	GameManagerClass(void);
 	~GameManagerClass(void);
@@ -31,8 +30,6 @@ public:
 	IrrlichtDevice * getDevice(void){ return device; }
 
 };
-
-
 
 typedef Singleton<GameManagerClass> GameManager;   // Global declaration
 

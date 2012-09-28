@@ -4,10 +4,9 @@ class Scene
 {
 
 public:
-	Scene(void){
-	};
-	~Scene(void){
-	};
+	Scene(void){};
+
+	~Scene(void){};
 
 	virtual void onEnter() = 0;
 

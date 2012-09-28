@@ -11,8 +11,6 @@ class MenuClass :
 	public Scene
 {
 
-
-
 public:
 	MenuClass(void);
 	~MenuClass(void);
