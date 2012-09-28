@@ -3,6 +3,7 @@
 #include "Scene.hpp"
 #include "GameManagerClass.hpp"
 #include "MenuSceneClass.hpp"
+#include "PracticeGameScene.hpp"
 
 #ifdef _IRR_WINDOWS_
 #pragma comment(lib, "Irrlicht.lib")
@@ -133,7 +134,7 @@ int GameManagerClass::run()
 		rect<s32>(10,10,260,22), true);
 
 	//we change to our initial state
-	changeState(menu);
+	changeState(practiceGame);
 
 	ITimer * timer = device->getTimer();
 	//using u32 as proposed @http://irrlicht.sourceforge.net/forum/viewtopic.php?t=723 and @http://irrlicht.sourceforge.net/forum/viewtopic.php?t=35143
@@ -180,7 +181,7 @@ Scene * GameManagerClass::changeState(states_t newState)
 	switch(newState)
 	{
 		case menu: currentScene = MenuScene::getInstance(); break;
-			//case game: currentScene = new Game; break;
+		case practiceGame: currentScene = new PracticeGameScene; break;
 	}
 
 	assert(currentScene);

@@ -83,16 +83,18 @@
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuSceneClass.cpp" />
-    <ClCompile Include="PracticeGame.cpp" />
+    <ClCompile Include="PracticeGameScene.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="GameManagerClass.hpp" />
     <ClInclude Include="GameRenderer.hpp" />
     <ClInclude Include="MenuSceneClass.hpp" />
-    <ClInclude Include="PracticeGame.hpp" />
+    <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="Vehicle.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

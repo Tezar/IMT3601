@@ -27,10 +27,13 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PracticeGame.cpp">
+    <ClCompile Include="MenuSceneClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MenuSceneClass.cpp">
+    <ClCompile Include="PracticeGameScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,10 +53,13 @@
     <ClInclude Include="Engine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PracticeGame.hpp">
+    <ClInclude Include="MenuSceneClass.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MenuSceneClass.hpp">
+    <ClInclude Include="PracticeGameScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

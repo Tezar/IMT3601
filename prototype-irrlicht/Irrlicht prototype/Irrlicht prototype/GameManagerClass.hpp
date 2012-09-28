@@ -5,7 +5,11 @@
 #include <irrlicht.h>
 using namespace irr;
 
-enum states_t{menu, game};
+enum states_t
+	{
+		menu,
+		practiceGame
+	};
 
 class GameManagerClass
 {
