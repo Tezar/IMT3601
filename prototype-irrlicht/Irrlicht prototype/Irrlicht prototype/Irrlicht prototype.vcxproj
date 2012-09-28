@@ -78,13 +78,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameManagerClass.cpp" />
+    <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuClass.cpp" />
+    <ClCompile Include="MenuSceneClass.cpp" />
+    <ClCompile Include="PracticeGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine.hpp" />
     <ClInclude Include="GameManagerClass.hpp" />
-    <ClInclude Include="MenuClass.hpp" />
+    <ClInclude Include="GameRenderer.hpp" />
+    <ClInclude Include="MenuSceneClass.hpp" />
+    <ClInclude Include="PracticeGame.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Singleton.hpp" />
   </ItemGroup>

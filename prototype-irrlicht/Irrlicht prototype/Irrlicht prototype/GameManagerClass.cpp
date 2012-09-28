@@ -2,7 +2,7 @@
 
 #include "Scene.hpp"
 #include "GameManagerClass.hpp"
-#include "MenuClass.hpp"
+#include "MenuSceneClass.hpp"
 
 #ifdef _IRR_WINDOWS_
 #pragma comment(lib, "Irrlicht.lib")
@@ -179,7 +179,7 @@ Scene * GameManagerClass::changeState(states_t newState)
 
 	switch(newState)
 	{
-		case menu: currentScene = Menu::getInstance(); break;
+		case menu: currentScene = MenuScene::getInstance(); break;
 			//case game: currentScene = new Game; break;
 	}
 
