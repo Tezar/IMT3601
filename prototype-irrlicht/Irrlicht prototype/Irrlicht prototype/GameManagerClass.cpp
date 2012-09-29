@@ -154,7 +154,7 @@ int GameManagerClass::run()
 		the GUI Environment draw their content. With the endScene()
 		call everything is presented on the screen.
 		*/
-		driver->beginScene(true, true, SColor(255,100,101,140));
+		driver->beginScene(true, true, SColor(255,100,150,040));
 
 		toProcess =	currentScene->onFrame(toProcess);
 
