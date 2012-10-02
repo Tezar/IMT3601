@@ -18,7 +18,7 @@ using namespace gui;
 struct SAppContext
 {
         IrrlichtDevice *device;
-        s32                             counter;
+        s32	counter;
         IGUIListBox*    listbox;
 };
 
@@ -106,11 +106,11 @@ int main()
                 skin->setFont(font);
 
         skin->setFont(env->getBuiltInFont(), EGDF_TOOLTIP);
-		env->addButton(rect<s32>(200,240,300,240 + 32), 0, GUI_ID_QUIT_BUTTON,
-                        L"Quit", L"Exits Program");
-        env->addButton(rect<s32>(200,280,300,280 + 32), 0, GUI_ID_START_BUTTON,
-                        L"Start Program", L"Launches a new Window");
-        env->addButton(rect<s32>(200,320,300,320 + 32), 0, GUI_ID_FILE_OPEN_BUTTON,
+		env->addButton(rect<s32>(200,100,460,100 + 72), 0, GUI_ID_START_BUTTON,
+                        L"Start Program", L"Starts the program");
+        env->addButton(rect<s32>(200,180,460,180 + 72), 0, GUI_ID_QUIT_BUTTON,
+                        L"Quit", L"terminates the current program");
+        env->addButton(rect<s32>(200,260,460,260 + 72), 0, GUI_ID_FILE_OPEN_BUTTON,
                         L"File Open", L"Opens a file");
 		while(device->run() && driver)
         if (device->isWindowActive())
