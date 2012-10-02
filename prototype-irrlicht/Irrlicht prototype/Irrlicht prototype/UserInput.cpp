@@ -31,27 +31,27 @@ UserInput::UserInput()
 int toDo()
 {
 	UserInput inputDevice;
-	if (inputDevice.IsKeyDown(KEY_KEY_W || KEY_UP))
+	if (inputDevice.IsKeyDown(KEY_KEY_W) || inputDevice.IsKeyDown(KEY_UP))
 	{
 		/* Increase acceleration */
 	}
-	else if (inputDevice.IsKeyDown(KEY_KEY_S || KEY_DOWN))
+	else if (inputDevice.IsKeyDown(KEY_KEY_S) || inputDevice.IsKeyDown(KEY_DOWN))
 	{
 		/* Decelerate/reverse */
 	}
 
 
-	if (inputDevice.IsKeyDown(KEY_KEY_A || KEY_LEFT))
+	if (inputDevice.IsKeyDown(KEY_KEY_A) || inputDevice.IsKeyDown(KEY_LEFT))
 	{
 		/* Turn counter-clockwise until button is let go */
 	}
-	else if (inputDevice.IsKeyDown(KEY_KEY_D || KEY_RIGHT))
+	else if (inputDevice.IsKeyDown(KEY_KEY_D) || inputDevice.IsKeyDown(KEY_RIGHT))
 	{
 		/* Turn clockwise until button is let go */
 	}
 
 
-	if (inputDevice.IsKeyDown(KEY_CONTROL || KEY_SPACE))
+	if (inputDevice.IsKeyDown(KEY_CONTROL) || inputDevice.IsKeyDown(KEY_SPACE))
 	{
 		/* Fire rocket */
 	}
