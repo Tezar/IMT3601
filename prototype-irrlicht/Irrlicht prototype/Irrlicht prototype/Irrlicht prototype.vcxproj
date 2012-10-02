@@ -84,6 +84,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuSceneClass.cpp" />
     <ClCompile Include="PracticeGameScene.cpp" />
+    <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +95,7 @@
     <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="UserInput.hpp" />
     <ClInclude Include="Vehicle.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
