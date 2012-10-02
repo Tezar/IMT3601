@@ -1,6 +1,7 @@
 #include "GameManagerClass.hpp"
 
 
+
 using namespace irr;
 
 using namespace core;
@@ -22,13 +23,7 @@ struct SAppContext
         IGUIListBox*    listbox;
 };
 
-// Define some values that we'll use to identify individual GUI controls.
-enum
-{
-        GUI_ID_QUIT_BUTTON = 101,
-        GUI_ID_START_BUTTON,
-        GUI_ID_FILE_OPEN_BUTTON,
-};
+
 
 class MyEventReceiver : public IEventReceiver
 {
@@ -79,54 +74,3 @@ public:
 private:
         SAppContext & Context;
 };
-
-/*
-This is the main method. We can now use main() on every platform.
-*/
-int main()
-{
-	video::E_DRIVER_TYPE driverType=irr::video::E_DRIVER_TYPE(1); //never put too "0"
-        if (driverType==video::EDT_COUNT)
-                return 1;
-
-        // create device and exit if creation failed
-
-        IrrlichtDevice * device = createDevice(driverType, core::dimension2d<u32>(640, 480));
-
-        if (device == 0)
-                return 1; // could not create selected driver.
-		device->setWindowCaption(L"Irrlicht Engine - User Interface Demo");
-        device->setResizable(true);
-
-        video::IVideoDriver* driver = device->getVideoDriver();
-        IGUIEnvironment* env = device->getGUIEnvironment();
-		IGUISkin* skin = env->getSkin();
-        IGUIFont* font = env->getFont("../../media/fonthaettenschweiler.bmp");
-        if (font)
-                skin->setFont(font);
-
-        skin->setFont(env->getBuiltInFont(), EGDF_TOOLTIP);
-		env->addButton(rect<s32>(200,240,300,240 + 32), 0, GUI_ID_QUIT_BUTTON,
-                        L"Quit", L"Exits Program");
-        env->addButton(rect<s32>(200,280,300,280 + 32), 0, GUI_ID_START_BUTTON,
-                        L"Start Program", L"Launches a new Window");
-        env->addButton(rect<s32>(200,320,300,320 + 32), 0, GUI_ID_FILE_OPEN_BUTTON,
-                        L"File Open", L"Opens a file");
-		while(device->run() && driver)
-        if (device->isWindowActive())
-        {
-                driver->beginScene(true, true, SColor(0,200,200,200));
-
-                env->drawAll();
-        
-                driver->endScene();
-        }
-
-        device->drop();
-
-        return 0;
-}
-
-/*
-That's it. Compile and run.
-**/
