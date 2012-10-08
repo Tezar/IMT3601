@@ -28,6 +28,16 @@ UserInput::UserInput()
  *  UNSURE WHERE TO PUT THIS SO I JUST MAKE IT HERE FOR NOW *
  ************************************************************/
 
+/*****************************************************************************
+ *	Have to somehow make the vehicles slow down while the forward button	 *
+ *	isn't being held down, and slow down at a faster rate while the reverse  *
+ *	button is being held down. The first part could be achieved through      *
+ *	physics settings or maybe having a current speed variable in the vehicle *
+ *	class(maybe not a good idea since it would have to be updated constantly)*
+ *	The default state can be to slow down to a stop.						 *
+ *																			 *
+ *	Maybe we can use a switch instead?										 *
+ *****************************************************************************/
 void DontKnowWhereToPutThisSoIPutItHere()
 {
 	UserInput inputDevice;
