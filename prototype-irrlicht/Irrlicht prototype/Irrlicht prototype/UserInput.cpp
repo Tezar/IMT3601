@@ -11,6 +11,11 @@ bool UserInput::OnEvent(const SEvent& event)
 	return false;
 }
 
+/*****************************************************************************
+ *	Probably need to add a check to see whether the key being held down is	 *
+ *	on a keyboard or a gamepad and adjust the code accordingly.				 *
+ *****************************************************************************/
+
 bool UserInput::IsKeyDown(EKEY_CODE keyCode) const
 {											//	Checks if key is being
 	return KeyIsDown[keyCode];				//	held down.

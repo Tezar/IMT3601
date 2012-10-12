@@ -12,8 +12,16 @@ using namespace irr;
 class Controller : public UserInput
 {
 private:
-	enum deviceType {keyboard, gamepad};
+	enum whatKindOfDeviceIsConnected {keyboard, gamepad};
+	bool isAGamepadConnected;
 
 public:
 	Controller();
+	Controller(int devType, bool gamepadConnected);
+	/*************************************************************************
+	 *	I don't yet know how gamepad detection works or how it's done,		 *
+	 *	but I'm thinking that a constructor with a parameter can somehow be  *
+	 *	used to set the enum and make the correct functions be called.		 *
+	 *************************************************************************/
+	~Controller();
 };
