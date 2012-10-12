@@ -17,6 +17,9 @@ public:
 	Engine(void);
 	~Engine(void);
 
+	/* averaged position of all vehicles for use by camera and track generato */
+	vector2df averagePosition;
+	
 
 	void addVehicle(Vehicle*);
 	
@@ -26,9 +29,16 @@ public:
 	*/
 	int step(int);
 
+
+
+
 	/** resets state of engine to initial conditions */
 	void reset();
 
+
+protected:
+	/** averages position of vehicles and updates member variable */
+	inline void recalculatePosition();
 
 };
 
