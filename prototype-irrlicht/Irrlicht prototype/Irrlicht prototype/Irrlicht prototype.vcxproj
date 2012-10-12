@@ -78,16 +78,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CongruentGenerator.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameManagerClass.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuSceneClass.cpp" />
     <ClCompile Include="PracticeGameScene.cpp" />
+    <ClCompile Include="TrackGenerator.cpp" />
+    <ClCompile Include="TrackSegment.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CongruentGenerator.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="GameManagerClass.hpp" />
     <ClInclude Include="GameRenderer.hpp" />
@@ -95,6 +99,9 @@
     <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="TrackGenerator.hpp" />
+    <ClInclude Include="TrackSegment.hpp" />
+    <ClInclude Include="TrackUtil.hpp" />
     <ClInclude Include="UserInput.hpp" />
     <ClInclude Include="Vehicle.hpp" />
   </ItemGroup>

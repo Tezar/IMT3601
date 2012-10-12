@@ -11,15 +11,8 @@ TrackGenerator::~TrackGenerator(void)
 }
 
 
-void TrackGenerator::reseed(irr::u32 newValue)
-{
-	currentSeed = newValue;
+
+
+list<TrackPoint>* TrackGenerator::getSegmentPoints(int){
+	return 0;
 }
-
-int TrackGenerator::random()
-{
-	  currentSeed = currentSeed * 1103515245 + 12345;
-      return (irr::u32)(currentSeed/65536) % 32768;
-}
-
-
