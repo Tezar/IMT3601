@@ -29,9 +29,6 @@ public:
 	*/
 	int step(int);
 
-
-
-
 	/** resets state of engine to initial conditions */
 	void reset();
 
