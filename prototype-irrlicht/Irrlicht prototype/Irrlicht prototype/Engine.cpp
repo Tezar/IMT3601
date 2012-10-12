@@ -7,6 +7,8 @@
 Engine::Engine(void)
 {
 		numVehicles = 0;
+
+		averagePosition.set(0,0,0);
 }
 
 
@@ -82,5 +84,5 @@ inline void Engine::recalculatePosition(){
 		posX += v->position.X;
 		posY += v->position.Y;
 	}
-	averagePosition.set(posX/numVehicles, posY/numVehicles);
+	averagePosition.set(posX/numVehicles, posY/numVehicles,0);
 }

@@ -18,7 +18,7 @@ public:
 	~Engine(void);
 
 	/* averaged position of all vehicles for use by camera and track generato */
-	vector2df averagePosition;
+	vector3df averagePosition;
 	
 
 	void addVehicle(Vehicle*);

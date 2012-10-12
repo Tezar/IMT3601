@@ -40,7 +40,7 @@ void GameRenderer::attach(IrrlichtDevice *)
 		vehicleNodes[nVehicle] = node;
 	}
 
-	smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
+	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 
 
 }
@@ -57,6 +57,8 @@ void GameRenderer::update()
 	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
 		vehicleNodes[nVehicle]->setPosition(engine->vehicles[nVehicle]->position);
 	}
+
+	cameraNode->setTarget(engine->averagePosition);
 	
 }
 

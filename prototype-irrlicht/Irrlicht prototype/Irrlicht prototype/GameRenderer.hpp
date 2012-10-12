@@ -13,7 +13,11 @@ private:
 	Engine* engine;
 	IrrlichtDevice* device;
 
+	//array to hold nodes of vehicles
 	IMeshSceneNode* vehicleNodes[MAX_VEHICLES];
+
+	//reference to our camera
+	ICameraSceneNode* cameraNode;
 
 public:
 	/** @par Engine reference to engine which we are going to render **/
