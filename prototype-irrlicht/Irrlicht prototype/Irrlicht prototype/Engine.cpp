@@ -63,7 +63,7 @@ void Engine::reset()
 			* = vehicle
 	*/
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
-		vehicles[nVehicle]->position.set(nVehicle*5.0,0.0,0.0);
+		vehicles[nVehicle]->position.set( nVehicle*5.0 ,0.0 ,0.0 );
 	}
 
 }
