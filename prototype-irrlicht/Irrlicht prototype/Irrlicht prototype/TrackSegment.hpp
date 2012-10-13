@@ -7,13 +7,19 @@ using namespace irr;
 using namespace core;
 
 
-class TrackSegment : CongruentGenerator
+class TrackSegment : public CongruentGenerator
 {
 
 public:
 	TrackSegment(void);
 	~TrackSegment(void);
 
-	list<TrackPoint>* generateTrackPoints();
+	list<core::vector3df> controlPoints;
+
+
+	void generate();
+	TrackPoint* getExitPoint();
+
+
 };
 
