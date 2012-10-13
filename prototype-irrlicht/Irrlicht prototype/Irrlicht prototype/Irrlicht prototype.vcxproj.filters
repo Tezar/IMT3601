@@ -52,7 +52,7 @@
       <Filter>Source Files\Segments</Filter>
     </ClCompile>
     <ClCompile Include="CongruentGenerator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Segments</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +93,7 @@
       <Filter>Header Files\TrackGenerator</Filter>
     </ClInclude>
     <ClInclude Include="CongruentGenerator.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\TrackGenerator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
