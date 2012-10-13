@@ -3,7 +3,6 @@
 #include "TrackUtil.hpp"
 
 using namespace irr;
-using namespace core;
 
 
 class CongruentGenerator
@@ -16,9 +15,9 @@ public:
 	~CongruentGenerator(void);
 
 	/** restarts generator to new sequence */
-	void reseed(irr::u32);
+	void seed(irr::u32);
 	/** returns new random number */
-	int random();
+	irr::u32 random(int maxNumber);
 
 };
 
