@@ -63,7 +63,7 @@ def catmull(points, steps = 30):
 
     count = len(points)
 
-    for i in range(0,count):
+    for i in range(0,count-3):
         p0 = points[i];
         p1 = points[(i+1)%count];
         p2 = points[(i+2)%count];
@@ -128,23 +128,27 @@ for x in range(10):
     #toDraw=[ (50,50),(450,50),(450,450),(50,450),(50,50) ]
 
     #zigzag
-    toDraw=[ (50,50),(450,50),(300,250),(150,300),(400,270),(450,450),(50,450) ]
+    toDraw=[ (50,50),(50,50),(450,50),(300,250),(150,300),(150,300)]
+
+    toDraw2 =[ (150,300),(150,300),(120,280), (200,50),(300,250),(300,250)]
 
     # deCasteljau / catmull
-    function = deCasteljau
+    function = catmull
 
     #control line
     drawLines(draw, toDraw, color = 230, width=1)
     #processed line
     drawLines(draw, function(toDraw), color = 220, width=2)
 
+
+    drawLines(draw, function(toDraw2), color = 200, width=2)
     #make new fragments
     fragmentedDraw = fragment( fragment(toDraw) )
     #draw fragmented control line
-    drawLines(draw, fragmentedDraw, color = 200, width=5)
+    #drawLines(draw, fragmentedDraw, color = 200, width=5)
 
     #processed fragmented line
-    drawLines(draw, function(fragmentedDraw), color = 0, width=3)
+    #drawLines(draw, function(fragmentedDraw), color = 0, width=3)
 
     del draw
 
