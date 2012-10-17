@@ -7,12 +7,13 @@ using namespace core;
 using namespace scene;
 using namespace video;
 
-
-IAnimatedMesh* GameRenderer::debug_arrowMesh = 0;
+//we have to define it here, or else compilator will fail (because of static nature of this var)
+IMesh* GameRenderer::debug_arrowMesh = 0;
 
 GameRenderer::GameRenderer(Engine* e)
 {
 	engine = e;
+	debug_arrows = 0;
 }
 
 GameRenderer::~GameRenderer(void)
@@ -46,13 +47,19 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	}
 
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
+
+	debug_createTrackArrows();
+
 }
 
 void GameRenderer::debug_createTrackArrows()
 {
+	debug_clearTrackArrows();	//first we clear all previous
+
 	ISceneManager* smgr = device->getSceneManager();
 
-	if(!debug_arrowMesh){	//arrowMesh is static and shared amnog all instances...
+	if(!debug_arrowMesh) 	//arrowMesh is static and shared amnog all instances...
+	{
 		debug_arrowMesh = smgr->addArrowMesh( "Arrow",
                                 video::SColor(255, 255, 0, 0),
                                 video::SColor(255, 0, 255, 0),
@@ -61,14 +68,28 @@ void GameRenderer::debug_createTrackArrows()
                                 0.1f, 0.6f
                                 );
 	}
+
+	IMeshSceneNode* node = smgr->addMeshSceneNode(debug_arrowMesh);
+	node->setPosition(vector3df(0,0,0));
+	node->setRotation(vector3df(0,0,270));
+	debug_arrows->push_back(node);
+
 }
 
 void GameRenderer::debug_clearTrackArrows()
 {
-	if(debug_arrows == 0) return;
+	if(debug_arrows == 0){
+		debug_arrows = new list<IMeshSceneNode*>();
+		return;
+	}
 
+	for (list<IMeshSceneNode*>::ConstIterator iterator = debug_arrows->begin(), end = debug_arrows->end(); iterator != end; ++iterator) {
+		(*iterator)->remove();
+	}
+	
+	debug_arrows->clear();
 
-	debug_arrows = new list<IMeshSceneNode>();
+	
 }
 
 
