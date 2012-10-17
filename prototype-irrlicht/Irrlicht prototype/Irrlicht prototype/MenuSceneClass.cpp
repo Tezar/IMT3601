@@ -65,6 +65,8 @@ int MenuSceneClass::onFrame(int toDo){
 
 bool MenuSceneClass::onExit()
 {
+	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+	device->setEventReceiver(0);
 	delete receiver;
 	return false;
 }
