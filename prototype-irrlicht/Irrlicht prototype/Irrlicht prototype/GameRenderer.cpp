@@ -79,6 +79,7 @@ void GameRenderer::debug_createTrackArrows()
 		node = smgr->addMeshSceneNode(debug_arrowMesh);
 		node->setPosition((*iterator)->position);
 		node->setRotation(vector3df(0,0,270));
+		node->setMaterialFlag(video::EMF_LIGHTING, false);
 		debug_arrows->push_back(node);
 	}
 
