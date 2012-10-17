@@ -100,6 +100,7 @@
     <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="StartMenuUi.h" />
     <ClInclude Include="TrackGenerator.hpp" />
     <ClInclude Include="TrackSegment.hpp" />
     <ClInclude Include="TrackUtil.hpp" />

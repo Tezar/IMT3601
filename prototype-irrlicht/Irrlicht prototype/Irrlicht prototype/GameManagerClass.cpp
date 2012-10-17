@@ -4,6 +4,7 @@
 #include "GameManagerClass.hpp"
 #include "MenuSceneClass.hpp"
 #include "PracticeGameScene.hpp"
+#include "StartMenuUi.h"
 
 #ifdef _IRR_WINDOWS_
 #pragma comment(lib, "Irrlicht.lib")
@@ -99,6 +100,8 @@ int GameManagerClass::run()
 	Always check the return value to cope with unsupported drivers,
 	dimensions, etc.
 	*/
+
+
 	device =
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(640, 480), 16,
 			false, false, false, 0);
@@ -113,7 +116,7 @@ int GameManagerClass::run()
 	'L' in front of the string. The Irrlicht Engine uses wide character
 	strings when displaying text.
 	*/
-	device->setWindowCaption(L"Hello World! - Irrlicht Engine Demo");
+	device->setWindowCaption(L"Wroom");
 
 	/*
 	Get a pointer to the VideoDriver, the SceneManager and the graphical
@@ -130,8 +133,8 @@ int GameManagerClass::run()
 	The text is placed at the position (10,10) as top left corner and
 	(260,22) as lower right corner.
 	*/
-	guienv->addStaticText(L"Hello World! This is the Irrlicht Software renderer!",
-		rect<s32>(10,10,260,22), true);
+	//guienv->addStaticText(L"Hello World! This is the Irrlicht Software renderer!",
+	//	rect<s32>(10,10,260,22), true);
 
 	//we change to our initial state
 	changeState(menu);
@@ -155,6 +158,7 @@ int GameManagerClass::run()
 		the GUI Environment draw their content. With the endScene()
 		call everything is presented on the screen.
 		*/
+		
 		driver->beginScene(true, true, SColor(255,100,150,040));
 
 		toProcess =	currentScene->onFrame(toProcess);

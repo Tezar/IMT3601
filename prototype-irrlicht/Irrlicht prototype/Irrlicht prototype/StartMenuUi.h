@@ -1,3 +1,4 @@
+#pragma once
 #include "GameManagerClass.hpp"
 
 
@@ -27,7 +28,7 @@ enum
 {
         GUI_ID_QUIT_BUTTON = 101,
         GUI_ID_START_BUTTON,
-        GUI_ID_FILE_OPEN_BUTTON,
+        GUI_ID_SETTINGS_BUTTON,
 };
 
 class MyEventReceiver : public IEventReceiver
@@ -58,9 +59,22 @@ public:
                                         }
                                         return true;
 
-                                case GUI_ID_FILE_OPEN_BUTTON:
-                                        Context.listbox->addItem(L"File open");
-                                        env->addFileOpenDialog(L"Please choose a file.");
+                                case GUI_ID_SETTINGS_BUTTON:
+                                        //Context.listbox->addItem(L"Window created");
+                                        //Context.counter += 30;
+                                        //if (Context.counter > 200)
+                                        //        Context.counter = 0;
+
+                                        //IGUIWindow* window = env->addWindow(
+                                        //        rect<s32>(100 + Context.counter, 100 + Context.counter, 300 + Context.counter, 200 + Context.counter),
+                                        //        false, // modal?
+                                        //        L"Test window");
+
+                                        //env->addStaticText(L"Please close me",
+                                        //        rect<s32>(35,35,140,50),
+                                        //        true, // border?
+                                        //        false, // wordwrap?
+                                        //        window);
                                         return true;
 
                                 default:
