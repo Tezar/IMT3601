@@ -58,6 +58,7 @@ void GameRenderer::debug_createTrackArrows()
 
 	ISceneManager* smgr = device->getSceneManager();
 
+	//secure mesh for us
 	if(!debug_arrowMesh) 	//arrowMesh is static and shared amnog all instances...
 	{
 		debug_arrowMesh = smgr->addArrowMesh( "Arrow",
@@ -69,10 +70,19 @@ void GameRenderer::debug_createTrackArrows()
                                 );
 	}
 
-	IMeshSceneNode* node = smgr->addMeshSceneNode(debug_arrowMesh);
-	node->setPosition(vector3df(0,0,0));
-	node->setRotation(vector3df(0,0,270));
-	debug_arrows->push_back(node);
+	std::list<TrackPoint*> track = engine->getTrack();
+	IMeshSceneNode* node;
+	
+
+	for(std::list<TrackPoint*>::const_iterator iterator = track.begin(); iterator != track.end();  iterator++)
+	{
+		node = smgr->addMeshSceneNode(debug_arrowMesh);
+		node->setPosition((*iterator)->position);
+		node->setRotation(vector3df(0,0,270));
+		debug_arrows->push_back(node);
+	}
+
+
 
 }
 

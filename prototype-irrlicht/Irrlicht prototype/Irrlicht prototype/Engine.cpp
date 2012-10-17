@@ -10,9 +10,6 @@ Engine::Engine(void)
 
 		track = new TrackGenerator(69);	//seed with randomly picked number...
 		
-		//add point at the end
-		trackPoints.splice( trackPoints.end() , track->getTrackPoints(0) );
-
 		averagePosition.set(0,0,0);
 }
 
@@ -70,6 +67,11 @@ void Engine::reset()
 	}
 
 	trackPoints.clear();
+
+
+
+	//add point at the end
+	trackPoints.splice( trackPoints.end() , track->getTrackPoints(0,10) );
 
 
 	//todo:
