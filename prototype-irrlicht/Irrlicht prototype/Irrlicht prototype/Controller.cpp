@@ -13,7 +13,7 @@ bool Controller::OnEvent(const SEvent& event)
 
 /*****************************************************************************
  *	Probably need to add a check to see whether the key being held down is	 *
- *	on a keyboard or a gamepad and adjust the code accordingly.				 *
+ *	on a keyboard or from the network or AI and adjust accoringly.			 *
  *****************************************************************************/
 
 bool Controller::IsKeyDown(EKEY_CODE keyCode) const
@@ -27,11 +27,6 @@ Controller::Controller()
 		KeyIsDown[i] = false;
 }
 
-
-
-/************************************************************
- *  Goes in PracticeGameScene::OnEnter						*
- ************************************************************/
 
 /*****************************************************************************
  *	Have to somehow make the vehicles slow down while the forward button	 *
