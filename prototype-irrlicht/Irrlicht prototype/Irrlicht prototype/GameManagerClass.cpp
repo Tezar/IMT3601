@@ -111,15 +111,6 @@ int GameManagerClass::run()
 		return 1;
 	}
 
-	SAppContext context;
-	context.device = device;
-	context.counter = 0;
-	context.listbox = 0;
-
-	MyEventReceiver receiver(context);
-
-	device->setEventReceiver(&receiver);
-
 	/*
 	Set the caption of the window to some nice text. Note that there is an
 	'L' in front of the string. The Irrlicht Engine uses wide character

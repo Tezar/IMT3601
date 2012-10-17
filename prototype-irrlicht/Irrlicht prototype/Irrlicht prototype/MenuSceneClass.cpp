@@ -30,7 +30,16 @@ MenuSceneClass::~MenuSceneClass(void)
 void MenuSceneClass::onEnter()
 {
 
-        IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+    IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+
+	
+	context.device = device;
+	context.counter = 0;
+	context.listbox = 0;
+
+	receiver = new MyEventReceiver(context);
+	
+	device->setEventReceiver(receiver);
 
         video::IVideoDriver* driver = device->getVideoDriver();
         IGUIEnvironment* env = device->getGUIEnvironment();
@@ -56,6 +65,7 @@ int MenuSceneClass::onFrame(int toDo){
 
 bool MenuSceneClass::onExit()
 {
+	delete receiver;
 	return false;
 }
 
