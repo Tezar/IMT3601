@@ -100,6 +100,8 @@ int GameManagerClass::run()
 	Always check the return value to cope with unsupported drivers,
 	dimensions, etc.
 	*/
+
+
 	device =
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(640, 480), 16,
 			false, false, false, 0);
@@ -108,6 +110,15 @@ int GameManagerClass::run()
 	{
 		return 1;
 	}
+
+	SAppContext context;
+	context.device = device;
+	context.counter = 0;
+	context.listbox = 0;
+
+	MyEventReceiver receiver(context);
+
+	device->setEventReceiver(&receiver);
 
 	/*
 	Set the caption of the window to some nice text. Note that there is an
