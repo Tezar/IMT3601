@@ -1,6 +1,7 @@
 #include "PracticeGameScene.hpp"
 #include "GameManagerClass.hpp"
 #include "Vehicle.hpp"
+#include "Controller.hpp"
 
 //todo: remove unused
 using namespace core;
@@ -26,6 +27,14 @@ void PracticeGameScene::onEnter()
 	engine = new Engine();
 	engine->addVehicle( new Vehicle() );
 	engine->addVehicle( new Vehicle() );
+
+	Controller inputDevice1, inputDevice2;
+
+	// Somehow connect each inputDevice with its respective vehicle.
+	/****************************************************************************
+	 *	inputDevice1.connect(Vehicle1);											*
+	 *	inputDevice2.connect(Vehicle2);
+	 ****************************************************************************/
 
 	engine->reset();
 

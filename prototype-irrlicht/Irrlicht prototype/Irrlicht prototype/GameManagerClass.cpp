@@ -134,7 +134,7 @@ int GameManagerClass::run()
 		rect<s32>(10,10,260,22), true);
 
 	//we change to our initial state
-	changeState(practiceGame);
+	changeState(menu);
 
 	ITimer * timer = device->getTimer();
 	//using u32 as proposed @http://irrlicht.sourceforge.net/forum/viewtopic.php?t=723 and @http://irrlicht.sourceforge.net/forum/viewtopic.php?t=35143
