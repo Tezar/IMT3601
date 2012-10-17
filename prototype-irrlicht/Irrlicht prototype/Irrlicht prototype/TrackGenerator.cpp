@@ -40,10 +40,8 @@ std::list<TrackPoint*> TrackGenerator::getTrackPoints(int position, int smoothne
 	int countControl = segment->controlPoints.size();
 	
 	core::list<vector3df>::Iterator iterator = segment->controlPoints.begin();
-	for (int i =0; i < countControl-3; ++i)
+	for (int i =0; i < countControl-3; ++i, ++iterator )
 	{
-		iterator++;
-
 		vector3df p0 = *iterator;
 		vector3df p1 = *(iterator+1);
 		vector3df p2 = *(iterator+2);
