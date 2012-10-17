@@ -10,9 +10,12 @@ class TrackPoint
 {
 public:
 	core::vector3df position;
+	//we use only rotation along Y axis so no need for evctor here
 	irr::f32 direction;
 
 	TrackPoint(void){};
+	
+	//constructor for creating point on position pos of curve defined by points p_1,p0,p1 and p2 
 	TrackPoint(irr::f32 pos, vector3df p_1, vector3df p0, vector3df p1, vector3df p2 )
 	{
 		irr::f32 c1 = pos*((2-pos)*pos - 1);

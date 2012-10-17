@@ -1,5 +1,7 @@
 #pragma once
 #include "Vehicle.hpp"
+#include "TrackUtil.hpp"
+#include "TrackGenerator.hpp"
 
 #define MAX_VEHICLES 4
 
@@ -12,6 +14,8 @@ class Engine
 	
 public:
 	Vehicle* vehicles[MAX_VEHICLES];
+	TrackGenerator * track;
+
 	int numVehicles;
 
 	Engine(void);
@@ -36,6 +40,8 @@ public:
 protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
+
+	list<TrackPoint*> trackPoints;
 
 };
 
