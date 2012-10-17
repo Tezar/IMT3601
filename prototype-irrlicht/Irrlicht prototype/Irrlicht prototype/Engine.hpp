@@ -37,6 +37,8 @@ public:
 	void reset();
 
 
+	std::list<TrackPoint*> getTrack();
+
 protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();

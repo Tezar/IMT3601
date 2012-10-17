@@ -57,6 +57,10 @@ int Engine::step(int toDo)
 }
 
 
+std::list<TrackPoint*> Engine::getTrack(){
+	return trackPoints;
+}
+
 
 void Engine::reset()
 {
