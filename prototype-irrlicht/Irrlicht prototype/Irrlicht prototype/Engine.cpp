@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <windows.h>
 #include <stdio.h>
 #include "Engine.hpp"
 
@@ -32,21 +33,22 @@ int Engine::step(int toDo)
 {
 	//todo:physics
 	//todo:collisions
-
+	int i = 0;
 	while(toDo > ENGINE_STEP){
-	
+		i++;
 
 		//simulation!
 		for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
+			
 			//todo: change to reflect behaviour, maybe implement it as strategy pattern to please Simon ? :-)
 			Vehicle* v = vehicles[nVehicle];
 			if(v->force == force_forward){
-				v->position.X += f32(0.0001);
+				v->position.X += f32(0.01);
 			}
 		}
 		toDo -= ENGINE_STEP;
 	}
-
+	i;
 
 	recalculatePosition();
 
@@ -71,7 +73,7 @@ void Engine::reset()
 
 
 	//add point at the end
-	trackPoints.splice( trackPoints.end() , track->getTrackPoints(0,10) );
+	trackPoints.splice( trackPoints.end() , track->getTrackPoints(0,5) );
 
 
 	//todo:
