@@ -17,7 +17,7 @@ TrackSegment* TrackGenerator::getSegment(int position)
 	//if we dont have enough we reserve some more
 	if( size <= position)
 	{
-		segmentCache.reserve(position+3);
+		segmentCache.resize(position+3, 0);
 	}
 
 	TrackSegment* segment = segmentCache[position];
@@ -33,15 +33,17 @@ TrackSegment* TrackGenerator::getSegment(int position)
 	return segment;
 }
 
-list<TrackPoint>* TrackGenerator::getTrackPoints(int position, int smoothnes = 30)
+std::list<TrackPoint*> TrackGenerator::getTrackPoints(int position, int smoothnes)
 {
-	list<TrackPoint>* points = new list<TrackPoint>();
 	TrackSegment* segment = getSegment(position);
 	
-	int countControl = segment->controlPoints.size()+2;
+	int countControl = segment->controlPoints.size();
 	
-	for ( irr::core::list<vector3df>::Iterator iterator = segment->controlPoints.begin(), end = segment->controlPoints.end()-3; iterator != end; ++iterator)
+	core::list<vector3df>::Iterator iterator = segment->controlPoints.begin();
+	for (int i =0; i < countControl-3; ++i)
 	{
+		iterator++;
+
 		vector3df p0 = *iterator;
 		vector3df p1 = *(iterator+1);
 		vector3df p2 = *(iterator+2);
@@ -51,8 +53,8 @@ list<TrackPoint>* TrackGenerator::getTrackPoints(int position, int smoothnes = 3
 		for(int step=0;step < smoothnes; step++)
 		{
 			irr::f32 position = increment*step;
-			TrackPoint point = TrackPoint(position,p0,p1,p2,p3);
-			points->push_back( point );
+			TrackPoint* point = new TrackPoint(position,p0,p1,p2,p3);
+			points.push_back( point );
 		}
 	}
 

@@ -24,7 +24,7 @@ private:
 	
 	//mesh for our arrow
 	static IMesh* debug_arrowMesh;
-	list<IMeshSceneNode*>* debug_arrows;
+	core::list<IMeshSceneNode*>* debug_arrows;
 
 public:
 	/** @par Engine reference to engine which we are going to render **/

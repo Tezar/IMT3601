@@ -41,7 +41,7 @@ protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
 
-	list<TrackPoint*> trackPoints;
+	std::list<TrackPoint*> trackPoints;
 
 };
 

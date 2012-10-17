@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <irrlicht.h>
 
 using namespace std;
@@ -22,13 +23,13 @@ public:
 		irr::f32 c2 = (pos*pos*(3*pos - 5) + 2);
 		irr::f32 c3 = pos*((4 - 3*pos)*pos + 1);
 		irr::f32 c4 = (pos-1)*pos*pos;
+		
+		vector3df a = c1*p_1;
+		vector3df b = c2*p0;
+		vector3df c = c3*p1;
+		vector3df d = c4*p2;
 
-		position.set(
-					 c1*p_1
-					+c2*p0
-					+c3*p1
-					+c4*p2
-			);
+		position.set(a+b+c+d);
 
 		position /= 2;
 	}

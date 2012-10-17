@@ -79,11 +79,11 @@ void GameRenderer::debug_createTrackArrows()
 void GameRenderer::debug_clearTrackArrows()
 {
 	if(debug_arrows == 0){
-		debug_arrows = new list<IMeshSceneNode*>();
+		debug_arrows = new core::list<IMeshSceneNode*>();
 		return;
 	}
 
-	for (list<IMeshSceneNode*>::ConstIterator iterator = debug_arrows->begin(), end = debug_arrows->end(); iterator != end; ++iterator) {
+	for (core::list<IMeshSceneNode*>::ConstIterator iterator = debug_arrows->begin(), end = debug_arrows->end(); iterator != end; ++iterator) {
 		(*iterator)->remove();
 	}
 	

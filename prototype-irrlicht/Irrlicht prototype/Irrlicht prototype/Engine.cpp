@@ -10,6 +10,9 @@ Engine::Engine(void)
 
 		track = new TrackGenerator(69);	//seed with randomly picked number...
 		
+		//add point at the end
+		trackPoints.splice( trackPoints.end() , track->getTrackPoints(0) );
+
 		averagePosition.set(0,0,0);
 }
 
@@ -57,7 +60,7 @@ int Engine::step(int toDo)
 
 void Engine::reset()
 {
-	for(list<TrackPoint*>::ConstIterator iterator = trackPoints.begin(); iterator != trackPoints.end();  iterator++)
+	for(std::list<TrackPoint*>::const_iterator iterator = trackPoints.begin(); iterator != trackPoints.end();  iterator++)
 	{
 		delete (*iterator);	//delete trackpoint to prevent memory leaks
 	}

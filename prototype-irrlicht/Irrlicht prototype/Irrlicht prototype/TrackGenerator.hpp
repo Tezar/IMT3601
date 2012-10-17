@@ -6,7 +6,6 @@
 #include "CongruentGenerator.hpp"
 
 using namespace std;
-using namespace core;
 
 
 
@@ -20,13 +19,15 @@ protected:
 
 	TrackSegment* getSegment(int);
 
+	std::list<TrackPoint*> points;
+
 public:
 	TrackGenerator(irr::u32 seed);
 	~TrackGenerator(void);
 
 	
 	/** function that returns point of track **/
-	list<TrackPoint>* getTrackPoints(int segment, int smoothnes);
+	std::list<TrackPoint*> getTrackPoints(int segment, int smoothnes=30);
 	vector3df* spline4p(irr::f32, vector3df,vector3df,vector3df,vector3df); 
 };
 
