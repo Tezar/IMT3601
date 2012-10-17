@@ -87,7 +87,7 @@
     <ClCompile Include="PracticeGameScene.cpp" />
     <ClCompile Include="TrackGenerator.cpp" />
     <ClCompile Include="TrackSegment.cpp" />
-    <ClCompile Include="UserInput.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +102,7 @@
     <ClInclude Include="TrackGenerator.hpp" />
     <ClInclude Include="TrackSegment.hpp" />
     <ClInclude Include="TrackUtil.hpp" />
-    <ClInclude Include="UserInput.hpp" />
+    <ClInclude Include="controller.hpp" />
     <ClInclude Include="Vehicle.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

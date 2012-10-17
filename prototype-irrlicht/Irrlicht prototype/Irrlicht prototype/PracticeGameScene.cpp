@@ -33,7 +33,7 @@ void PracticeGameScene::onEnter()
 	// Somehow connect each inputDevice with its respective vehicle.
 	/****************************************************************************
 	 *	inputDevice1.connect(Vehicle1);											*
-	 *	inputDevice2.connect(Vehicle2);
+	 *	inputDevice2.connect(Vehicle2);											*
 	 ****************************************************************************/
 
 	engine->reset();
