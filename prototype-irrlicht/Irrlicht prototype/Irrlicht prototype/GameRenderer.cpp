@@ -7,6 +7,9 @@ using namespace core;
 using namespace scene;
 using namespace video;
 
+
+IAnimatedMesh* GameRenderer::debug_arrowMesh = 0;
+
 GameRenderer::GameRenderer(Engine* e)
 {
 	engine = e;
@@ -41,9 +44,29 @@ void GameRenderer::attach(IrrlichtDevice *)
 	}
 
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
-
-
 }
+
+void GameRenderer::debug_createTrackArrows()
+{
+	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+	ISceneManager* smgr = device->getSceneManager();
+
+	if(!debug_arrowMesh){	//arrowMesh is static and shared amnog all instances...
+		debug_arrowMesh = smgr->addArrowMesh( "Arrow",
+                                video::SColor(255, 255, 0, 0),
+                                video::SColor(255, 0, 255, 0),
+                                16,16,
+                                2.f, 1.3f,
+                                0.1f, 0.6f
+                                );
+	}
+}
+
+void GameRenderer::debug_clearTrackArrows()
+{
+	//todo
+}
+
 
 void GameRenderer::detach()
 {
