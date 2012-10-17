@@ -7,6 +7,8 @@
 Engine::Engine(void)
 {
 		numVehicles = 0;
+
+		averagePosition.set(0,0,0);
 }
 
 
@@ -40,15 +42,16 @@ int Engine::step(int toDo)
 				v->position.X += f32(0.0001);
 			}
 		}
-
-	
 		toDo -= ENGINE_STEP;
 	}
 
 
+	recalculatePosition();
 
 	return toDo;
 }
+
+
 
 void Engine::reset()
 {
@@ -63,7 +66,23 @@ void Engine::reset()
 			* = vehicle
 	*/
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
-		vehicles[nVehicle]->position.set(nVehicle*5.0,0.0,0.0);
+		vehicles[nVehicle]->position.set( nVehicle*5.0 ,0.0 ,0.0 );
 	}
 
+}
+
+
+inline void Engine::recalculatePosition(){
+	static float posX;
+	static float posY;
+
+	posX = 0;
+	posY = 0;
+
+	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
+		Vehicle* v = vehicles[nVehicle];
+		posX += v->position.X;
+		posY += v->position.Y;
+	}
+	averagePosition.set(posX/numVehicles, posY/numVehicles,0);
 }
