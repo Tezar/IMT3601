@@ -24,7 +24,8 @@ void TrackSegment::generate()
 	//default implementation, for start we just add equally spaced segments and move them a little
 	
 	for(int i=2; i < 5; i++){
-		controlPoints.push_back(core::vector3df(i*10,0,random(10)-5 ));
+		irr::s32 r = random(10)-5;	//we have to retype tosigned otherwise compiler make stupid assumptions and let our number underflow
+		controlPoints.push_back(core::vector3df(i*10,0, r ));
 	}
 }
 

@@ -19,6 +19,8 @@ void CongruentGenerator::seed(irr::u32 newValue)
 
 irr::u32 CongruentGenerator::random(int maxNumber)
 {
-	  currentSeed = currentSeed * 1103515245 + 12345;
-      return (irr::u32)  (((currentSeed/65536) % 32768)/32768.0*maxNumber) ;
+	currentSeed = currentSeed * 1103515245 + 12345;
+	irr:f32 f = (currentSeed/65536) % 32768;
+	f = f/32768.0*maxNumber;
+    return irr::u32(f) ;
 }
