@@ -24,7 +24,7 @@ private:
 	
 	//mesh for our arrow
 	static IAnimatedMesh* debug_arrowMesh;
-	//list<IMeshSceneNode>* debug_arrows;
+	list<IMeshSceneNode>* debug_arrows;
 
 public:
 	/** @par Engine reference to engine which we are going to render **/

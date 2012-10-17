@@ -19,9 +19,11 @@ GameRenderer::~GameRenderer(void)
 {
 }
 
-void GameRenderer::attach(IrrlichtDevice *)
+
+
+void GameRenderer::attach(IrrlichtDevice * attachTo)
 {
-	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+	device = attachTo;
 	ISceneManager* smgr = device->getSceneManager();
 	
 	//dont need asset manager, irrlich handles it automaticaly
@@ -48,7 +50,6 @@ void GameRenderer::attach(IrrlichtDevice *)
 
 void GameRenderer::debug_createTrackArrows()
 {
-	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	ISceneManager* smgr = device->getSceneManager();
 
 	if(!debug_arrowMesh){	//arrowMesh is static and shared amnog all instances...
@@ -64,7 +65,10 @@ void GameRenderer::debug_createTrackArrows()
 
 void GameRenderer::debug_clearTrackArrows()
 {
-	//todo
+	if(debug_arrows == 0) return;
+
+
+	debug_arrows = new list<IMeshSceneNode>();
 }
 
 
