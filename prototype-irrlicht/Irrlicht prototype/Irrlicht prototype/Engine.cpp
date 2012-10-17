@@ -76,6 +76,7 @@ void Engine::reset()
 	trackPoints.splice( trackPoints.end() , track->getTrackPoints(0,5) );
 
 
+
 	//todo:
 	/*	placeVehicles( point 1 , point 2)
 	
