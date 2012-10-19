@@ -72,18 +72,26 @@ void GameRenderer::debug_createTrackArrows()
 
 	std::list<TrackPoint*> track = engine->getTrack();
 	IMeshSceneNode* node;
+	IMeshSceneNode* previousNode = 0;
 	
 
 	for(std::list<TrackPoint*>::const_iterator iterator = track.begin(); iterator != track.end();  iterator++)
 	{
 		node = smgr->addMeshSceneNode(debug_arrowMesh);
 		node->setPosition((*iterator)->position);
-		node->setRotation(vector3df(0,0,270));
+		if(previousNode !=0)
+		{
+			vector3df diff =  previousNode->getPosition() - node->getPosition();
+			irr:f32 f = diff.getHorizontalAngle().Y-90;
+			previousNode->setRotation(vector3df(f,0,90));
+		}
+
 		node->setMaterialFlag(video::EMF_LIGHTING, false);
 		debug_arrows->push_back(node);
+		previousNode = node;
 	}
-
-
+	
+	
 
 }
 
@@ -118,7 +126,7 @@ void GameRenderer::update()
 	}
 
 	cameraNode->setTarget(engine->averagePosition);
-	
+	cameraNode->setPosition(engine->averagePosition+core::vector3df(-10,10,-10) );
 }
 
 
