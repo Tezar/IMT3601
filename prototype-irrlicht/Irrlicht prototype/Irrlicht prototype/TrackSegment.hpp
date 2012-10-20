@@ -13,18 +13,15 @@ public:
 	TrackSegment(void);
 	~TrackSegment(void);
 
-	core::list<core::vector3df> controlPoints;
+	//generate track that will start at origin TrackPoint and will be smoothed by value
+	void TrackSegment::generate(TrackPoint*, int);
 
-
-	//ratate control point around point of origin
-	void TrackSegment::rotate(float degrees);
-	
-	//offset all control point
-	void TrackSegment::offset(vector3df offset);
-	
-	void generate();
 	TrackPoint* getExitPoint();
 
+	TrackPointList* getTrack();
 
+protected:
+	TrackPoint exitPoint;
+	TrackPointList trackPoints;
 };
 
