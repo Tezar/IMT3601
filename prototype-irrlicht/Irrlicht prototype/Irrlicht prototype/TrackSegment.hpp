@@ -16,6 +16,12 @@ public:
 	core::list<core::vector3df> controlPoints;
 
 
+	//ratate control point around point of origin
+	void TrackSegment::rotate(float degrees);
+	
+	//offset all control point
+	void TrackSegment::offset(vector3df offset);
+	
 	void generate();
 	TrackPoint* getExitPoint();
 
