@@ -17,7 +17,7 @@ public:
 	~TrackSegment(void);
 
 	//generate track that will start at origin TrackPoint and will be smoothed by value
-	void TrackSegment::generate(TrackPoint* origin = 0, int smoothnes = 5);
+	void TrackSegment::generate(TrackPoint* origin = 0, int smoothnes = 10);
 
 	TrackPoint* getExitPoint();
 

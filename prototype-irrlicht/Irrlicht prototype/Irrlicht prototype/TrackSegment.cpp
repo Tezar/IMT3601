@@ -63,6 +63,8 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 
 	int countControl = controlPoints.size();
 
+	TrackPoint * previousPoint = 0;
+
 	core::list<vector3df>::Iterator iterator = controlPoints.begin();
 	for (int i =0; i < countControl-3; ++i, ++iterator )
 	{
@@ -77,7 +79,19 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 		{
 			irr::f32 position = increment*step;
 			TrackPoint* point = new TrackPoint(position,p0,p1,p2,p3);
+			
+			if(previousPoint == 0)
+			{
+				point->direction = origin == 0 ? 180 : origin->direction;
+			}else
+			{
+				vector3df diff =  previousPoint->position-point->position ;
+				f32 f = diff.getHorizontalAngle().Y-90;
+				point->direction = f;
+			}
+
 			trackPoints.push_back( point );
+			previousPoint = point;
 		}
 	}
 

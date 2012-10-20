@@ -88,26 +88,11 @@ void GameRenderer::debug_createTrackArrows()
 		{
 			node = smgr->addMeshSceneNode(debug_arrowMesh);
 			node->setPosition((*iterator)->position);
-			if(previousNode !=0)
-			{
-				vector3df diff =  previousNode->getPosition() - node->getPosition();
-				f32 f2 = diff.getLength();
-				if(f2 < 0.1)
-				{
-					continue; //skip control points that are too close
-				}
-			
-				f32 f = diff.getHorizontalAngle().Y-90;
-				previousNode->setRotation(vector3df(f,0,90));
-			
-				char tanga[99];
-				sprintf(tanga,"%f %f %f",node->getPosition().X,node->getPosition().Y,node->getPosition().Z); 
-				logger->log(tanga);
-			}
-
+			node->setRotation(vector3df((*iterator)->direction,0,90));
 			node->setMaterialFlag(video::EMF_LIGHTING, false);
+
 			debug_arrows->push_back(node);
-			previousNode = node;
+
 		} //end trackpoint loop
 	}	//end segment loop
 } //end method
