@@ -7,6 +7,14 @@ TrackSegment::TrackSegment(void)
 	exitPoint.direction = 0;
 }
 
+TrackSegment::TrackSegment(int id)
+{
+	exitPoint.position.set(0,0,0);
+	exitPoint.direction = 0;
+	this->id = id;
+}
+
+
 
 TrackSegment::~TrackSegment(void)
 {

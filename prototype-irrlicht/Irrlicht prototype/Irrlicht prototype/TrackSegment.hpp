@@ -10,7 +10,10 @@ class TrackSegment : public CongruentGenerator
 {
 
 public:
+	irr::u32 id;
+
 	TrackSegment(void);
+	TrackSegment(int);
 	~TrackSegment(void);
 
 	//generate track that will start at origin TrackPoint and will be smoothed by value
