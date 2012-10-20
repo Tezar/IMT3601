@@ -7,17 +7,16 @@
 
 using namespace std;
 
-
-
 class TrackGenerator : CongruentGenerator
 {
 protected:
 	irr::u32 originalSeed;
 
 	//todo: change to list...
-	vector<TrackSegment*> segmentCache;
+	vector<TrackPoint*> exitPoints;
 
 	TrackSegment* getSegment(int);
+	TrackPoint* getExitPoint(int);
 
 	std::list<TrackPoint*> points;
 

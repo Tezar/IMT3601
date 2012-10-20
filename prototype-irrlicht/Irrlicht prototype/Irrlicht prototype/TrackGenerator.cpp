@@ -10,35 +10,64 @@ TrackGenerator::~TrackGenerator(void)
 {
 }
 
-
-TrackSegment* TrackGenerator::getSegment(int position)
-{
-	int size = segmentCache.size();
+TrackPoint* TrackGenerator::getExitPoint(int position){
+	int size = exitPoints.size();
 	//if we dont have enough we reserve some more
 	if( size <= position)
 	{
-		segmentCache.resize(position+3, 0);
+		exitPoints.resize(position+8,0);
 	}
 
-	TrackSegment* segment = segmentCache[position];
+	//try to get it
+	TrackPoint* point = exitPoints[position];
 
-	if(segment != 0) return segment;
+	//we have it in cache, our job here is done
+	if(point != 0) return exitPoints[position];
+
+	TrackSegment* segment = getSegment(position-1);
+	point = segment->getExitPoint();
+	
+	delete segment;
+	return point;
+}
+
+TrackSegment* TrackGenerator::getSegment(int position)
+{
+	TrackSegment* segment;
 
 	segment = new TrackSegment();
-	segment->seed(originalSeed+position);
+	segment->seed(originalSeed*(position+1));
 	segment->generate();
 
-	segmentCache[position] = segment;
+	if(position > 0)
+	{
+		TrackPoint * point = getExitPoint(position-1);
+		//segment->rotate(point->direction);
+		segment->offset(point->position);
+		
+	}
+
 
 	return segment;
 }
 
+
+
 std::list<TrackPoint*> TrackGenerator::getTrackPoints(int position, int smoothnes)
 {
+	//reset generated point so far
+	for(std::list<TrackPoint*>::const_iterator iterator = points.begin(); iterator != points.end();  iterator++)
+	{
+		delete (*iterator);	//delete trackpoint to prevent memory leaks
+	}
+	points.clear();
+
+	/*****************************************************/
+
 	TrackSegment* segment = getSegment(position);
 	
 	int countControl = segment->controlPoints.size();
-	
+
 	core::list<vector3df>::Iterator iterator = segment->controlPoints.begin();
 	for (int i =0; i < countControl-3; ++i, ++iterator )
 	{
@@ -56,11 +85,7 @@ std::list<TrackPoint*> TrackGenerator::getTrackPoints(int position, int smoothne
 		}
 	}
 
-	
-
-	vector<core::vector3df*> controlPoints (countControl);
-	//controlPoints[0] = 
-
+	delete segment;
 	return points;
 }
 
