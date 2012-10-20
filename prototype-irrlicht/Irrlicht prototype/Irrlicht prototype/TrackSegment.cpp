@@ -72,6 +72,7 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 		vector3df p3 = *(iterator+3);
 
 		irr::f32 increment = 1.0/smoothnes;
+		//todo: add direction
 		for(int step=0;step < smoothnes; step++)
 		{
 			irr::f32 position = increment*step;
@@ -85,6 +86,12 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 	
 }
 
+
+
+TrackPointList* TrackSegment::getTrack()
+{
+	return &(this->trackPoints);
+}
 
 TrackPoint* TrackSegment::getExitPoint()
 {

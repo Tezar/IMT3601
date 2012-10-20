@@ -36,14 +36,13 @@ public:
 	/** resets state of engine to initial conditions */
 	void reset();
 
-
-	std::list<TrackPoint*> getTrack();
+	core::list<TrackSegment*>* getSegments();
 
 protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
 
-	std::list<TrackPoint*> trackPoints;
+	core::list<TrackSegment*> segments;
 
 };
 

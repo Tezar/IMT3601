@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <windows.h>
 #include <stdio.h>
+#include <functional>
 #include "Engine.hpp"
 
 
@@ -9,14 +10,16 @@ Engine::Engine(void)
 {
 		numVehicles = 0;
 
-		track = new TrackGenerator(69);	//seed with randomly picked number...
+		track = new TrackGenerator(69696969);	//seed with randomly picked number...
 		
+
 		averagePosition.set(0,0,0);
 }
 
 
 Engine::~Engine(void)
 {
+	delete track;
 }
 
 
@@ -56,27 +59,13 @@ int Engine::step(int toDo)
 }
 
 
-std::list<TrackPoint*> Engine::getTrack(){
-	return trackPoints;
-}
-
-
 void Engine::reset()
 {
-	for(std::list<TrackPoint*>::const_iterator iterator = trackPoints.begin(); iterator != trackPoints.end();  iterator++)
-	{
-		delete (*iterator);	//delete trackpoint to prevent memory leaks
-	}
-
-	trackPoints.clear();
-
-
-
 	//add point at the end
-	trackPoints.splice( trackPoints.end() , track->getTrackPoints(0,5) );
+	segments.push_back( track->getSegment(0) );
 
-
-
+	//trackPoints.splice(trackPoints.end(), track->getTrackPoints(1,5));
+	//trackPoints.splice(trackPoints.end(), track->getTrackPoints(2,5));
 	//todo:
 	/*	placeVehicles( point 1 , point 2)
 	
@@ -98,15 +87,19 @@ void Engine::reset()
 inline void Engine::recalculatePosition()
 {
 	static float posX;
-	static float posY;
+	static float posZ;
 
 	posX = 0;
-	posY = 0;
+	posZ = 0;
 
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
 		posX += v->position.X;
-		posY += v->position.Y;
+		posZ += v->position.Z;
 	}
-	averagePosition.set(posX/numVehicles, posY/numVehicles,0);
+	averagePosition.set(posX/numVehicles, 0, posZ/numVehicles);
+}
+
+core::list<TrackSegment*>* Engine::getSegments(){
+	return &segments;
 }

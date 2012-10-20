@@ -3,9 +3,11 @@
 #include "GameManagerClass.hpp"
 
 //todo: remove unused
+using namespace irr;
 using namespace core;
 using namespace scene;
 using namespace video;
+
 
 //we have to define it here, or else compilator will fail (because of static nature of this var)
 IMesh* GameRenderer::debug_arrowMesh = 0;
@@ -70,30 +72,45 @@ void GameRenderer::debug_createTrackArrows()
                                 );
 	}
 
-	std::list<TrackPoint*> track = engine->getTrack();
 	IMeshSceneNode* node;
 	IMeshSceneNode* previousNode = 0;
 	
+	ILogger* logger = device->getLogger();
 
-	for(std::list<TrackPoint*>::const_iterator iterator = track.begin(); iterator != track.end();  iterator++)
+
+	core::list<TrackSegment*>* segments = engine->getSegments();
+
+	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments->begin(); segment_iterator != segments->end(); segment_iterator++)
 	{
-		node = smgr->addMeshSceneNode(debug_arrowMesh);
-		node->setPosition((*iterator)->position);
-		if(previousNode !=0)
+		TrackPointList * track = (*segment_iterator)->getTrack();
+
+		for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
 		{
-			vector3df diff =  previousNode->getPosition() - node->getPosition();
-			irr:f32 f = diff.getHorizontalAngle().Y-90;
-			previousNode->setRotation(vector3df(f,0,90));
-		}
+			node = smgr->addMeshSceneNode(debug_arrowMesh);
+			node->setPosition((*iterator)->position);
+			if(previousNode !=0)
+			{
+				vector3df diff =  previousNode->getPosition() - node->getPosition();
+				f32 f2 = diff.getLength();
+				if(f2 < 0.1)
+				{
+					continue; //skip control points that are too close
+				}
+			
+				f32 f = diff.getHorizontalAngle().Y-90;
+				previousNode->setRotation(vector3df(f,0,90));
+			
+				char tanga[99];
+				sprintf(tanga,"%f %f %f",node->getPosition().X,node->getPosition().Y,node->getPosition().Z); 
+				logger->log(tanga);
+			}
 
-		node->setMaterialFlag(video::EMF_LIGHTING, false);
-		debug_arrows->push_back(node);
-		previousNode = node;
-	}
-	
-	
-
-}
+			node->setMaterialFlag(video::EMF_LIGHTING, false);
+			debug_arrows->push_back(node);
+			previousNode = node;
+		} //end trackpoint loop
+	}	//end segment loop
+} //end method
 
 void GameRenderer::debug_clearTrackArrows()
 {
@@ -126,7 +143,7 @@ void GameRenderer::update()
 	}
 
 	cameraNode->setTarget(engine->averagePosition);
-	cameraNode->setPosition(engine->averagePosition+core::vector3df(-10,10,-10) );
+	cameraNode->setPosition(engine->averagePosition+core::vector3df(-10,20,-10) );
 }
 
 
