@@ -14,9 +14,6 @@ using namespace gui;
 
 using namespace irr;
 
-#ifdef _IRR_WINDOWS_
-#pragma comment(lib, "Irrlicht.lib")
-#endif
 
 MenuSceneClass::MenuSceneClass(void)
 {
