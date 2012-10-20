@@ -6,13 +6,14 @@ using namespace std;
 using namespace irr;
 using namespace core;
 
-
 class TrackPoint
 {
 public:
 	core::vector3df position;
 	//we use only rotation along Y axis so no need for evctor here
 	irr::f32 direction;
+	irr::u32 segment;
+
 
 	TrackPoint(void){};
 	
@@ -33,12 +34,24 @@ public:
 
 		position /= 2;
 	}
-    
+};
 
 
+class TrackPointList : public core::list<TrackPoint*>{
+public:
+	TrackPointList(): core::list<TrackPoint*>()
+	{
+	}
 
+	~TrackPointList() //parents destructor callaed automatically
+	{ 
+		for(TrackPointList::ConstIterator iterator = begin(); iterator != end();  iterator++)
+		{
+			delete (*iterator);	//delete trackpoint to prevent memory leaks
+		}
+		clear(); //clear list itself
+	}
 
-	
 };
 
 

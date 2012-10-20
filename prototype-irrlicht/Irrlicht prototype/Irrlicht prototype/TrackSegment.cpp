@@ -21,7 +21,7 @@ TrackSegment::~TrackSegment(void)
 }
 
 
-void TrackSegment::generate(TrackPoint* origin=0, int smoothnes)
+void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 {
 	core::list<core::vector3df> controlPoints;
 
