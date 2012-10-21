@@ -17,7 +17,10 @@ public:
 	~TrackSegment(void);
 
 	//generate track that will start at origin TrackPoint and will be smoothed by value
-	void TrackSegment::generate(TrackPoint* origin = 0, int smoothnes = 10);
+	void TrackSegment::generate(TrackPoint* origin=0, int smoothnes=10);
+
+	//seperated control point generation so we can easily change behaviour in child object
+	core::list<core::vector3df>* TrackSegment::createControlPoints();
 
 	TrackPoint* getExitPoint();
 
