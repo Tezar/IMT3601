@@ -59,7 +59,7 @@ void GameRenderer::debug_createTrackArrows()
 	debug_clearTrackArrows();	//first we clear all previous
 
 	ISceneManager* smgr = device->getSceneManager();
-
+	
 	//secure mesh for us
 	if(!debug_arrowMesh) 	//arrowMesh is static and shared amnog all instances...
 	{
@@ -71,24 +71,33 @@ void GameRenderer::debug_createTrackArrows()
                                 0.1f, 0.6f
                                 );
 	}
-
+	
 	IMeshSceneNode* node;
 	IMeshSceneNode* previousNode = 0;
-	
-	ILogger* logger = device->getLogger();
 
 
 	core::list<TrackSegment*>* segments = engine->getSegments();
-
+	int i=0;
 	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments->begin(); segment_iterator != segments->end(); segment_iterator++)
 	{
+		
+		IMesh* arrowMesh = smgr->addArrowMesh( stringc("arrow")+core::stringc(i),
+                                video::SColor(255, 30, 0, 0),
+                                video::SColor(255, 200*(1+i), 100*i, 150*i),
+                                16,16,
+                                2.f, 1.3f,
+                                0.1f, 0.6f
+                                );
+
+		i++;
+
 		TrackPointList * track = (*segment_iterator)->getTrack();
 
 		for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
 		{
-			node = smgr->addMeshSceneNode(debug_arrowMesh);
+			node = smgr->addMeshSceneNode(arrowMesh);
 			node->setPosition((*iterator)->position);
-			node->setRotation(vector3df((*iterator)->direction,0,90));
+			node->setRotation(vector3df(((*iterator)->direction+90),0,90));
 			node->setMaterialFlag(video::EMF_LIGHTING, false);
 
 			debug_arrows->push_back(node);
