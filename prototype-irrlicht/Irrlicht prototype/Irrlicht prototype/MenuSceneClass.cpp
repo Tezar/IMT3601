@@ -29,9 +29,6 @@ void MenuSceneClass::onEnter()
 	
     IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 
-	
-
-
 	receiver = new MyEventReceiver(context);
 	
 	device->setEventReceiver(receiver);
@@ -44,6 +41,14 @@ void MenuSceneClass::onEnter()
 		context.device = device;
 		context.counter = 0;
 		//context.listbox = listbox;
+
+		
+		for (u32 i=0; i<EGDC_COUNT ; ++i)
+			{
+				SColor col = env->getSkin()->getColor((EGUI_DEFAULT_COLOR)i);
+				col.setAlpha(200);
+				env->getSkin()->setColor((EGUI_DEFAULT_COLOR)i, col);
+			}
 
 
         skin->setFont(env->getBuiltInFont(), EGDF_TOOLTIP);

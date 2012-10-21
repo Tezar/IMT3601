@@ -26,6 +26,9 @@ enum
         GUI_ID_QUIT_BUTTON = 101,
         GUI_ID_START_BUTTON,
         GUI_ID_SETTINGS_BUTTON,
+		GUI_ID_GAME_ENGINE_BUTTON,
+		GUI_ID_AUDIO_BUTTON,
+		GUI_ID_HOTKEY_BUTTON,
 };
 
 class MyEventReceiver : public IEventReceiver
@@ -58,21 +61,25 @@ public:
 
                                 case GUI_ID_SETTINGS_BUTTON:
 									{
-                                        //Context.listbox->addItem(L"Window created");
-                                        //Context.counter += 30;
-                                        //if (Context.counter > 200)
-                                        //        Context.counter = 0;
-
                                         IGUIWindow* window = env->addWindow(
                                                 rect<s32>(100, 50, 550, 400),
-                                                false, // modal?
-                                                L"Settings");
+                                                false,
+												L"Settings");
 
-                                        env->addStaticText(L"Please close me",
-                                                rect<s32>(35,35,140,50),
-                                                true, // border?
-                                                false, // wordwrap?
-                                                window);
+										env->addButton(rect<s32>(50, 20 + 20 + 0, 400, 100 + 0), window, GUI_ID_GAME_ENGINE_BUTTON,
+										L"Game settings", L"Opens the game settings window");
+
+										env->addButton(rect<s32>(50, 20 + 20 + 80, 400, 100 + 80), window, GUI_ID_AUDIO_BUTTON,
+										L"Audio settings", L"Opens the audio settings window");
+
+										env->addButton(rect<s32>(50, 20 + 20 + 160, 400, 100 + 160), window, GUI_ID_HOTKEY_BUTTON,
+										L"Hotkey menu", L"Opens the Hotkey menu window");
+
+                                        //env->addStaticText(L"Please close me",
+                                        //        rect<s32>(35,35,140,50),
+                                        //        false, // border?
+                                        //        true, // wordwrap?
+                                        //        window);
 									}
 										return true;
 
@@ -92,54 +99,3 @@ public:
 private:
         SAppContext & Context;
 };
-
-/*
-This is the main method. We can now use main() on every platform.
-//*/
-//int main()
-//{
-//	video::E_DRIVER_TYPE driverType=irr::video::E_DRIVER_TYPE(1); //never put too "0"
-//        if (driverType==video::EDT_COUNT)
-//                return 1;
-//
-//        // create device and exit if creation failed
-//
-//        IrrlichtDevice * device = createDevice(driverType, core::dimension2d<u32>(640, 480));
-//
-//        if (device == 0)
-//                return 1; // could not create selected driver.
-//		device->setWindowCaption(L"Irrlicht Engine - User Interface Demo");
-//        device->setResizable(true);
-//
-//        video::IVideoDriver* driver = device->getVideoDriver();
-//        IGUIEnvironment* env = device->getGUIEnvironment();
-//		IGUISkin* skin = env->getSkin();
-//        IGUIFont* font = env->getFont("../../media/fonthaettenschweiler.bmp");
-//        if (font)
-//                skin->setFont(font);
-//
-//        skin->setFont(env->getBuiltInFont(), EGDF_TOOLTIP);
-//		env->addButton(rect<s32>(200,100,460,100 + 72), 0, GUI_ID_START_BUTTON,
-//                        L"Start Program", L"Starts the program");
-//        env->addButton(rect<s32>(200,180,460,180 + 72), 0, GUI_ID_QUIT_BUTTON,
-//                        L"Quit", L"terminates the current program");
-//        env->addButton(rect<s32>(200,260,460,260 + 72), 0, GUI_ID_FILE_OPEN_BUTTON,
-//                        L"File Open", L"Opens a file");
-//		while(device->run() && driver)
-//        if (device->isWindowActive())
-//        {
-//                driver->beginScene(true, true, SColor(0,200,200,200));
-//
-//                env->drawAll();
-//        
-//                driver->endScene();
-//        }
-//
-//        device->drop();
-//
-//        return 0;
-//}
-
-/*
-That's it. Compile and run.
-**/
