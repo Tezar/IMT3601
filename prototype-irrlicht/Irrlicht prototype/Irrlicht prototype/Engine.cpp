@@ -46,7 +46,8 @@ int Engine::step(int toDo)
 			//todo: change to reflect behaviour, maybe implement it as strategy pattern to please Simon ? :-)
 			Vehicle* v = vehicles[nVehicle];
 			if(v->force == force_forward){
-				v->position.X += f32(0.01);
+				v->position.X += f32(0.00);
+				v->position.Z += f32(0.01);
 			}
 		}
 		toDo -= ENGINE_STEP;
@@ -63,6 +64,9 @@ void Engine::reset()
 {
 	//add point at the end
 	segments.push_back( track->getSegment(0) );
+	segments.push_back( track->getSegment(1) );
+	segments.push_back( track->getSegment(2) );
+	segments.push_back( track->getSegment(3) );
 
 	//trackPoints.splice(trackPoints.end(), track->getTrackPoints(1,5));
 	//trackPoints.splice(trackPoints.end(), track->getTrackPoints(2,5));

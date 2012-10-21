@@ -21,23 +21,32 @@ TrackSegment::~TrackSegment(void)
 }
 
 
+
+
 void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 {
+	smoothnes = 10;
 	core::list<core::vector3df> controlPoints;
 
 	/******************* control points generation ****************************/
 	//x,z is plane, y is elevation
 	//add reset control points
+
+	//irrlich angle calculation presumes that 0 angle o Y axis is aligned with Z axis, so it's imporatant to do gennerall progress 0 is aligned with Z axis, so its 
+	controlPoints.push_back(vector3df(0,0,-50)); //far away control point that will assure straight connection
 	controlPoints.push_back(vector3df(0,0,0));
-	controlPoints.push_back(vector3df(0,0,0));
+	controlPoints.push_back(vector3df(0,0,10));
 
 	//add short stub to smooth the transion
-	controlPoints.push_back(vector3df(10,0,0));
-
+	controlPoints.push_back(vector3df(10,0,10));
+	//controlPoints.push_back(vector3df(0,0,15));
+	//controlPoints.push_back(vector3df(0,0,20));
+	
+	
 	//default implementation, for start we just add equally spaced segments and move them a little
-	for(int i=2; i < 5; i++){
-		irr::s32 r = random(20)-10;	//we have to retype tosigned otherwise compiler make stupid assumptions and let our number underflow
-		controlPoints.push_back(core::vector3df(i*10,0, r ));
+	for(int i=4; i < 6; i++){
+		irr::s32 r = random(10)-5;	//we have to retype tosigned otherwise compiler make stupid assumptions and let our number underflow
+		controlPoints.push_back(core::vector3df(r,0, i*10 ));
 	}
 	//repeat last point so the spline ends on it
 	controlPoints.push_back( core::vector3df( *controlPoints.getLast() ));
@@ -48,17 +57,19 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 	{
 		for(core::list<core::vector3df>::Iterator iterator = controlPoints.begin(); iterator != controlPoints.end();  iterator++)
 		{
-			(*iterator).rotateXZBy(origin->direction);
+			(*iterator).rotateXZBy(-origin->direction);
 			(*iterator) += origin->position;
 		}
 	}
 
+	
 	vector3df last = *controlPoints.getLast();
 	vector3df beforeLast = *(controlPoints.getLast()-2);
 	vector3df diff = last-beforeLast;
 
 	exitPoint.position.set(last);
-	exitPoint.direction = diff.getHorizontalAngle().Y-90;
+	exitPoint.direction = diff.getHorizontalAngle().Y;
+
 
 
 	int countControl = controlPoints.size();
@@ -82,17 +93,24 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 			
 			if(previousPoint == 0)
 			{
-				point->direction = origin == 0 ? 180 : origin->direction;
+				point->direction = origin == 0 ? 90 : origin->direction;
 			}else
 			{
-				vector3df diff =  previousPoint->position-point->position ;
-				f32 f = diff.getHorizontalAngle().Y-90;
+				vector3df diff = point->position-previousPoint->position ;
+				vector3df angl = diff.getHorizontalAngle();
+				
+				f32 f = diff.getHorizontalAngle().Y;
 				point->direction = f;
 			}
 
 			trackPoints.push_back( point );
 			previousPoint = point;
 		}
+
+		//exitPoint.direction = previousPoint->direction;
+		//exitPoint.position = previousPoint->position;
+
+
 	}
 
 
