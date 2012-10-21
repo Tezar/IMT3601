@@ -61,18 +61,18 @@ public:
 
                                 case GUI_ID_SETTINGS_BUTTON:
 									{
-                                        IGUIWindow* window = env->addWindow(
+                                        IGUIWindow* settingsWindow = env->addWindow(
                                                 rect<s32>(100, 50, 550, 400),
                                                 false,
 												L"Settings");
 
-										env->addButton(rect<s32>(50, 20 + 20 + 0, 400, 100 + 0), window, GUI_ID_GAME_ENGINE_BUTTON,
+										env->addButton(rect<s32>(50, 20 + 20 + 0, 400, 100 + 0), settingsWindow, GUI_ID_GAME_ENGINE_BUTTON,
 										L"Game settings", L"Opens the game settings window");
 
-										env->addButton(rect<s32>(50, 20 + 20 + 80, 400, 100 + 80), window, GUI_ID_AUDIO_BUTTON,
+										env->addButton(rect<s32>(50, 20 + 20 + 80, 400, 100 + 80), settingsWindow, GUI_ID_AUDIO_BUTTON,
 										L"Audio settings", L"Opens the audio settings window");
 
-										env->addButton(rect<s32>(50, 20 + 20 + 160, 400, 100 + 160), window, GUI_ID_HOTKEY_BUTTON,
+										env->addButton(rect<s32>(50, 20 + 20 + 160, 400, 100 + 160), settingsWindow, GUI_ID_HOTKEY_BUTTON,
 										L"Hotkey menu", L"Opens the Hotkey menu window");
 
                                         //env->addStaticText(L"Please close me",
@@ -83,6 +83,32 @@ public:
 									}
 										return true;
 
+								case GUI_ID_GAME_ENGINE_BUTTON:
+									{
+                                        IGUIWindow* gameEnginWindow = env->addWindow(
+                                                rect<s32>(100, 50, 550, 400),
+                                                false,
+												L"Game Engine Settings");
+									}
+										return true;
+
+								case GUI_ID_AUDIO_BUTTON:
+									{
+                                        IGUIWindow* audiosWindow = env->addWindow(
+                                                rect<s32>(100, 50, 550, 400),
+                                                false,
+												L"Audio Settings");
+									}
+										return true;
+
+								case GUI_ID_HOTKEY_BUTTON:
+									{
+                                        IGUIWindow* hotkeyWindow = env->addWindow(
+                                                rect<s32>(100, 50, 550, 400),
+                                                false,
+												L"Hotkey Config");
+									}
+										return true;
                                 default:
                                         return false;
                                 }
