@@ -12,4 +12,10 @@ public:
 	virtual bool OnEvent(const SEvent& event);
 	virtual bool IsKeyDown(EKEY_CODE keyCode) const;
 	Controller();
+
+	/*************************************************************************
+	 *	Make the Controller class detect if the input is coming from the	 *
+	 *	keyboard, AI, or network and have the class behave accordingly.		 *
+	 *************************************************************************/
+
 };
