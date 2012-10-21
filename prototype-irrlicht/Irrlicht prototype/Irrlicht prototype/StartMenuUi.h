@@ -57,22 +57,24 @@ public:
                                         return true;
 
                                 case GUI_ID_SETTINGS_BUTTON:
+									{
                                         //Context.listbox->addItem(L"Window created");
                                         //Context.counter += 30;
                                         //if (Context.counter > 200)
                                         //        Context.counter = 0;
 
-                                        //IGUIWindow* window = env->addWindow(
-                                        //        rect<s32>(100 + Context.counter, 100 + Context.counter, 300 + Context.counter, 200 + Context.counter),
-                                        //        false, // modal?
-                                        //        L"Test window");
+                                        IGUIWindow* window = env->addWindow(
+                                                rect<s32>(100, 50, 550, 400),
+                                                false, // modal?
+                                                L"Settings");
 
-                                        //env->addStaticText(L"Please close me",
-                                        //        rect<s32>(35,35,140,50),
-                                        //        true, // border?
-                                        //        false, // wordwrap?
-                                        //        window);
-                                        return true;
+                                        env->addStaticText(L"Please close me",
+                                                rect<s32>(35,35,140,50),
+                                                true, // border?
+                                                false, // wordwrap?
+                                                window);
+									}
+										return true;
 
                                 default:
                                         return false;

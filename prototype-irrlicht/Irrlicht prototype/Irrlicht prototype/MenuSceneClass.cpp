@@ -26,13 +26,11 @@ MenuSceneClass::~MenuSceneClass(void)
 
 void MenuSceneClass::onEnter()
 {
-
+	
     IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 
 	
-	context.device = device;
-	context.counter = 0;
-	context.listbox = 0;
+
 
 	receiver = new MyEventReceiver(context);
 	
@@ -41,6 +39,12 @@ void MenuSceneClass::onEnter()
         video::IVideoDriver* driver = device->getVideoDriver();
         IGUIEnvironment* env = device->getGUIEnvironment();
 		IGUISkin* skin = env->getSkin();
+		//IGUIListBox * listbox = env->addListBox(rect<s32>(50, 140, 250, 210));
+
+		context.device = device;
+		context.counter = 0;
+		//context.listbox = listbox;
+
 
         skin->setFont(env->getBuiltInFont(), EGDF_TOOLTIP);
 		env->addButton(rect<s32>(200,100,460,100 + 72), 0, GUI_ID_START_BUTTON,
@@ -64,6 +68,7 @@ bool MenuSceneClass::onExit()
 {
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	device->setEventReceiver(0);
+	device->getGUIEnvironment()->clear();
 	delete receiver;
 	return false;
 }
