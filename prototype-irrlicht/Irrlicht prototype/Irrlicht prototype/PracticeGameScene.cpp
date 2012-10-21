@@ -1,3 +1,4 @@
+#pragma once
 #include "PracticeGameScene.hpp"
 #include "GameManagerClass.hpp"
 #include "Vehicle.hpp"
@@ -9,6 +10,8 @@ using namespace scene;
 using namespace video;
 using namespace gui;
 
+using namespace io;
+using namespace irr;
 
 
 PracticeGameScene::PracticeGameScene(void)
@@ -27,6 +30,11 @@ void PracticeGameScene::onEnter()
 	engine = new Engine();
 	engine->addVehicle( new Vehicle() );
 	engine->addVehicle( new Vehicle() );
+	
+	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+	receiver = new Controller();
+
+	device->setEventReceiver(receiver);
 
 	Controller inputDevice1, inputDevice2;
 
@@ -37,10 +45,6 @@ void PracticeGameScene::onEnter()
 	 *************************************************************************/
 
 	engine->reset();
-
-
-
-	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	
 	renderer = new GameRenderer(engine);
 	renderer->attach(device);
