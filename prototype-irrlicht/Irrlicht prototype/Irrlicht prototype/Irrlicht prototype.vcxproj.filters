@@ -99,4 +99,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\lib\BulletCollision_vs2010_debug.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\..\lib\BulletDynamics_vs2010_debug.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\..\lib\LinearMath_vs2010_debug.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="..\..\lib\Irrlicht.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+  </ItemGroup>
 </Project>

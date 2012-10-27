@@ -1,7 +1,11 @@
 #pragma once
+
+
 #include "Vehicle.hpp"
 #include "TrackUtil.hpp"
 #include "TrackGenerator.hpp"
+
+#include "btBulletDynamicsCommon.h"
 
 #define MAX_VEHICLES 4
 
@@ -43,6 +47,13 @@ protected:
 	inline void recalculatePosition();
 
 	core::list<TrackSegment*> segments;
+
+	//physics system
+    btBroadphaseInterface* broadphase;
+    btDefaultCollisionConfiguration* collisionConfiguration;
+    btCollisionDispatcher* dispatcher;
+    btSequentialImpulseConstraintSolver* solver;
+    btDiscreteDynamicsWorld* dynamicsWorld;
 
 };
 
