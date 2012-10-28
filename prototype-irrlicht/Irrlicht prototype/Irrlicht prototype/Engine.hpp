@@ -22,6 +22,8 @@ public:
 
 	int numVehicles;
 
+	void (*movementHandler)(irr::u32 id,const btTransform* transform);
+
 	Engine(void);
 	~Engine(void);
 
@@ -47,6 +49,9 @@ protected:
 	inline void recalculatePosition();
 
 	core::list<TrackSegment*> segments;
+
+
+	btRigidBody* bodies_vehicles[MAX_VEHICLES];	//references for vehicle bodies
 
 	//physics system
     btBroadphaseInterface* broadphase;

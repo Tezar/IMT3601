@@ -5,6 +5,41 @@
 #include "Engine.hpp"
 
 
+class EngineBodyState: public btMotionState {
+public:
+    EngineBodyState(Engine * e, irr::u32 _id, const btTransform &initialpos) {
+        engine = e;
+		id = _id;
+        mPos1 = initialpos;
+    }
+
+    virtual ~EngineBodyState() {
+    }
+
+	virtual void getWorldTransform(btTransform &worldTrans) const {
+        worldTrans = mPos1;
+    }
+
+    virtual void setWorldTransform(const btTransform &worldTrans) {
+		if(engine->movementHandler == NULL)
+				return; // we silently return as there is no handler to notify
+
+		engine->movementHandler(id, &worldTrans);
+		/*
+        btQuaternion rot = worldTrans.getRotation();
+        mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
+        btVector3 pos = worldTrans.getOrigin();
+        mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
+		*/
+    }
+
+protected:
+	irr::u32 id;
+    Engine* engine;
+    btTransform mPos1;
+};
+
+
 
 Engine::Engine(void)
 {
@@ -12,6 +47,8 @@ Engine::Engine(void)
 
 	track = new TrackGenerator(69696969);	//seed with randomly picked number...
 	averagePosition.set(0,0,0);
+
+	movementHandler = 0;
 
 
 	// Build the broadphase
@@ -48,6 +85,23 @@ void Engine::addVehicle(Vehicle * vehicle)
 	assert(numVehicles < MAX_VEHICLES);
 
 	vehicles[numVehicles] = vehicle;
+
+
+	//memmory leak
+    btCollisionShape* fallShape = new btSphereShape(1);
+
+
+	btMotionState* fallMotionState =
+		new  EngineBodyState(this, numVehicles, btTransform(btQuaternion(0,0,0,1),btVector3(0,50,0)));
+    btScalar mass = 1;
+    btVector3 fallInertia(0,0,0);
+    fallShape->calculateLocalInertia(mass,fallInertia);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
+    btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+
+	bodies_vehicles[numVehicles] = fallRigidBody;
+
+
 	numVehicles++;
 }
 
@@ -72,7 +126,7 @@ int Engine::step(int toDo)
 		}
 		toDo -= ENGINE_STEP;
 	}
-	i;
+	
 
 	recalculatePosition();
 
