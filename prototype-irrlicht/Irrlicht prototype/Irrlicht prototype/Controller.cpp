@@ -9,6 +9,33 @@ bool Controller::OnEvent(const SEvent& event)
 	if (event.EventType == EET_KEY_INPUT_EVENT)
 		KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
 
+
+	//	Only need to make the referencing vehicle from engine.
+
+//	if (IsKeyDown(KEY_KEY_W))
+//		VehicleReference->force = force_forward;
+//
+//	else if (IsKeyDown(KEY_KEY_A))
+//		VehicleReference->turning = turning_left;
+//
+//	else if (IsKeyDown(KEY_KEY_S))
+//		VehicleReference->force = force_backward;
+//
+//	else if (IsKeyDown(KEY_KEY_D))
+//		VehicleReference->turning = turning_right;
+//
+//	else if (IsKeyDown(Fire))
+//		RequestingPermissionToLaunchNukes;
+//
+//	else if (IsKeyDown(KEY_ESCAPE))
+//		OpenMenu;
+//
+//	else
+//	{
+//		VehicleReference->force = force_none;
+//		VehicleReference->turning = turning_none;
+//	}
+
 	return false;
 }
 
@@ -22,13 +49,15 @@ bool Controller::IsKeyDown(EKEY_CODE keyCode) const
 	return KeyIsDown[keyCode];				//	held down.
 }
 
-Controller::Controller()
+Controller::Controller(/* ReferencingTheVehicle */)
 {
-	Forward = 'w';
-	Back = 's';
-	Left = 'a';
-	Right = 'd';
-	Fire = KEY_SPACE;
+//	ReferencingTheVehicle = VehicleReference;
+
+	Forward = KEY_KEY_W;
+	Back	= KEY_KEY_S;
+	Left	= KEY_KEY_A;
+	Right	= KEY_KEY_W;
+	Fire	= KEY_SPACE;
 
 	for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
 		KeyIsDown[i] = false;
@@ -63,16 +92,7 @@ void DontKnowWhereToPutThisSoIPutItHere()
 {
 	Controller inputDevice;
 
-//	switch(inputDevice.OnEvent(KeyIsDown))
-//	{
-//		case Forward:	Vehicle.force = force_forward;		break;
-//		case Left:		Vehicle.turning = turning_left;		break;
-//		case Back:		Vehicle.force = force_backward;		break;
-//		case Right:		Vehicle.turning = turning_right;	break;
-//
-//		default:		Vehicle.force = force_none;
-//						Vehicle.turning = turning_none;		break;
-//	}
+
 
 	if (inputDevice.IsKeyDown(KEY_KEY_W) || inputDevice.IsKeyDown(KEY_UP))
 	{

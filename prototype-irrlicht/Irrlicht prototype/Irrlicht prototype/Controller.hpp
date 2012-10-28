@@ -14,10 +14,12 @@ private:
 	char Right;
 	char Fire;
 
+//	VehicleReference;
+
 public:
 	virtual bool OnEvent(const SEvent& event);
 	virtual bool IsKeyDown(EKEY_CODE keyCode) const;
-	Controller();
+	Controller(/* ReferencingTheVehicle */);
 
 	void ChangeKeySettings(int direction, char keyboardKey);
 
