@@ -1,4 +1,5 @@
 #include "controller.hpp"
+#include "Vehicle.hpp"
 
 using namespace irr;
 
@@ -23,8 +24,28 @@ bool Controller::IsKeyDown(EKEY_CODE keyCode) const
 
 Controller::Controller()
 {
+	Forward = 'w';
+	Back = 's';
+	Left = 'a';
+	Right = 'd';
+	Fire = KEY_SPACE;
+
 	for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
 		KeyIsDown[i] = false;
+}
+
+void Controller::ChangeKeySettings(int direction, char keyboardKey)
+{
+	switch(direction)
+	{
+		case 0: Forward = keyboardKey;	break;
+		case 1: Back	= keyboardKey;	break;
+		case 2: Left	= keyboardKey;	break;
+		case 3: Right	= keyboardKey;	break;
+		case 4: Fire	= keyboardKey;	break;
+
+		default: break;
+	}
 }
 
 
@@ -41,6 +62,17 @@ Controller::Controller()
 void DontKnowWhereToPutThisSoIPutItHere()
 {
 	Controller inputDevice;
+
+//	switch(inputDevice.OnEvent(KeyIsDown))
+//	{
+//		case Forward:	Vehicle.force = force_forward;		break;
+//		case Left:		Vehicle.turning = turning_left;		break;
+//		case Back:		Vehicle.force = force_backward;		break;
+//		case Right:		Vehicle.turning = turning_right;	break;
+//
+//		default:		Vehicle.force = force_none;
+//						Vehicle.turning = turning_none;		break;
+//	}
 
 	if (inputDevice.IsKeyDown(KEY_KEY_W) || inputDevice.IsKeyDown(KEY_UP))
 	{
