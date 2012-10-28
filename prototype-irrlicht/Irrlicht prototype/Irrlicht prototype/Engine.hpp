@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Vehicle.hpp"
 #include "TrackUtil.hpp"
 #include "TrackGenerator.hpp"
@@ -9,8 +8,20 @@
 
 #define MAX_VEHICLES 4
 
+#define MAKE_VEHICLE_ID(x) (x | (1 << 31) )
+#define IS_VEHICLE_ID(x) (x & (1 << 31) ) ? true : false
+#define GET_VEHICLE_ID(x) (x & (~(1 << 31)) )
+
 //!if you change this value it will mess up all unscaled physical constrains!
-#define ENGINE_STEP 10
+#define ENGINE_STEP 20
+
+
+
+/* "interface" for listeners */
+class MovementListener{
+	public:
+		virtual void onBodyMovement(irr::u32 id,const btTransform* transform) = 0;
+};
 
 
 class Engine
@@ -22,7 +33,7 @@ public:
 
 	int numVehicles;
 
-	void (*movementHandler)(irr::u32 id,const btTransform* transform);
+	MovementListener* listener;
 
 	Engine(void);
 	~Engine(void);

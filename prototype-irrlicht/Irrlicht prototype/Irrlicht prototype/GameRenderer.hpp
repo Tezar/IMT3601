@@ -6,7 +6,7 @@ using namespace scene;
 #include "Engine.hpp"
 
 
-class GameRenderer
+class GameRenderer: public MovementListener
 {
 private:
 	//engine which we are going to render
@@ -32,6 +32,8 @@ public:
 	void attach(IrrlichtDevice* );
 	/** remove anything we have done to device*/
 	void detach();
+
+	void onBodyMovement(irr::u32 id,const btTransform* transform);
 
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();

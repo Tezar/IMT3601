@@ -21,10 +21,10 @@ public:
     }
 
     virtual void setWorldTransform(const btTransform &worldTrans) {
-		if(engine->movementHandler == NULL)
+		if(engine->listener == NULL)
 				return; // we silently return as there is no handler to notify
 
-		engine->movementHandler(id, &worldTrans);
+		engine->listener->onBodyMovement(id, &worldTrans);
 		/*
         btQuaternion rot = worldTrans.getRotation();
         mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
@@ -48,7 +48,7 @@ Engine::Engine(void)
 	track = new TrackGenerator(69696969);	//seed with randomly picked number...
 	averagePosition.set(0,0,0);
 
-	movementHandler = 0;
+	listener = NULL;
 
 
 	// Build the broadphase
@@ -92,7 +92,7 @@ void Engine::addVehicle(Vehicle * vehicle)
 
 
 	btMotionState* fallMotionState =
-		new  EngineBodyState(this, numVehicles, btTransform(btQuaternion(0,0,0,1),btVector3(0,50,0)));
+		new  EngineBodyState(this, MAKE_VEHICLE_ID(numVehicles), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
     btScalar mass = 1;
     btVector3 fallInertia(0,0,0);
     fallShape->calculateLocalInertia(mass,fallInertia);
@@ -100,6 +100,8 @@ void Engine::addVehicle(Vehicle * vehicle)
     btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
 
 	bodies_vehicles[numVehicles] = fallRigidBody;
+
+	dynamicsWorld->addRigidBody(fallRigidBody);
 
 
 	numVehicles++;
@@ -113,9 +115,11 @@ int Engine::step(int toDo)
 	int i = 0;
 	while(toDo > ENGINE_STEP){
 		i++;
-
+		dynamicsWorld->stepSimulation(ENGINE_STEP/1000.0,10);
+		/*
 		//simulation!
 		for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
+			
 			
 			//todo: change to reflect behaviour, maybe implement it as strategy pattern to please Simon ? :-)
 			Vehicle* v = vehicles[nVehicle];
@@ -123,7 +127,7 @@ int Engine::step(int toDo)
 				v->position.X += f32(0.00);
 				v->position.Z += f32(0.01);
 			}
-		}
+		}*/
 		toDo -= ENGINE_STEP;
 	}
 	

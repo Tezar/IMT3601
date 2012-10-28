@@ -12,6 +12,7 @@ using namespace video;
 GameRenderer::GameRenderer(Engine* e)
 {
 	engine = e;
+	engine->listener = this;
 	debug_arrows = 0;
 }
 
@@ -117,13 +118,22 @@ void GameRenderer::detach()
 
 void GameRenderer::update()
 {
-
+	/*
 	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
 		vehicleNodes[nVehicle]->setPosition(engine->vehicles[nVehicle]->position);
-	}
+	}*/
 
 	cameraNode->setTarget(engine->averagePosition);
 	cameraNode->setPosition(engine->averagePosition+core::vector3df(-10,20,-10) );
 }
 
 
+void GameRenderer::onBodyMovement(irr::u32 id,const btTransform* transform){
+
+	if( IS_VEHICLE_ID(id)){
+		btVector3 pos = transform->getOrigin();
+		vector3df posVector = vector3df(pos.x(), pos.y(), pos.z());
+		int vid = GET_VEHICLE_ID(id);
+		vehicleNodes[vid]->setPosition(posVector);
+	}
+}
