@@ -32,17 +32,11 @@ void PracticeGameScene::onEnter()
 	engine->addVehicle( new Vehicle() );
 	
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
-	receiver = new Controller();
+	receiver = new Controller(/* ReferencingTheVehicle */);
 
 	device->setEventReceiver(receiver);
 
 	Controller inputDevice1, inputDevice2;
-
-	// Somehow connect each inputDevice with its respective vehicle.
-	/*************************************************************************
-	 *	inputDevice1.connect(Vehicle1);										 *
-	 *	inputDevice2.connect(Vehicle2);										 *
-	 *************************************************************************/
 
 	engine->reset();
 	
