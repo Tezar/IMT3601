@@ -43,6 +43,9 @@ void PracticeGameScene::onEnter()
 	 *	inputDevice1.connect(Vehicle1);										 *
 	 *	inputDevice2.connect(Vehicle2);										 *
 	 *************************************************************************/
+	
+
+
 
 	engine->reset();
 	
