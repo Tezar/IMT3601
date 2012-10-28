@@ -21,9 +21,6 @@ private:
 
 
 	//for debugging purposes only
-	
-	//mesh for our arrow
-	static IMesh* debug_arrowMesh;
 	core::list<IMeshSceneNode*>* debug_arrows;
 
 public:

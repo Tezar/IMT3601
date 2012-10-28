@@ -9,9 +9,6 @@ using namespace scene;
 using namespace video;
 
 
-//we have to define it here, or else compilator will fail (because of static nature of this var)
-IMesh* GameRenderer::debug_arrowMesh = 0;
-
 GameRenderer::GameRenderer(Engine* e)
 {
 	engine = e;
@@ -60,18 +57,6 @@ void GameRenderer::debug_createTrackArrows()
 
 	ISceneManager* smgr = device->getSceneManager();
 	
-	//secure mesh for us
-	if(!debug_arrowMesh) 	//arrowMesh is static and shared amnog all instances...
-	{
-		debug_arrowMesh = smgr->addArrowMesh( "Arrow",
-                                video::SColor(255, 255, 0, 0),
-                                video::SColor(255, 0, 255, 0),
-                                16,16,
-                                2.f, 1.3f,
-                                0.1f, 0.6f
-                                );
-	}
-	
 	IMeshSceneNode* node;
 	IMeshSceneNode* previousNode = 0;
 
@@ -80,6 +65,7 @@ void GameRenderer::debug_createTrackArrows()
 	int i=0;
 	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments->begin(); segment_iterator != segments->end(); segment_iterator++)
 	{
+		//memmory leak, but for debugging, it doesn't matter, does it?
 		
 		IMesh* arrowMesh = smgr->addArrowMesh( stringc("arrow")+core::stringc(i),
                                 video::SColor(255, 30, 0, 0),
