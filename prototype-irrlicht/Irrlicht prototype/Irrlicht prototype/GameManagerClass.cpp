@@ -103,7 +103,7 @@ int GameManagerClass::run()
 
 
 	device =
-		createDevice( video::EDT_OPENGL, dimension2d<u32>(640, 480), 16,
+		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
 			false, false, false, 0);
 
 	if (!device)
