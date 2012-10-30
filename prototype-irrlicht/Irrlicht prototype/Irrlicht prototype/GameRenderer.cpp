@@ -120,9 +120,6 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 
 
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
-
-	debug_createTrackArrows();
-
 }
 
 void GameRenderer::debug_createTrackArrows()
@@ -215,4 +212,11 @@ void GameRenderer::onVehicleMovement(irr::u32 id,Vehicle* vehicle)
 {
 	vehicleNodes[id]->setPosition(vehicle->position);
 	//todo:rotation
+}
+
+
+void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
+	
+	debug_createTrackArrows();
+
 }

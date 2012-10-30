@@ -36,6 +36,7 @@ public:
 	//react to engine events
 	void onBodyMovement(irr::u32 id,const btTransform* transform);
 	void onVehicleMovement(irr::u32 id,Vehicle* vehicle);
+	void afterSegmentLoaded(TrackSegment * segment);
 
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();

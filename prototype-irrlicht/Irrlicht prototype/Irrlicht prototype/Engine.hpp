@@ -68,7 +68,7 @@ protected:
 
 
 
-	/* checks if there should be more segments loaded */
+	/* checks if there should be more segments loaded, based on change of previous closest segment */
 	void checkLoadedSegments(); 
 	/* loads segments*/
 	void loadSegments(int min, int max);

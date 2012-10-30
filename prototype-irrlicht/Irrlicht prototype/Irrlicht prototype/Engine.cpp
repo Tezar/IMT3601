@@ -167,6 +167,7 @@ int Engine::step(int toDo)
 	
 
 	recalculatePosition();
+	checkLoadedSegments();
 
 	return toDo;
 }
@@ -175,11 +176,6 @@ int Engine::step(int toDo)
 void Engine::reset()
 {
 	currentSegment = -1;
-	//add point at the end
-	segments.push_back( track->getSegment(0) );
-	segments.push_back( track->getSegment(1) );
-	segments.push_back( track->getSegment(2) );
-	segments.push_back( track->getSegment(3) );
 
 	//todo:
 	/*	placeVehicles( point 1 , point 2)
@@ -245,6 +241,8 @@ void Engine::checkLoadedSegments()
 {
 	int segment = -1; //segments vehicles are in
 
+	vector3df planarAveragedPosition = vector3df(averagePosition);
+	planarAveragedPosition.Y = 0; //we ignore elevation for this calculation
 
 	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments.begin(); segment_iterator != segments.end(); segment_iterator++)
 	{
@@ -252,7 +250,7 @@ void Engine::checkLoadedSegments()
 
 		for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
 		{
-			irr::f32 dist =	averagePosition.getDistanceFrom( (*iterator)->position);
+			irr::f32 dist =	planarAveragedPosition.getDistanceFrom( (*iterator)->position);
 			if(dist < 5.f)
 			{
 				segment = (*segment_iterator)->id;
@@ -266,14 +264,45 @@ void Engine::checkLoadedSegments()
 	if( (segment != currentSegment) || currentSegment < 0)
 	{
 		loadSegments(segment-1, segment+3);
+		currentSegment = segment;
 	}
 }
 
 void Engine::loadSegments(int min, int max)
 {
 	min = min < 0 ? 0 : min;
+	assert(max > min);
 	
+	std::list<int> toBeLoaded;
 
+	//add all segments to be loaded
+	for(int i = min; i <= max; i++) toBeLoaded.push_back(i);
+
+	//iterate thru loaded segments and remove them from toBeLoaded list, or from game when they are out of region
+	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments.begin(); segment_iterator != segments.end(); segment_iterator++)
+	{
+		int id = (*segment_iterator)->id;
+
+		if( id >= min && id <= max)
+		{
+			toBeLoaded.remove(id);
+		}else
+		{
+			//inform listener that segment is about to be unloaded
+			//todo remove it from list
+		}
+	}
+
+	//load all loadables
+	for(std::list<int>::const_iterator iterator = toBeLoaded.begin(); iterator != toBeLoaded.end(); iterator++)
+	{
+		//add point at the end
+		TrackSegment* segment = track->getSegment( (*iterator) ) ;
+		segments.push_back( segment );
+		//inform listener that segment is loaded
+		if(listener != NULL) listener->afterSegmentLoaded(segment);
+	}
+	
 }
 
 
