@@ -36,6 +36,7 @@ public:
 	TrackGenerator * track;
 
 	int numVehicles;
+	int currentSegment;
 
 	EngineListener* listener;
 
@@ -57,11 +58,20 @@ public:
 	/** resets state of engine to initial conditions */
 	void reset();
 
+
+	//get list of segments
 	core::list<TrackSegment*>* getSegments();
 
 protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
+
+
+
+	/* checks if there should be more segments loaded */
+	void checkLoadedSegments(); 
+	/* loads segments*/
+	void loadSegments(int min, int max);
 
 	core::list<TrackSegment*> segments;
 

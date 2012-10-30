@@ -124,7 +124,7 @@ Vehicle* Engine::addVehicle(Vehicle * vehicle)
 
 
 	//memmory leak
-    btCollisionShape* fallShape = new btSphereShape(1);
+    btCollisionShape* fallShape = new btSphereShape(0.5);
 
 	//MAKE_VEHICLE_ID(currentVehicle)
 	btMotionState* fallMotionState = new  EngineVehicleState(this, currentVehicle, vehicle, btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
@@ -174,14 +174,13 @@ int Engine::step(int toDo)
 
 void Engine::reset()
 {
+	currentSegment = -1;
 	//add point at the end
 	segments.push_back( track->getSegment(0) );
 	segments.push_back( track->getSegment(1) );
 	segments.push_back( track->getSegment(2) );
 	segments.push_back( track->getSegment(3) );
 
-	//trackPoints.splice(trackPoints.end(), track->getTrackPoints(1,5));
-	//trackPoints.splice(trackPoints.end(), track->getTrackPoints(2,5));
 	//todo:
 	/*	placeVehicles( point 1 , point 2)
 	
@@ -192,11 +191,6 @@ void Engine::reset()
 			point1
 			* = vehicle
 	*/
-	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++)
-	{
-		vehicles[nVehicle]->position.set( nVehicle*5.0 ,0.0 ,0.0 );
-	}
-
 
 	// Build the broadphase
     btBroadphaseInterface* broadphase = new btDbvtBroadphase();
@@ -243,6 +237,45 @@ inline void Engine::recalculatePosition()
 	}
 	averagePosition.set(posX/numVehicles, posY/numVehicles, posZ/numVehicles);
 }
+
+
+
+
+void Engine::checkLoadedSegments()
+{
+	int segment = -1; //segments vehicles are in
+
+
+	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments.begin(); segment_iterator != segments.end(); segment_iterator++)
+	{
+		TrackPointList * track = (*segment_iterator)->getTrack();
+
+		for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
+		{
+			irr::f32 dist =	averagePosition.getDistanceFrom( (*iterator)->position);
+			if(dist < 5.f)
+			{
+				segment = (*segment_iterator)->id;
+				break;
+			}
+		} //end trackpoint loop
+
+		if(segment >= 0) break;	//we have found our segment
+	}	//end segment loop
+
+	if( (segment != currentSegment) || currentSegment < 0)
+	{
+		loadSegments(segment-1, segment+3);
+	}
+}
+
+void Engine::loadSegments(int min, int max)
+{
+	min = min < 0 ? 0 : min;
+	
+
+}
+
 
 core::list<TrackSegment*>* Engine::getSegments(){
 	return &segments;
