@@ -27,12 +27,13 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 {
 	device = attachTo;
 	ISceneManager* smgr = device->getSceneManager();
+	IVideoDriver* driver = device->getVideoDriver();
 	
 	//dont need asset manager, irrlich handles it automaticaly
 	IAnimatedMesh* CarMesh = smgr->getMesh("../../media/Car - Main Body.obj");
 	IAnimatedMesh* WheelMesh = smgr->getMesh("../../media/Wheel.obj");
 
-	if (!CarMesh && !WheelMesh)
+	if (!CarMesh || !WheelMesh)
 	{
 		device->drop();
 	}
@@ -41,12 +42,22 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
 		IMeshSceneNode* node = smgr->addMeshSceneNode( CarMesh );
 
+		for (int VehicleWheels = 0; VehicleWheels < 4; VehicleWheels++)
+		{
+			IMeshSceneNode* node = smgr->addMeshSceneNode( WheelMesh );
+
+			assert(node);
+	
+			node->setMaterialFlag(EMF_LIGHTING, false);
+			node->setMaterialTexture( 0, driver->getTexture("../../media/Car - Wheel Texture.bmp") );
+		}
+
 		//	Add 4 wheels in correct positions and make them stick to the car.
 
 		assert(node);
 	
 		node->setMaterialFlag(EMF_LIGHTING, false);
-//		node->setMaterialTexture( 0, driver->getTexture("../../media/sydney.bmp") );
+		node->setMaterialTexture( 0, driver->getTexture("../../media/Car - Main Body Texture.bmp") );
 
 		vehicleNodes[nVehicle] = node;
 	}
