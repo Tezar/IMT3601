@@ -33,7 +33,9 @@ public:
 	/** remove anything we have done to device*/
 	void detach();
 
+	//react to engine events
 	void onBodyMovement(irr::u32 id,const btTransform* transform);
+	void onVehicleMovement(irr::u32 id,Vehicle* vehicle);
 
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();

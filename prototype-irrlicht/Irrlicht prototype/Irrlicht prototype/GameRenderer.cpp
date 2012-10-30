@@ -193,7 +193,9 @@ void GameRenderer::update()
 	}*/
 
 	cameraNode->setTarget(engine->averagePosition);
-	cameraNode->setPosition(engine->averagePosition+core::vector3df(-10,20,-10) );
+	vector3df cameraPosition = engine->averagePosition+core::vector3df(-10,20,-10) ;
+	cameraPosition.Y = 20;
+	cameraNode->setPosition(cameraPosition);
 }
 
 void GameRenderer::onBodyMovement(irr::u32 id,const btTransform* transform){
@@ -204,4 +206,10 @@ void GameRenderer::onBodyMovement(irr::u32 id,const btTransform* transform){
 		int vid = GET_VEHICLE_ID(id);
 		vehicleNodes[vid]->setPosition(posVector);
 	}
+}
+
+void GameRenderer::onVehicleMovement(irr::u32 id,Vehicle* vehicle)
+{
+	vehicleNodes[id]->setPosition(vehicle->position);
+	//todo:rotation
 }

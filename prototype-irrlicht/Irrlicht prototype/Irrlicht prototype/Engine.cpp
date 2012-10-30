@@ -40,6 +40,42 @@ protected:
 };
 
 
+class EngineVehicleState: public btMotionState {
+public:
+    EngineVehicleState(Engine * e,irr::u32 _id, Vehicle* _vehicle, const btTransform &initialpos) {
+        engine = e;
+		vehicle = _vehicle;
+		id = _id;
+        mPos1 = initialpos;
+    }
+
+    virtual ~EngineVehicleState() {
+    }
+
+	virtual void getWorldTransform(btTransform &worldTrans) const {
+        worldTrans = mPos1;
+    }
+
+    virtual void setWorldTransform(const btTransform &worldTrans) {
+		if(engine->listener == NULL)
+				return; // we silently return as there is no handler to notify
+
+		
+		btVector3 pos = worldTrans.getOrigin();
+		vehicle->position.set(pos.x(), pos.y(), pos.z());
+
+		engine->listener->onVehicleMovement(id, vehicle );
+    }
+
+protected:
+	Vehicle* vehicle;
+	irr::u32 id;
+    Engine* engine;
+    btTransform mPos1;
+};
+
+
+
 
 Engine::Engine(void)
 {
@@ -90,8 +126,8 @@ Vehicle* Engine::addVehicle(Vehicle * vehicle)
 	//memmory leak
     btCollisionShape* fallShape = new btSphereShape(1);
 
-
-	btMotionState* fallMotionState = new  EngineBodyState(this, MAKE_VEHICLE_ID(currentVehicle), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+	//MAKE_VEHICLE_ID(currentVehicle)
+	btMotionState* fallMotionState = new  EngineVehicleState(this, currentVehicle, vehicle, btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
     btScalar mass = 1+10*currentVehicle;
     btVector3 fallInertia(0,0,0);
     fallShape->calculateLocalInertia(mass,fallInertia);
@@ -192,17 +228,20 @@ void Engine::reset()
 inline void Engine::recalculatePosition()
 {
 	static float posX;
+	static float posY;
 	static float posZ;
 
 	posX = 0;
+	posY = 0;
 	posZ = 0;
 
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
 		posX += v->position.X;
+		posY += v->position.Y;
 		posZ += v->position.Z;
 	}
-	averagePosition.set(posX/numVehicles, 0, posZ/numVehicles);
+	averagePosition.set(posX/numVehicles, posY/numVehicles, posZ/numVehicles);
 }
 
 core::list<TrackSegment*>* Engine::getSegments(){
