@@ -137,13 +137,13 @@ void GameRenderer::debug_createTrackArrows()
 	int i=0;
 	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments->begin(); segment_iterator != segments->end(); segment_iterator++)
 	{
-		
+		//memmory leak but its only for debugging so dont worry for now...
 		IMesh* arrowMesh = smgr->addArrowMesh( stringc("arrow")+core::stringc(i),
                                 video::SColor(255, 30, 0, 0),
                                 video::SColor(255, 200*(1+i), 100*i, 150*i),
                                 16,16,
-                                2.f, 1.3f,
-                                0.1f, 0.6f
+                                1.f, 0.6f,
+                                0.05f, 0.2f
                                 );
 
 		i++;
@@ -193,8 +193,9 @@ void GameRenderer::update()
 	}*/
 
 	cameraNode->setTarget(engine->averagePosition);
-	vector3df cameraPosition = engine->averagePosition+core::vector3df(-10,20,-10) ;
-	cameraPosition.Y = 20;
+	//put camera on steady altitude, slighty offseted on X axis
+	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-10) ;
+	cameraPosition.Y = 10;
 	cameraNode->setPosition(cameraPosition);
 }
 
