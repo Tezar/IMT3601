@@ -29,20 +29,24 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	ISceneManager* smgr = device->getSceneManager();
 	
 	//dont need asset manager, irrlich handles it automaticaly
-	IAnimatedMesh* mesh = smgr->getMesh("../../media/low.obj");
+	IAnimatedMesh* CarMesh = smgr->getMesh("../../media/Car - Main Body.obj");
+	IAnimatedMesh* WheelMesh = smgr->getMesh("../../media/Wheel.obj");
 
-	if (!mesh)
+	if (!CarMesh && !WheelMesh)
 	{
 		device->drop();
 	}
 	
 	
 	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
-		IMeshSceneNode* node = smgr->addMeshSceneNode( mesh );
+		IMeshSceneNode* node = smgr->addMeshSceneNode( CarMesh );
+
+		//	Add 4 wheels in correct positions and make them stick to the car.
 
 		assert(node);
 	
 		node->setMaterialFlag(EMF_LIGHTING, false);
+//		node->setMaterialTexture( 0, driver->getTexture("../../media/sydney.bmp") );
 
 		vehicleNodes[nVehicle] = node;
 	}
