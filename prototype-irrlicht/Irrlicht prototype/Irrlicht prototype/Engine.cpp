@@ -80,31 +80,29 @@ Engine::~Engine(void)
 }
 
 
-void Engine::addVehicle(Vehicle * vehicle)
+Vehicle* Engine::addVehicle(Vehicle * vehicle)
 {
 	assert(numVehicles < MAX_VEHICLES);
-
-	vehicles[numVehicles] = vehicle;
+	int currentVehicle = numVehicles++;
+	vehicles[currentVehicle] = vehicle;
 
 
 	//memmory leak
     btCollisionShape* fallShape = new btSphereShape(1);
 
 
-	btMotionState* fallMotionState =
-		new  EngineBodyState(this, MAKE_VEHICLE_ID(numVehicles), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-    btScalar mass = 1;
+	btMotionState* fallMotionState = new  EngineBodyState(this, MAKE_VEHICLE_ID(currentVehicle), btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+    btScalar mass = 1+10*currentVehicle;
     btVector3 fallInertia(0,0,0);
     fallShape->calculateLocalInertia(mass,fallInertia);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
     btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
 
-	bodies_vehicles[numVehicles] = fallRigidBody;
+	bodies_vehicles[currentVehicle] = fallRigidBody;
 
 	dynamicsWorld->addRigidBody(fallRigidBody);
 
-
-	numVehicles++;
+	return vehicle;
 }
 
 

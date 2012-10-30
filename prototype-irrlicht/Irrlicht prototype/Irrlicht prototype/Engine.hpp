@@ -18,9 +18,13 @@
 
 
 /* "interface" for listeners */
-class MovementListener{
+class EngineListener{
 	public:
-		virtual void onBodyMovement(irr::u32 id,const btTransform* transform) = 0;
+		void onBodyMovement(irr::u32 id,const btTransform* transform){};
+		void onVehicleMovement(irr::u32 id,const btTransform* transform){};
+		void afterSegmentLoaded(TrackSegment* segment){};
+		void beforeSegmentUnLoaded(TrackSegment* segment){};
+
 };
 
 
@@ -33,7 +37,7 @@ public:
 
 	int numVehicles;
 
-	MovementListener* listener;
+	EngineListener* listener;
 
 	Engine(void);
 	~Engine(void);
@@ -42,7 +46,7 @@ public:
 	vector3df averagePosition;
 	
 
-	void addVehicle(Vehicle*);
+	Vehicle* addVehicle(Vehicle*);
 	
 	/** consumes time to make simulation, returns any leftovers 
 		@par int time to be consumed

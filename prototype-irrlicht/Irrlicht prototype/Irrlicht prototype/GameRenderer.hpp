@@ -6,7 +6,7 @@ using namespace scene;
 #include "Engine.hpp"
 
 
-class GameRenderer: public MovementListener
+class GameRenderer: public EngineListener
 {
 private:
 	//engine which we are going to render
