@@ -1,6 +1,8 @@
 #pragma once
 
 #include <irrlicht.h>
+#include "Vehicle.hpp"
+
 using namespace irr;
 
 class Controller : public IEventReceiver
@@ -14,12 +16,13 @@ private:
 	char Right;
 	char Fire;
 
+	Vehicle * ControllerVehicle;
 //	VehicleReference;
 
 public:
 	virtual bool OnEvent(const SEvent& event);
 	virtual bool IsKeyDown(EKEY_CODE keyCode) const;
-	Controller(/* ReferencingTheVehicle */);
+	Controller(Vehicle * vehicleReference);
 
 	void ChangeKeySettings(int direction, char keyboardKey);
 

@@ -28,15 +28,13 @@ PracticeGameScene::~PracticeGameScene(void)
 void PracticeGameScene::onEnter()
 {
 	engine = new Engine();
-	engine->addVehicle( new Vehicle() );
+	Vehicle * vehicle1 = engine->addVehicle( new Vehicle() );
 	engine->addVehicle( new Vehicle() );
 	
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
-	receiver = new Controller(/* ReferencingTheVehicle */);
+	receiver = new Controller(vehicle1);
 
 	device->setEventReceiver(receiver);
-
-	Controller inputDevice1, inputDevice2;
 
 	engine->reset();
 	
