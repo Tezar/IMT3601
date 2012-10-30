@@ -185,7 +185,6 @@ void GameRenderer::update()
 	cameraNode->setPosition(engine->averagePosition+core::vector3df(-10,20,-10) );
 }
 
-
 void GameRenderer::onBodyMovement(irr::u32 id,const btTransform* transform){
 
 	if( IS_VEHICLE_ID(id)){

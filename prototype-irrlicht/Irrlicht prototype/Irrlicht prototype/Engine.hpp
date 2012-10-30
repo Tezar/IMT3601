@@ -20,10 +20,10 @@
 /* "interface" for listeners */
 class EngineListener{
 	public:
-		void onBodyMovement(irr::u32 id,const btTransform* transform){};
-		void onVehicleMovement(irr::u32 id,const btTransform* transform){};
-		void afterSegmentLoaded(TrackSegment* segment){};
-		void beforeSegmentUnLoaded(TrackSegment* segment){};
+		virtual void onBodyMovement(irr::u32 id,const btTransform* transform){};
+		virtual void onVehicleMovement(irr::u32 id,const btTransform* transform){};
+		virtual void afterSegmentLoaded(TrackSegment* segment){};
+		virtual void beforeSegmentUnLoaded(TrackSegment* segment){};
 
 };
 
