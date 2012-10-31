@@ -167,6 +167,7 @@ int Engine::step(int toDo)
 	
 
 	recalculatePosition();
+	//that can be done not so often, maybe 0.5s?
 	checkLoadedSegments();
 
 	return toDo;
