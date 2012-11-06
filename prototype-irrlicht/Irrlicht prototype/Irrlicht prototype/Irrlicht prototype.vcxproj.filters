@@ -13,11 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Segments">
-      <UniqueIdentifier>{91bcc0f7-f1d8-4603-8d75-a60e7b4d0e68}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\TrackGenerator">
       <UniqueIdentifier>{6801da35-3578-491a-a0d6-3f64feb87a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TrackGenerator">
+      <UniqueIdentifier>{91bcc0f7-f1d8-4603-8d75-a60e7b4d0e68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -43,13 +43,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TrackSegment.cpp">
-      <Filter>Source Files\Segments</Filter>
+      <Filter>Source Files\TrackGenerator</Filter>
     </ClCompile>
     <ClCompile Include="TrackGenerator.cpp">
-      <Filter>Source Files\Segments</Filter>
+      <Filter>Source Files\TrackGenerator</Filter>
     </ClCompile>
     <ClCompile Include="CongruentGenerator.cpp">
-      <Filter>Source Files\Segments</Filter>
+      <Filter>Source Files\TrackGenerator</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
       <Filter>Source Files</Filter>
