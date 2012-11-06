@@ -3,6 +3,8 @@
 #include "TrackUtil.hpp"
 #include "CongruentGenerator.hpp"
 
+#include "btBulletDynamicsCommon.h"
+
 using namespace irr;
 
 
@@ -26,7 +28,17 @@ public:
 
 	TrackPointList* getTrack();
 
+
+
+	//physics representation btCollisionShape
+	btCollisionShape* segmentShape;
+	core::list<btRigidBody*>* segmentBodies;
+
 protected:
+	void init();
+
+	core::list<btRigidBody*>* getBodies();
+
 	TrackPoint exitPoint;
 	TrackPointList trackPoints;
 };

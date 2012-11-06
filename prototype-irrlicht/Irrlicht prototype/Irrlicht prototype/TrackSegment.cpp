@@ -3,21 +3,42 @@
 
 TrackSegment::TrackSegment(void)
 {
-	exitPoint.position.set(0,0,0);
-	exitPoint.direction = 0;
+	init();
 }
 
 TrackSegment::TrackSegment(int id)
 {
-	exitPoint.position.set(0,0,0);
-	exitPoint.direction = 0;
+	init();
 	this->id = id;
 }
 
 
+void TrackSegment::init()
+{
+	exitPoint.position.set(0,0,0);
+	exitPoint.direction = 0;
+
+	segmentShape = 0;
+	segmentBodies = 0;
+}
 
 TrackSegment::~TrackSegment(void)
 {
+	//remove what we allocated
+	if(segmentShape)
+	{
+		delete segmentShape;
+		segmentShape = 0;
+	}
+	
+	if(segmentBodies){
+		//todo: actually list thru them a nd free them as well
+
+		delete segmentBodies;
+		segmentBodies = 0;
+	}
+		
+
 }
 
 
@@ -120,6 +141,31 @@ void TrackSegment::generate(TrackPoint* origin, int smoothnes)
 	
 }
 
+
+core::list<btRigidBody*>* TrackSegment::getBodies()
+{
+	if(segmentBodies)
+	{
+		//great we already generated them
+		return segmentBodies;
+	}
+
+	segmentShape = new btBoxShape(btVector3(10,10,10));
+
+	segmentBodies = new  core::list<btRigidBody*>(); 
+
+	//0 mass, no motion state, segment shape and zero inertia
+	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,0,segmentShape,btVector3(0,0,0));
+
+	TrackPointList* track = getTrack();
+
+	for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
+		{
+			segmentBodies->push_back(new btRigidBody(groundRigidBodyCI));
+		} //end trackpoint loop
+
+	return segmentBodies;
+}
 
 
 TrackPointList* TrackSegment::getTrack()
