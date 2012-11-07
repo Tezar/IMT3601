@@ -36,6 +36,9 @@ void MenuSceneClass::onEnter()
         video::IVideoDriver* driver = device->getVideoDriver();
         IGUIEnvironment* env = device->getGUIEnvironment();
 		IGUISkin* skin = env->getSkin();
+		IGUIFont* font = env->getFont("../../media/bigfont.png");
+        if (font)
+                skin->setFont(font);
 		//IGUIListBox * listbox = env->addListBox(rect<s32>(50, 140, 250, 210));
 
 		context.device = device;
@@ -51,12 +54,11 @@ void MenuSceneClass::onEnter()
 			}
 
 
-        skin->setFont(env->getBuiltInFont(), EGDF_TOOLTIP);
-		env->addButton(rect<s32>(200,100,460,100 + 72), 0, GUI_ID_START_BUTTON,
+		env->addButton(rect<s32>(100,100,700,100 + 72), 0, GUI_ID_START_BUTTON,
                         L"Start Program", L"Starts the program");
-        env->addButton(rect<s32>(200,180,460,180 + 72), 0, GUI_ID_SETTINGS_BUTTON,
+        env->addButton(rect<s32>(100,180,700,180 + 72), 0, GUI_ID_SETTINGS_BUTTON,
                         L"Settings", L"Opens the settings window");
-        env->addButton(rect<s32>(200,260,460,260 + 72), 0, GUI_ID_QUIT_BUTTON,
+        env->addButton(rect<s32>(100,260,700,260 + 72), 0, GUI_ID_QUIT_BUTTON,
                         L"Quit", L"Quits the program");
 
 }

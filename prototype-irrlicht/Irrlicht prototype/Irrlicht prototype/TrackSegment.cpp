@@ -194,7 +194,7 @@ scene::ISceneNode*  TrackSegment::injectTrackNode(scene::ISceneManager *scnMgr)
 		// Create an Irrlicht cube and add it to our universal parent
 		scene::ISceneNode *node = scnMgr->addCubeSceneNode(TILING_SIZE, trackNode);
 		node->setScale(vector3df(1.f,0.01f,1.f));	//we want thin plate instead of box
-		node->setMaterialFlag(EMF_LIGHTING, false);
+		//node->setMaterialFlag(EMF_LIGHTING, false);
 		node->setPosition((*iterator)->position-vector3df(0,0.1f,0) );	//put it slightly bellow
 		node->setRotation(vector3df(0,(*iterator)->direction,0));
 	} //end trackpoint loop
