@@ -278,6 +278,16 @@ void Engine::loadSegments(int min, int max)
 		//add point at the end
 		TrackSegment* segment = track->getSegment( (*iterator) ) ;
 		segments.push_back( segment );
+
+		core::list<btRigidBody*>* bodies = segment->getTrackBodies();
+
+		//load all bodies from segment into engine
+		for(core::list<btRigidBody*>::ConstIterator iterator = bodies->begin(); iterator != bodies->end(); iterator++)
+		{
+			dynamicsWorld->addRigidBody((*iterator));
+		}
+
+
 		//inform listener that segment is loaded
 		if(listener != NULL) listener->afterSegmentLoaded(segment);
 	}

@@ -28,18 +28,23 @@ public:
 
 	TrackPointList* getTrack();
 
+	//returns
+	core::list<btRigidBody*>* getTrackBodies();
+	scene::ISceneNode* getTrackNode();
 
-
-	//physics representation btCollisionShape
-	btCollisionShape* segmentShape;
-	core::list<btRigidBody*>* segmentBodies;
+	
 
 protected:
 	void init();
 
-	core::list<btRigidBody*>* getBodies();
-
 	TrackPoint exitPoint;
 	TrackPointList trackPoints;
+
+	//physics representation btCollisionShape
+	btCollisionShape* segmentShape;
+	core::list<btRigidBody*>* trackBodies;	
+	scene::ISceneNode* trackNode;	
+
+
 };
 
