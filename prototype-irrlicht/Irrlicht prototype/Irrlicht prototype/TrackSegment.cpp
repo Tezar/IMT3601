@@ -20,6 +20,7 @@ void TrackSegment::init()
 
 	segmentShape = 0;
 	trackBodies = 0;
+	trackNode = 0;
 }
 
 TrackSegment::~TrackSegment(void)
@@ -36,6 +37,13 @@ TrackSegment::~TrackSegment(void)
 
 		delete trackBodies;
 		trackBodies = 0;
+	}
+	
+	if(trackNode){
+		//todo: check if we are supposed to decrement reference pointer?
+
+		delete trackNode;
+		trackNode = 0;
 	}
 		
 
@@ -150,7 +158,7 @@ core::list<btRigidBody*>* TrackSegment::getTrackBodies()
 		return trackBodies;
 	}
 
-	segmentShape = new btBoxShape(btVector3(3.31,0.1,10));
+	segmentShape = new btBoxShape(btVector3(TILING_SIZE*0.5,0.1,TILING_SIZE*0.5));
 
 	trackBodies = new  core::list<btRigidBody*>(); 
 
@@ -168,10 +176,32 @@ core::list<btRigidBody*>* TrackSegment::getTrackBodies()
 }
 
 
-scene::ISceneNode*  TrackSegment::getTrackNode()
+scene::ISceneNode*  TrackSegment::injectTrackNode(scene::ISceneManager *scnMgr)
 {
+	if(trackNode)
+	{
+		//great we already generated them
+		return trackNode;
+	}
+
+	//our universal parent
+	trackNode = scnMgr->addEmptySceneNode();
+
+	TrackPointList* track = getTrack();
+
+	for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
+	{
+		// Create an Irrlicht cube and add it to our universal parent
+		scene::ISceneNode *node = scnMgr->addCubeSceneNode(TILING_SIZE, trackNode);
+		node->setScale(vector3df(1.f,0.01f,1.f));	//we want thin plate instead of box
+		node->setMaterialFlag(EMF_LIGHTING, false);
+		node->setPosition((*iterator)->position-vector3df(0,0.1f,0) );	//put it slightly bellow
+		node->setRotation(vector3df(0,(*iterator)->direction,0));
+	} //end trackpoint loop
+
+
 	//todo
-	return 0;
+	return trackNode;
 }
 
 

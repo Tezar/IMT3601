@@ -7,6 +7,9 @@
 
 using namespace irr;
 
+//size for tiling the physics and graphics
+#define TILING_SIZE 5.0f
+
 
 class TrackSegment : public CongruentGenerator
 {
@@ -30,7 +33,7 @@ public:
 
 	//returns
 	core::list<btRigidBody*>* getTrackBodies();
-	scene::ISceneNode* getTrackNode();
+	scene::ISceneNode* injectTrackNode(scene::ISceneManager *scnMgr=0);
 
 	
 

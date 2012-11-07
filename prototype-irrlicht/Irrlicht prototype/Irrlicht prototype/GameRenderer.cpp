@@ -219,4 +219,8 @@ void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
 	
 	debug_createTrackArrows();
 
+	ISceneManager* smgr = device->getSceneManager();
+
+	segment->injectTrackNode(smgr);
+
 }
