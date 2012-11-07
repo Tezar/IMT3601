@@ -112,7 +112,7 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
         pss->addAffector(pafs); // same goes for the affector
         pafs->drop();
 
-        pss->setScale(core::vector3df(0.1,0.1,0.1));
+        pss->setScale(core::vector3df(0.1,0.1,0.1)); // size of squares
 		pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
         pss->setMaterialFlag(video::EMF_LIGHTING, false);
         pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);

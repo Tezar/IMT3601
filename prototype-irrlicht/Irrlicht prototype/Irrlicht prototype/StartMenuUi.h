@@ -29,6 +29,7 @@ enum
 		GUI_ID_GAME_ENGINE_BUTTON,
 		GUI_ID_AUDIO_BUTTON,
 		GUI_ID_HOTKEY_BUTTON,
+		GUI_ID_TEST_BUTTON,
 };
 
 class MyEventReceiver : public IEventReceiver
@@ -109,6 +110,7 @@ public:
 												L"Hotkey Config");
 									}
 										return true;
+
                                 default:
                                         return false;
                                 }

@@ -59,7 +59,10 @@ void MenuSceneClass::onEnter()
         env->addButton(rect<s32>(100,180,700,180 + 72), 0, GUI_ID_SETTINGS_BUTTON,
                         L"Settings", L"Opens the settings window");
         env->addButton(rect<s32>(100,260,700,260 + 72), 0, GUI_ID_QUIT_BUTTON,
-                        L"Quit", L"Quits the program");
+                        L"Quit", L"Quits the program");	
+
+		//env->addButton(rect<s32>(100,340,700,340 + 72), 0, GUI_ID_TEST_BUTTON,
+  //                      L"Test partic", L"Tests particle generator");
 
 }
 
