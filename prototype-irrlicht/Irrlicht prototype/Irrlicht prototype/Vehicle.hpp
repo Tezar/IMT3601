@@ -2,6 +2,9 @@
 #include <irrlicht.h>
 using namespace irr;
 using namespace core;
+using namespace scene;
+using namespace video;
+using namespace io;
 
 
 
@@ -20,9 +23,10 @@ enum vehicle_turning_t
 	};
 
 
-
 class Vehicle
 {
+protected:
+	scene::IMeshSceneNode* vehicleNode;
 
 public:
 	//currently applied force
@@ -32,6 +36,9 @@ public:
 	vehicle_turning_t turning;
 
 	vector3df position;
+
+	scene::IMeshSceneNode* injectNode(IrrlichtDevice* device=0);
+	
 
 	Vehicle(void);
 	~Vehicle(void);
