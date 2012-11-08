@@ -29,7 +29,7 @@ void PracticeGameScene::onEnter()
 {
 	engine = new Engine();
 	Vehicle * vehicle1 = engine->addVehicle( new Vehicle() );
-	engine->addVehicle( new Vehicle() );
+	//engine->addVehicle( new Vehicle() );
 	
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	receiver = new Controller(vehicle1);

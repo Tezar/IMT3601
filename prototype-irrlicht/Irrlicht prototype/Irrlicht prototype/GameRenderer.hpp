@@ -41,7 +41,7 @@ public:
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();
 
-	void createPointParticle(IrrlichtDevice*,IMeshSceneNode*,int red ,int green ,int blue);
+	void createPointParticle(IMeshSceneNode*,int red ,int green ,int blue);
 
 	void update();
 };
