@@ -1,4 +1,5 @@
 #include "TrackSegment.hpp"
+#include <float.h>
 
 
 TrackSegment::TrackSegment(void)
@@ -64,13 +65,12 @@ core::list<core::vector3df>* TrackSegment::createControlPoints(){
 	controlPoints->push_back(vector3df(0,0,10));
 
 	//add short stub to smooth the transion
-	controlPoints->push_back(vector3df(10,0,10));
 	//controlPoints.push_back(vector3df(0,0,15));
 	//controlPoints.push_back(vector3df(0,0,20));
 	
 	
 	//default implementation, for start we just add equally spaced segments and move them a little
-	for(int i=4; i < 6; i++){
+	for(int i=2; i < 6; i++){
 		irr::s32 r = random(10)-5;	//we have to retype tosigned otherwise compiler make stupid assumptions and let our number underflow
 		controlPoints->push_back(core::vector3df(r,0, i*10 ));
 	}
@@ -192,20 +192,32 @@ scene::ISceneNode*  TrackSegment::injectTrackNode(IrrlichtDevice* device)
 
 	TrackPointList* track = getTrack();
 
+	float minX = std::numeric_limits<float>::infinity();
+	float minZ = std::numeric_limits<float>::infinity();
+	float maxX = 0;
+	float maxZ = 0;
+
 	for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
 	{
-		// Create an Irrlicht cube and add it to our universal parent
-		scene::ISceneNode *node = smgr->addCubeSceneNode(TILING_SIZE, trackNode);
-		node->setScale(vector3df(1.f,0.01f,1.f));	//we want thin plate instead of box
-
-		node->setMaterialTexture( 0, driver->getTexture("../../media/wood1.png") );
-		node->setMaterialType( video::EMT_SOLID );
-
-
-		node->setMaterialFlag(video::EMF_LIGHTING, false);
-		node->setPosition((*iterator)->position-vector3df(0,0.1f,0) );	//put it slightly bellow
-		node->setRotation(vector3df(0,(*iterator)->direction,0));
+		vector3df point = (*iterator)->position;
+		if(minX > point.X) minX = point.X;
+		if(minZ > point.Z) minZ = point.Z;
+		if(maxX < point.X) maxX = point.X;
+		if(maxZ < point.Z) maxZ = point.Z;
 	} //end trackpoint loop
+
+	// Create an Irrlicht cube and add it to our universal parent
+	scene::ISceneNode *node = smgr->addCubeSceneNode(1.f, trackNode);
+	node->setScale(vector3df(maxX-minX,1.f,maxZ-minZ));	//we want thin plate instead of box
+
+	node->setMaterialTexture( 0, driver->getTexture("../../media/wood1.png") );
+	node->setMaterialType( video::EMT_SOLID );
+
+
+	node->setMaterialFlag(video::EMF_LIGHTING, false);
+	node->setPosition(vector3df((maxX-minX)*0.5+minX,-0.6f,(maxZ-minZ)*0.5+minZ) );	//put it slightly bellow
+	//node->setRotation(vector3df(0,(*iterator)->direction,0));
+
 
 
 	//todo

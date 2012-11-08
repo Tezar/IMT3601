@@ -6,6 +6,8 @@
 #include "btBulletDynamicsCommon.h"
 
 using namespace irr;
+using namespace core;
+
 
 //size for tiling the physics and graphics
 #define TILING_SIZE 5.0f
