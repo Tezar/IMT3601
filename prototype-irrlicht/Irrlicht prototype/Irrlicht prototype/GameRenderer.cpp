@@ -61,10 +61,8 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 		vehicleNodes[nVehicle] = node;
 	}
 		        // create a particle system
-		int prt_color = 1;
-		createPointParticle(device,vehicleNodes[0],prt_color);
-		prt_color = 0;
-		createPointParticle(device,vehicleNodes[1],prt_color);
+		createPointParticle(device,vehicleNodes[0],25,255,255);
+		createPointParticle(device,vehicleNodes[1],255,255,25);
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 }
@@ -172,22 +170,19 @@ void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
 
 }
 
-void GameRenderer::createPointParticle(IrrlichtDevice * attachTo,IMeshSceneNode * vehicleNodes,int color) {
+void GameRenderer::createPointParticle(IrrlichtDevice * attachTo,IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
     
 	ISceneManager* smgr = attachTo->getSceneManager();
 
 	IParticleSystemSceneNode* pss =
 		smgr->addParticleSystemSceneNode(false,vehicleNodes);
-	int red, blue;
-
-	if(color == 1){red = 255;blue = 25;}else{red = 25;blue = 255;}
 
     IParticleEmitter* ems = pss->createPointEmitter(
                 /*core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size*/
                 core::vector3df(0.0f,0.006f,0.0f),   // initial direction
                 8,10,                             // emit rate
                 video::SColor(0,0,0,0),       // darkest color
-                video::SColor(0,red,255,blue),       // brightest color
+                video::SColor(0,red,green,blue),       // brightest color /red,green,blue
                 800,2000,0,                         // min and max age, angle
                 core::dimension2df(1.f,1.f),         // min size
                 core::dimension2df(2.f,2.f));        // max size
