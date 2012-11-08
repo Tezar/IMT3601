@@ -33,7 +33,7 @@ public:
 
 	//returns
 	core::list<btRigidBody*>* getTrackBodies();
-	scene::ISceneNode* injectTrackNode(scene::ISceneManager *scnMgr=0);
+	scene::ISceneNode* injectTrackNode(IrrlichtDevice* device=0);
 
 	
 

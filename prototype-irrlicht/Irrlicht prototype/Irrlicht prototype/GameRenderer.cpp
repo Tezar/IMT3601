@@ -221,6 +221,6 @@ void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
 
 	ISceneManager* smgr = device->getSceneManager();
 
-	segment->injectTrackNode(smgr);
+	segment->injectTrackNode(device);
 
 }
