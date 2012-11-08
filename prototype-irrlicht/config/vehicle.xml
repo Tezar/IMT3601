@@ -1,3 +1,4 @@
 <chassis model=	"../../media/Car - Main Body.obj" texture="../../media/Car - Main Body Texture.bmp"/>
 <wheel model="../../media/Wheel.obj" posX="0.1" posY="0.2" posZ="3"/>
 <wheel model="../../media/Wheel.obj" posX="-3.1" posY="0.2" posZ="3"/>
+<wheel model="../../media/Wheel.obj" posX="-3.1" posY="2.2" posZ="3"/>

@@ -29,68 +29,15 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	ISceneManager* smgr = device->getSceneManager();
 	IVideoDriver* driver = device->getVideoDriver();
 	
+
 	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
 		IMeshSceneNode* node = engine->vehicles[nVehicle]->injectNode(device);
 		vehicleNodes[nVehicle] = node;
 	}
-	
 		        // create a particle system
-
-        IParticleSystemSceneNode* ps =
-                smgr->addParticleSystemSceneNode(false,vehicleNodes[0]);
-
-        IParticleEmitter* em = ps->createBoxEmitter(
-                core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size
-                core::vector3df(0.0f,0.006f,0.0f),   // initial direction
-                8,10,                             // emit rate
-                video::SColor(0,0,0,0),       // darkest color
-                video::SColor(0,25,255,255),       // brightest color
-                800,2000,0,                         // min and max age, angle
-                core::dimension2df(1.f,1.f),         // min size
-                core::dimension2df(2.f,2.f));        // max size
-
-        ps->setEmitter(em); // this grabs the emitter
-        em->drop(); // so we can drop it here without deleting it
-
-        IParticleAffector* paf = ps->createFadeOutParticleAffector();
-
-        ps->addAffector(paf); // same goes for the affector
-        paf->drop();
-
-        ps->setScale(core::vector3df(0.1,0.1,0.1));
-		ps->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
-        ps->setMaterialFlag(video::EMF_LIGHTING, false);
-        ps->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
-        ps->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
-
-        IParticleSystemSceneNode* pss =
-                smgr->addParticleSystemSceneNode(false,vehicleNodes[1]);
-
-        IParticleEmitter* ems = pss->createBoxEmitter(
-                core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size
-                core::vector3df(0.0f,0.006f,0.0f),   // initial direction
-                8,10,                             // emit rate
-                video::SColor(0,0,0,0),       // darkest color
-                video::SColor(0,255,255,25),       // brightest color
-                800,2000,0,                         // min and max age, angle
-                core::dimension2df(1.f,1.f),         // min size
-                core::dimension2df(2.f,2.f));        // max size
-
-        pss->setEmitter(ems); // this grabs the emitter
-        ems->drop(); // so we can drop it here without deleting it
-
-        IParticleAffector* pafs = pss->createFadeOutParticleAffector();
-
-        pss->addAffector(pafs); // same goes for the affector
-        pafs->drop();
-
-        pss->setScale(core::vector3df(0.1,0.1,0.1)); // size of squares
-		pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
-        pss->setMaterialFlag(video::EMF_LIGHTING, false);
-        pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
-        pss->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
-
-
+		createPointParticle(device,vehicleNodes[0],25,255,255);
+		createPointParticle(device,vehicleNodes[1],255,255,25);
+		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 }
 
@@ -165,8 +112,8 @@ void GameRenderer::update()
 
 	cameraNode->setTarget(engine->averagePosition);
 	//put camera on steady altitude, slighty offseted on X axis
-	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-10) ;
-	cameraPosition.Y = 10;
+	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-5) ;
+	cameraPosition.Y = 5;
 	cameraNode->setPosition(cameraPosition);
 }
 
@@ -195,4 +142,35 @@ void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
 
 	segment->injectTrackNode(device);
 
+}
+
+void GameRenderer::createPointParticle(IrrlichtDevice * attachTo,IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
+    
+	ISceneManager* smgr = attachTo->getSceneManager();
+
+	IParticleSystemSceneNode* pss =
+		smgr->addParticleSystemSceneNode(false,vehicleNodes);
+
+    IParticleEmitter* ems = pss->createPointEmitter(
+                /*core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size*/
+                core::vector3df(0.0f,0.006f,0.0f),   // initial direction
+                8,10,                             // emit rate
+                video::SColor(0,0,0,0),       // darkest color
+                video::SColor(0,red,green,blue),       // brightest color /red,green,blue
+                800,2000,0,                         // min and max age, angle
+                core::dimension2df(1.f,1.f),         // min size
+                core::dimension2df(2.f,2.f));        // max size
+	
+	pss->setEmitter(ems); // this grabs the emitter
+    ems->drop(); // so we can drop it here without deleting it
+    IParticleAffector* pafs = pss->createFadeOutParticleAffector();
+
+    pss->addAffector(pafs); // same goes for the affector
+    pafs->drop();
+	
+    pss->setScale(core::vector3df(0.1,0.1,0.1)); // size of squares
+	pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
+    pss->setMaterialFlag(video::EMF_LIGHTING, false);
+    pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
+    pss->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
 }
