@@ -29,36 +29,8 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	ISceneManager* smgr = device->getSceneManager();
 	IVideoDriver* driver = device->getVideoDriver();
 	
-	//dont need asset manager, irrlich handles it automaticaly
-	IAnimatedMesh* CarMesh = smgr->getMesh("../../media/Car - Main Body.obj");
-	IAnimatedMesh* WheelMesh = smgr->getMesh("../../media/Wheel.obj");
-
-	if (!CarMesh || !WheelMesh)
-	{
-		device->drop();
-	}
-	
-	
 	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
-		IMeshSceneNode* node = smgr->addMeshSceneNode( CarMesh );
-
-//		for (int VehicleWheels = 0; VehicleWheels < 4; VehicleWheels++)
-//		{
-//			IMeshSceneNode* node = smgr->addMeshSceneNode( WheelMesh );
-//
-//			assert(node);
-//	
-//			node->setMaterialFlag(EMF_LIGHTING, false);
-//			node->setMaterialTexture( 0, driver->getTexture("../../media/Car - Wheel Texture.bmp") );
-//		}
-
-		//	Add 4 wheels in correct positions and make them stick to the car.
-
-		assert(node);
-	
-		node->setMaterialFlag(EMF_LIGHTING, false);
-		node->setMaterialTexture( 0, driver->getTexture("../../media/Car - Main Body Texture.bmp") );
-
+		IMeshSceneNode* node = engine->vehicles[nVehicle]->injectNode(device);
 		vehicleNodes[nVehicle] = node;
 	}
 	
@@ -193,7 +165,7 @@ void GameRenderer::update()
 
 	cameraNode->setTarget(engine->averagePosition);
 	//put camera on steady altitude, slighty offseted on X axis
-	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-5) ;
+	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-10) ;
 	cameraPosition.Y = 10;
 	cameraNode->setPosition(cameraPosition);
 }
