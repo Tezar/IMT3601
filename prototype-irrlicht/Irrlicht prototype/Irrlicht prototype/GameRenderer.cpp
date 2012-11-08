@@ -178,37 +178,22 @@ void GameRenderer::createPointParticle(IrrlichtDevice * attachTo,IMeshSceneNode 
 
 	IParticleSystemSceneNode* pss =
 		smgr->addParticleSystemSceneNode(false,vehicleNodes);
-	if(color == 1){
+	int red, blue;
+
+	if(color == 1){red = 255;blue = 25;}else{red = 25;blue = 255;}
 
     IParticleEmitter* ems = pss->createPointEmitter(
                 /*core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size*/
                 core::vector3df(0.0f,0.006f,0.0f),   // initial direction
                 8,10,                             // emit rate
                 video::SColor(0,0,0,0),       // darkest color
-                video::SColor(0,25,255,255),       // brightest color
-                800,2000,0,                         // min and max age, angle
-                core::dimension2df(1.f,1.f),         // min size
-                core::dimension2df(2.f,2.f));        // max size
-
-	pss->setEmitter(ems); // this grabs the emitter
-    ems->drop(); // so we can drop it here without deleting it
-
-	}else{
-
-    IParticleEmitter* ems = pss->createPointEmitter(
-                /*core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size*/
-                core::vector3df(0.0f,0.006f,0.0f),   // initial direction
-                8,10,                             // emit rate
-                video::SColor(0,0,0,0),       // darkest color
-                video::SColor(0,255,255,25),       // brightest color
+                video::SColor(0,red,255,blue),       // brightest color
                 800,2000,0,                         // min and max age, angle
                 core::dimension2df(1.f,1.f),         // min size
                 core::dimension2df(2.f,2.f));        // max size
 	
 	pss->setEmitter(ems); // this grabs the emitter
     ems->drop(); // so we can drop it here without deleting it
-	}
-
     IParticleAffector* pafs = pss->createFadeOutParticleAffector();
 
     pss->addAffector(pafs); // same goes for the affector
