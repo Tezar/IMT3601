@@ -144,9 +144,9 @@ void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
 
 }
 
-void GameRenderer::createPointParticle(IrrlichtDevice * attachTo,IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
+void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
     
-	ISceneManager* smgr = attachTo->getSceneManager();
+	ISceneManager* smgr = device->getSceneManager();
 
 	IParticleSystemSceneNode* pss =
 		smgr->addParticleSystemSceneNode(false,vehicleNodes);
