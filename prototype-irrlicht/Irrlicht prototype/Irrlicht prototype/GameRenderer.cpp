@@ -35,8 +35,8 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 		vehicleNodes[nVehicle] = node;
 	}
 		        // create a particle system
-		createPointParticle(device,vehicleNodes[0],25,255,255);
-	//	createPointParticle(device,vehicleNodes[1],255,255,25);
+		createPointParticle(vehicleNodes[0],25,255,255);
+	//	createPointParticle(vehicleNodes[1],255,255,25);
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 }
