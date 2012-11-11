@@ -101,6 +101,11 @@ Engine::Engine(void)
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 
+
+	localDevice = 0;
+	device = 0;
+	
+	getDevice();
 }
 
 
@@ -297,4 +302,16 @@ void Engine::loadSegments(int min, int max)
 
 core::list<TrackSegment*>* Engine::getSegments(){
 	return &segments;
+}
+
+
+IrrlichtDevice* Engine::getDevice(){
+	if(device != 0) return device;
+	if(localDevice != 0) return localDevice;
+	//we need to create local device so we can handle cache, filesystem and stuff even on multiple instances
+	//todo: not verified solution, to be checked when server is implemented
+
+	localDevice = createDevice( video::EDT_NULL, dimension2d<u32>(0, 0), 16, false, false, false, 0);
+	
+	return localDevice;
 }

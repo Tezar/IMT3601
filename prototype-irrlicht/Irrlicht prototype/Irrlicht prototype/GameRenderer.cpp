@@ -36,7 +36,7 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	}
 		        // create a particle system
 		createPointParticle(device,vehicleNodes[0],25,255,255);
-		createPointParticle(device,vehicleNodes[1],255,255,25);
+	//	createPointParticle(device,vehicleNodes[1],255,255,25);
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 }
@@ -113,7 +113,7 @@ void GameRenderer::update()
 	cameraNode->setTarget(engine->averagePosition);
 	//put camera on steady altitude, slighty offseted on X axis
 	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-5) ;
-	cameraPosition.Y = 5;
+	cameraPosition.Y = 0;
 	cameraNode->setPosition(cameraPosition);
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "irrlicht.h"
 
 #include "Vehicle.hpp"
 #include "TrackUtil.hpp"
@@ -40,6 +41,7 @@ public:
 
 	EngineListener* listener;
 
+
 	Engine(void);
 	~Engine(void);
 
@@ -58,15 +60,21 @@ public:
 	/** resets state of engine to initial conditions */
 	void reset();
 
-
 	//get list of segments
 	core::list<TrackSegment*>* getSegments();
+
+	
 
 protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
 
 
+	IrrlichtDevice* getDevice();
+
+	//pointer to device, could be local, in taht case we must drop it in the end
+	IrrlichtDevice* localDevice;
+	IrrlichtDevice* device;
 
 	/* checks if there should be more segments loaded, based on change of previous closest segment */
 	void checkLoadedSegments(); 
