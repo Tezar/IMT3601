@@ -169,6 +169,12 @@ int GameManagerClass::run()
 		driver->endScene();
 	}
 
+	if(currentScene)
+	{
+		bool shouldDelete = currentScene->onExit();
+		if(shouldDelete) delete currentScene;
+	}
+
 
 	device->drop();
 	return 0;
