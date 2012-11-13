@@ -35,7 +35,7 @@ void PracticeGameScene::onEnter()
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	receiver = new Controller(vehicle1);
 	
-	receiver->addEventReceiver(receiver);
+	EventManager::getInstance()->addEventReceiver(receiver);
 
 //	device->setEventReceiver(receiver);
 
@@ -57,7 +57,7 @@ int PracticeGameScene::onFrame(int toDo){
 
 bool PracticeGameScene::onExit()
 {
-	receiver->removeEventReceiver(receiver);
+	EventManager::getInstance()->removeEventReceiver(receiver);
 	//free this scene after exit
 	return true;
 }

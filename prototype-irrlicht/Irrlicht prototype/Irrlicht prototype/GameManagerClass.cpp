@@ -118,6 +118,7 @@ int GameManagerClass::run()
 	*/
 	device->setWindowCaption(L"Wroom");
 
+	device->setEventReceiver(EventManager::getInstance());
 	/*
 	Get a pointer to the VideoDriver, the SceneManager and the graphical
 	user interface environment, so that we do not always have to write

@@ -7,14 +7,14 @@ using namespace irr;
 
 
 // !Add a event receiver for for listening for events 
-void CIrrDeviceStub::addEventReceiver(IEventReceiver *receiver)
+void CIrrDeviceStubclass::addEventReceiver(IEventReceiver *receiver)
 {
    if (receiver != NULL)
       ReceiverList.push_back(receiver);
 }
       
 // !Remove a event receiver for for listening for events 
-void CIrrDeviceStub::removeEventReceiver(IEventReceiver *receiver)
+void CIrrDeviceStubclass::removeEventReceiver(IEventReceiver *receiver)
 {
    s32 pos = ReceiverList.binary_search(receiver);
 
@@ -24,6 +24,17 @@ void CIrrDeviceStub::removeEventReceiver(IEventReceiver *receiver)
    }
 }
 
+
+bool CIrrDeviceStubclass::OnEvent(const SEvent& event)
+{
+   for (u32 s = 0; s < ReceiverList.size(); ++s)
+   {
+      if (ReceiverList[s]->OnEvent(event))
+        return true; // only let one receiver handle message
+   }
+
+   return false;
+}
 //void CIrrDeviceStub::postEventFromUser(SEvent event)
 //{
 //   bool absorbed = false;

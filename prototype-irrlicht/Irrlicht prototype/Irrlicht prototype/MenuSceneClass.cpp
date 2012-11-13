@@ -4,6 +4,7 @@ parts based on irrlich example01
 #include "MenuSceneClass.hpp"
 #include "GameManagerClass.hpp"
 #include "StartMenuUi.h"
+#include "EventManager.h"
 
 //todo: remove unused
 using namespace core;
@@ -31,7 +32,8 @@ void MenuSceneClass::onEnter()
 
 	receiver = new MyEventReceiver(context);
 	
-	device->setEventReceiver(receiver);
+	EventManager::getInstance()->addEventReceiver(receiver);
+//	device->setEventReceiver(receiver);
 
         video::IVideoDriver* driver = device->getVideoDriver();
         IGUIEnvironment* env = device->getGUIEnvironment();
@@ -77,7 +79,8 @@ int MenuSceneClass::onFrame(int toDo){
 bool MenuSceneClass::onExit()
 {
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
-	device->setEventReceiver(0);
+	EventManager::getInstance()->removeEventReceiver(receiver);
+//	device->setEventReceiver(0);
 	device->getGUIEnvironment()->clear();
 	delete receiver;
 	return false;
