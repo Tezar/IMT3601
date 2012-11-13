@@ -1,11 +1,15 @@
 #pragma once
 
+
 #include <irrlicht.h>
 #include "Vehicle.hpp"
+#include "EventManager.h"
 
 using namespace irr;
 
-class Controller : public IEventReceiver
+//	GET THE EVENT HANDLER WORKING
+
+class Controller : public CIrrDeviceStub
 {
 private:
 	bool KeyIsDown[KEY_KEY_CODES_COUNT];

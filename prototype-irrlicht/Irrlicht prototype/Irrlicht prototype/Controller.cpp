@@ -1,5 +1,6 @@
 #include "controller.hpp"
 #include "Vehicle.hpp"
+#include "EventManager.h"
 
 using namespace irr;
 

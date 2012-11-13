@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="CongruentGenerator.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameManagerClass.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -97,6 +98,7 @@
   <ItemGroup>
     <ClInclude Include="CongruentGenerator.hpp" />
     <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameManagerClass.hpp" />
     <ClInclude Include="GameRenderer.hpp" />
     <ClInclude Include="MenuSceneClass.hpp" />

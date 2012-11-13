@@ -54,6 +54,9 @@
     <ClCompile Include="Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.hpp">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StartMenuUi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

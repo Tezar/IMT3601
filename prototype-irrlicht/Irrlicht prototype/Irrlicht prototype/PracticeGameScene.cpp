@@ -3,6 +3,7 @@
 #include "GameManagerClass.hpp"
 #include "Vehicle.hpp"
 #include "Controller.hpp"
+#include "EventManager.h"
 
 //todo: remove unused
 using namespace core;
@@ -33,8 +34,10 @@ void PracticeGameScene::onEnter()
 	
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	receiver = new Controller(vehicle1);
+	
+	receiver->addEventReceiver(receiver);
 
-	device->setEventReceiver(receiver);
+//	device->setEventReceiver(receiver);
 
 	engine->reset();
 	
@@ -54,6 +57,7 @@ int PracticeGameScene::onFrame(int toDo){
 
 bool PracticeGameScene::onExit()
 {
+	receiver->removeEventReceiver(receiver);
 	//free this scene after exit
 	return true;
 }
