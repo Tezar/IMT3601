@@ -67,7 +67,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)\include;$(ProjectDir)\source\enet\include;$(IncludePath)</IncludePath>
-    <TargetExt>lib</TargetExt>
+    <TargetExt>.lib</TargetExt>
     <OutDir>$(SolutionDir)lib\</OutDir>
     <TargetName>IrrNetLite</TargetName>
   </PropertyGroup>
