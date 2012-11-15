@@ -210,7 +210,7 @@ scene::ISceneNode*  TrackSegment::injectTrackNode(IrrlichtDevice* device)
 	scene::ISceneNode *node = smgr->addCubeSceneNode(1.f, trackNode);
 	node->setScale(vector3df(maxX-minX,1.f,maxZ-minZ));	//we want thin plate instead of box
 
-	node->setMaterialTexture( 0, driver->getTexture("../../media/wood1.png") );
+	node->setMaterialTexture( 0, driver->getTexture("../media/wood1.png") );
 	node->setMaterialType( video::EMT_SOLID );
 
 

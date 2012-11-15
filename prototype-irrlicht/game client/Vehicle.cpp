@@ -21,7 +21,7 @@ scene::IMeshSceneNode* Vehicle::injectNode(IrrlichtDevice* device)
 	ISceneManager* smgr = device->getSceneManager();
 	IVideoDriver* driver = device->getVideoDriver();
 
-	IrrXMLReader* xml = createIrrXMLReader("../../config/vehicle.xml");
+	IrrXMLReader* xml = createIrrXMLReader("../config/vehicle.xml");
 
 	 
     while(xml && xml->read())

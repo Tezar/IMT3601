@@ -1,9 +1,9 @@
-<chassis model=	"../../media/Car - Main Body.obj" texture="../../media/Car - Main Body Texture.bmp"/>
+<chassis model=	"../media/Car - Main Body.obj" texture="../../media/Car - Main Body Texture.bmp"/>
 
-<wheel model="../../media/Wheel.obj" posX="-0.3" posY="-0.3" posZ="-0.5"/>
+<wheel model="../media/Wheel.obj" posX="-0.3" posY="-0.3" posZ="-0.5"/>
 
-<wheel model="../../media/Wheel.obj" posX="-0.3" posY="-0.3" posZ="0.5"/>
+<wheel model="../media/Wheel.obj" posX="-0.3" posY="-0.3" posZ="0.5"/>
 
-<wheel model="../../media/Wheel.obj" posX="0.3" posY="-0.3" posZ="-0.5"/>
-<wheel model="../../media/Wheel.obj" posX="0.3" posY="-0.3" posZ="0.5"/>
+<wheel model="../media/Wheel.obj" posX="0.3" posY="-0.3" posZ="-0.5"/>
+<wheel model="../media/Wheel.obj" posX="0.3" posY="-0.3" posZ="0.5"/>
 
