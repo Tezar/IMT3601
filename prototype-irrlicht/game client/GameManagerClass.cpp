@@ -8,7 +8,6 @@
 #include "StartMenuUi.h"
 
 #ifdef _IRR_WINDOWS_
-#pragma comment(lib, "Irrlicht.lib")
 #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 #endif
