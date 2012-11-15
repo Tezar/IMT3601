@@ -63,7 +63,7 @@
       <Profile>false</Profile>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>Irrlicht.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Irrlicht.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
