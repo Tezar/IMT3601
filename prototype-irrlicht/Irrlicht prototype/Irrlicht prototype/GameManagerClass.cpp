@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <irrKlang.h>
 
 #include "Scene.hpp"
 #include "GameManagerClass.hpp"
@@ -9,6 +10,7 @@
 #ifdef _IRR_WINDOWS_
 #pragma comment(lib, "Irrlicht.lib")
 #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 #endif
 
 
@@ -106,7 +108,9 @@ int GameManagerClass::run()
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
 			false, false, false, 0);
 
-	if (!device)
+	irrklang::ISoundEngine * soundDevice = irrklang::createIrrKlangDevice();
+
+	if (!device || !soundDevice)
 	{
 		return 1;
 	}
