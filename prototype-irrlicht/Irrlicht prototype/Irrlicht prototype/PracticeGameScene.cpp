@@ -35,7 +35,7 @@ void PracticeGameScene::onEnter()
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 	receiver = new Controller(vehicle1);
 	
-	EventManager::getInstance()->addEventReceiver(receiver);
+	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 
 //	device->setEventReceiver(receiver);
 

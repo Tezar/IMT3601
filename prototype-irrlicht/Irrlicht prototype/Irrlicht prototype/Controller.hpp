@@ -7,7 +7,7 @@
 
 using namespace irr;
 
-//	GET THE EVENT HANDLER WORKING
+
 
 class Controller : public IEventReceiver
 {
