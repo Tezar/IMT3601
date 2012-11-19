@@ -38,7 +38,7 @@ void MenuSceneClass::onEnter()
         video::IVideoDriver* driver = device->getVideoDriver();
         IGUIEnvironment* env = device->getGUIEnvironment();
 		IGUISkin* skin = env->getSkin();
-		IGUIFont* font = env->getFont("../../media/bigfont.png");
+		IGUIFont* font = env->getFont("../media/bigfont.png");
         if (font)
                 skin->setFont(font);
 		//IGUIListBox * listbox = env->addListBox(rect<s32>(50, 140, 250, 210));
@@ -56,11 +56,13 @@ void MenuSceneClass::onEnter()
 			}
 
 
-		env->addButton(rect<s32>(100,100,700,100 + 72), 0, GUI_ID_START_BUTTON,
-                        L"Start Program", L"Starts the program");
-        env->addButton(rect<s32>(100,180,700,180 + 72), 0, GUI_ID_SETTINGS_BUTTON,
+		env->addButton(rect<s32>(100,100,700,100 + 72), 0, GUI_ID_SINGLE_BUTTON,
+                        L"Start Single player", L"Starts the single player");
+		env->addButton(rect<s32>(100,100 + 80,700,100 + 80 + 72), 0, GUI_ID_MULTY_BUTTON,
+                        L"Start Multy Player", L"Starts the multy player");
+        env->addButton(rect<s32>(100,100 + 160,700,100 + 160 + 72), 0, GUI_ID_SETTINGS_BUTTON,
                         L"Settings", L"Opens the settings window");
-        env->addButton(rect<s32>(100,260,700,260 + 72), 0, GUI_ID_QUIT_BUTTON,
+        env->addButton(rect<s32>(100,100 + 240,700,100 + 240 + 72), 0, GUI_ID_QUIT_BUTTON,
                         L"Quit", L"Quits the program");	
 
 		//env->addButton(rect<s32>(100,340,700,340 + 72), 0, GUI_ID_TEST_BUTTON,
