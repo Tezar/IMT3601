@@ -1,21 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Irrlicht prototype server.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSession.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionsManager.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Network_class_server.h">
+    <ClInclude Include="targetver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSession.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Network_class_server.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionsManager.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

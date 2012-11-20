@@ -79,12 +79,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Network_class_server.h" />
+    <ClInclude Include="GameSession.hpp" />
+    <ClInclude Include="Network_class_server.hpp" />
+    <ClInclude Include="SessionsManager.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Irrlicht prototype server.cpp" />
+    <ClCompile Include="GameSession.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SessionsManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

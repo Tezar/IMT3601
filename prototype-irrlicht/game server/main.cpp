@@ -2,11 +2,14 @@
 //
 
 #include "stdafx.h"
-#include "Network_class_server.h"
+#include "Network_class_server.hpp"
 
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+
+	//SessionsManager::getInstance()->run();
+
 	// Ask the user whether they want to be the server or a client.
 	std::cout << "Client (c) or Server (s)?";
 	char i;
