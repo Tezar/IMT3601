@@ -40,12 +40,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\include\IrrNetLite;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\game engine\;$(SolutionDir)\include\IrrNetLite;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\include\IrrNetLite;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\game engine\;$(SolutionDir)\include\IrrNetLite;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -75,6 +75,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>irrNetLite.lib;gameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -90,6 +91,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\game engine\game engine.vcxproj">
+      <Project>{511fd3dc-2bc0-4e9d-a223-565d03bf2f87}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\lib IrrNetLite\IrrNetLite.vcxproj">
       <Project>{25b7fb89-1dde-4ff1-b08f-a01c77880df3}</Project>
     </ProjectReference>

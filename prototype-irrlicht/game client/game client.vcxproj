@@ -63,7 +63,7 @@
       <Profile>false</Profile>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>Irrlicht.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;gameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Irrlicht.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -104,6 +104,11 @@
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="StartMenuUi.h" />
     <ClInclude Include="controller.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\game engine\game engine.vcxproj">
+      <Project>{511fd3dc-2bc0-4e9d-a223-565d03bf2f87}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
