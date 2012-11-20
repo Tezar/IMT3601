@@ -101,7 +101,6 @@
     <ClInclude Include="MenuSceneClass.hpp" />
     <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
-    <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="StartMenuUi.h" />
     <ClInclude Include="controller.hpp" />
   </ItemGroup>
