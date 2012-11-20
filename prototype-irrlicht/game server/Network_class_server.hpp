@@ -41,8 +41,10 @@ public:
 		// to encrypt/decrypt a packet respectively. Do not try to
 		// decrypt an un-encrypted packet or read from an encrypted
 		// packet without decrypting it first or bad things will happen!
-		packet.decryptPacket("hushthisissecret");
-		
+	//packet.decryptPacket("hushthisissecret");
+	
+		//^is disabled because of a stack problem
+
 		// irrNetLite compression is even easier! The ZLib library is used
 		// here, just call compressPacket/decompressPacket to 
 		// compress/decompress a packet. Again, do not try to decompress
@@ -51,8 +53,10 @@ public:
 		// decompress and decrypt in the correct order. If you compressed a file
 		// and then encrypted it when it was sent, you must decrypt it first
 		// before trying to decompress it, same goes for the other order.
-		packet.deCompressPacket();
+	//packet.deCompressPacket();
 		
+		//^is disabled because of a stack problem
+
 		// Extracting info from a received packet is simple. You can treat
 		// the packet as an input stream, the >> operator is overloaded
 		// and works for most built in types. The string class in irrNetLite

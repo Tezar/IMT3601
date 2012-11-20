@@ -14,6 +14,7 @@ class MultiplayerGameScene :
 	GameRenderer* renderer;
 	Engine* engine;
 	net::INetManager* netManager;
+	net::SOutPacket packet;
 
 public:
 	MultiplayerGameScene(void);

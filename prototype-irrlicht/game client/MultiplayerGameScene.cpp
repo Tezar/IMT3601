@@ -49,19 +49,10 @@ void MultiplayerGameScene::onEnter()
 	//Network
 		netManager = net::createIrrNetClient(0, "127.0.0.1");
 		
-		// Enable debug messages.
+	// Enable debug messages.
 		netManager->setVerbose(true);
 
-			//netManager->update(1000);
-
-}
-
-int MultiplayerGameScene::onFrame(int toDo){
-
-	toDo = engine->step(toDo);
-			if(netManager->getConnectionStatus() != net::EICS_FAILED){
-			// To send a packet, first you create an SOutPacket object.
-			net::SOutPacket packet;
+		if(netManager->getConnectionStatus() != net::EICS_FAILED){
 			
 			// Then you can use the streaming operator << to add new data to it.
 			packet << "Help I am stuck on a mountain!";
@@ -69,15 +60,29 @@ int MultiplayerGameScene::onFrame(int toDo){
 			// You can even chain the << operators like so, just like with ostream.
 			packet << core::vector3df(50.0f, 30.0f, 20.0f) << 50.0f;
 			
+		//compressing and encrypting disabled atm because of a stack problem
 			// Compress the packet, not much to be said.
-			packet.compressPacket();
+			//packet.compressPacket();
 			
-			packet.encryptPacket("hushthisissecret");
+			//packet.encryptPacket("hushthisissecret");
 			// A simple call to "sendOutPacket" will send the packet to the server.
 			netManager->sendOutPacket(packet);
-			}
+			netManager->update();
+			
+		}
+
+}
+
+int MultiplayerGameScene::onFrame(int toDo){
+
+	toDo = engine->step(toDo);
+
 	renderer->update();
-	
+
+	//netManager->sendOutPacket(packet);
+
+	//netManager->update();
+
 	return toDo;
 }
 
