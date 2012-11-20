@@ -1,12 +1,12 @@
 #include "StdAfx.h"
-#include "SessionsManager.hpp"
-
-
-SessionsManagerClass::SessionsManager(void)
-{
-}
-
-
-SessionsManagerClass::~SessionsManager(void)
-{
-}
+//#include "SessionsManager.hpp"
+//
+//
+//SessionsManagerClass::SessionsManager(void)
+//{
+//}
+//
+//
+//SessionsManagerClass::~SessionsManager(void)
+//{
+//}
