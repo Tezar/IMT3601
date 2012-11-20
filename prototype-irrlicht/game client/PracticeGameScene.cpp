@@ -1,4 +1,5 @@
 #pragma once
+#include <irrKlang.h>
 #include "PracticeGameScene.hpp"
 #include "GameManagerClass.hpp"
 #include "Vehicle.hpp"
@@ -29,6 +30,10 @@ PracticeGameScene::~PracticeGameScene(void)
 void PracticeGameScene::onEnter()
 {
 	engine = new Engine();
+
+	soundDevice = AudioManager::getInstance();
+	soundDevice->BackgroundMusic();
+
 	Vehicle * vehicle1 = engine->addVehicle( new Vehicle() );
 	//engine->addVehicle( new Vehicle() );
 	
@@ -36,6 +41,8 @@ void PracticeGameScene::onEnter()
 	receiver = new Controller(vehicle1);
 	
 	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
+
+	
 
 //	device->setEventReceiver(receiver);
 

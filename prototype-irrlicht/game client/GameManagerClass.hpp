@@ -4,6 +4,7 @@
 
 #include <irrlicht.h>
 using namespace irr;
+using namespace core;
 
 enum states_t
 	{

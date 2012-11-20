@@ -3,6 +3,7 @@
 #include "Engine.hpp"
 #include "GameRenderer.hpp"
 #include "Controller.hpp"
+#include "AudioManager.hpp"
 
 #include <irrlicht.h>
 using namespace irr;
@@ -12,6 +13,7 @@ class PracticeGameScene :
 {
 	GameRenderer* renderer;
 	Engine* engine;
+	AudioManagerClass* soundDevice;
 
 public:
 	PracticeGameScene(void);
