@@ -91,6 +91,7 @@
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuSceneClass.cpp" />
+    <ClCompile Include="MultiplayerGameScene.cpp" />
     <ClCompile Include="PracticeGameScene.cpp" />
     <ClCompile Include="Controller.cpp" />
   </ItemGroup>
@@ -99,6 +100,7 @@
     <ClInclude Include="GameManagerClass.hpp" />
     <ClInclude Include="GameRenderer.hpp" />
     <ClInclude Include="MenuSceneClass.hpp" />
+    <ClInclude Include="MultiplayerGameScene.h" />
     <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="StartMenuUi.h" />

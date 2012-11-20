@@ -5,6 +5,7 @@
 #include "GameManagerClass.hpp"
 #include "MenuSceneClass.hpp"
 #include "PracticeGameScene.hpp"
+#include "MultiplayerGameScene.h"
 #include "StartMenuUi.h"
 
 #ifdef _IRR_WINDOWS_
@@ -197,6 +198,7 @@ Scene * GameManagerClass::changeState(states_t newState)
 	{
 		case menu: currentScene = MenuScene::getInstance(); break;
 		case practiceGame: currentScene = new PracticeGameScene; break;
+		case multiPlayerGame: currentScene = new MultiplayerGameScene; break;
 	}
 
 	assert(currentScene);

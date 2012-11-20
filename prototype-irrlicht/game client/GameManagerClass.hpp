@@ -8,7 +8,8 @@ using namespace irr;
 enum states_t
 	{
 		menu,
-		practiceGame
+		practiceGame,
+		multiPlayerGame
 	};
 
 class GameManagerClass

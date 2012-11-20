@@ -62,6 +62,13 @@ public:
                                         }
                                         return true;
 
+								case GUI_ID_MULTY_BUTTON:
+										{
+											GameManager::getInstance()->changeState(multiPlayerGame);
+											return 0;
+										}
+										return true;
+
                                 case GUI_ID_SETTINGS_BUTTON:
 									{
                                         IGUIWindow* settingsWindow = env->addWindow(
