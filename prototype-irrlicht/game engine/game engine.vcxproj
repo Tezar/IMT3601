@@ -11,22 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D6EF03E3-45DF-42B8-A280-81AE42E46710}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Irrlichtprototype</RootNamespace>
-    <ProjectName>game client</ProjectName>
+    <ProjectGuid>{511FD3DC-2BC0-4E9D-A223-565D03BF2F87}</ProjectGuid>
+    <RootNamespace>gameengine</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -39,71 +37,61 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)include\irrlicht;$(SolutionDir)include\irrKlang;$(SolutionDir)include\bullet;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)include\irrlicht;$(SolutionDir)include\bullet;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)lib\</OutDir>
+    <TargetName>gameEngine</TargetName>
+    <LibraryPath>$(SolutionDir)lib\;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)include\irrlicht;$(SolutionDir)include\irrKlang;$(SolutionDir)include\bullet;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)include\irrlicht;$(SolutionDir)include\bullet;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)lib\</OutDir>
+    <TargetName>gameEngine</TargetName>
+    <LibraryPath>$(SolutionDir)lib\;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>false</Profile>
-      <IgnoreAllDefaultLibraries>
-      </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>Irrlicht.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Irrlicht.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;gameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="GameManagerClass.cpp" />
-    <ClCompile Include="GameRenderer.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuSceneClass.cpp" />
-    <ClCompile Include="PracticeGameScene.cpp" />
-    <ClCompile Include="Controller.cpp" />
+    <ClInclude Include="ConfigReader.hpp" />
+    <ClInclude Include="CongruentGenerator.hpp" />
+    <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="TrackGenerator.hpp" />
+    <ClInclude Include="TrackSegment.hpp" />
+    <ClInclude Include="TrackUtil.hpp" />
+    <ClInclude Include="Vehicle.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EventManager.h" />
-    <ClInclude Include="GameManagerClass.hpp" />
-    <ClInclude Include="GameRenderer.hpp" />
-    <ClInclude Include="MenuSceneClass.hpp" />
-    <ClInclude Include="PracticeGameScene.hpp" />
-    <ClInclude Include="Scene.hpp" />
-    <ClInclude Include="Singleton.hpp" />
-    <ClInclude Include="StartMenuUi.h" />
-    <ClInclude Include="controller.hpp" />
+    <ClCompile Include="ConfigReader.cpp" />
+    <ClCompile Include="CongruentGenerator.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="TrackGenerator.cpp" />
+    <ClCompile Include="TrackSegment.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

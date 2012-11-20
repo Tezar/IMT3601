@@ -39,7 +39,7 @@ public:
 	~ObjectReader(void);
 
 	list<ObjectRecord>* getObjects(const char *);
-	list<ObjectRecord>* getObjects(const char *);
+
 
 protected:
 	list<std::pair<const char *, list<ObjectRecord> > > cache;
