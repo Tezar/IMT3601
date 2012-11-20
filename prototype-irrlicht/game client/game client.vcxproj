@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.hpp" />
-    <ClInclude Include="EventManager.h" />
+    <ClInclude Include="EventManager.hpp" />
     <ClInclude Include="GameManagerClass.hpp" />
     <ClInclude Include="GameRenderer.hpp" />
     <ClInclude Include="MenuSceneClass.hpp" />

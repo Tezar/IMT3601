@@ -4,7 +4,7 @@
 #include "GameManagerClass.hpp"
 #include "Vehicle.hpp"
 #include "Controller.hpp"
-#include "EventManager.h"
+#include "EventManager.hpp"
 
 //todo: remove unused
 using namespace core;
@@ -58,6 +58,8 @@ int PracticeGameScene::onFrame(int toDo){
 
 	renderer->update();
 	
+	soundDevice->UpdateListenerPosition(engine);
+
 	return toDo;
 }
 
@@ -65,6 +67,7 @@ int PracticeGameScene::onFrame(int toDo){
 bool PracticeGameScene::onExit()
 {
 	EventManager::getInstance()->removeEventReceiver(receiver);
+	
 	//free this scene after exit
 	return true;
 }

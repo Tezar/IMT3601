@@ -4,7 +4,7 @@
 #include "GameManagerClass.hpp"
 #include "Vehicle.hpp"
 #include "Controller.hpp"
-#include "EventManager.h"
+#include "EventManager.hpp"
 
 //todo: remove unused
 using namespace core;
