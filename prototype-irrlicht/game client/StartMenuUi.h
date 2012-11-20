@@ -25,6 +25,8 @@ enum
 {
         GUI_ID_QUIT_BUTTON = 101,
         GUI_ID_START_BUTTON,
+		GUI_ID_SINGLE_BUTTON,
+		GUI_ID_MULTY_BUTTON,
         GUI_ID_SETTINGS_BUTTON,
 		GUI_ID_GAME_ENGINE_BUTTON,
 		GUI_ID_AUDIO_BUTTON,
@@ -53,7 +55,7 @@ public:
                                         Context.device->closeDevice();
                                         return true;
 
-                                case GUI_ID_START_BUTTON:
+                                case GUI_ID_SINGLE_BUTTON:
                                         {
 											GameManager::getInstance()->changeState(practiceGame);
 											return 0;
