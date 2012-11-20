@@ -5,12 +5,11 @@
 #include "GameManagerClass.hpp"
 #include "MenuSceneClass.hpp"
 #include "PracticeGameScene.hpp"
-#include "MultiplayerGameScene.h"
 #include "StartMenuUi.h"
-//#include "AudioManager.hpp"
+
+
 
 #ifdef _IRR_WINDOWS_
-#pragma comment(lib, "Irrlicht.lib")
 #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 #endif
@@ -110,11 +109,9 @@ int GameManagerClass::run()
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
 			false, false, false, 0);
 
-//	irrklang::ISoundEngine * soundDevice = irrklang::createIrrKlangDevice();
-//	AudioManager * soundDevice = new AudioManager;
-//	soundDevice->CreateAudioManager();
+	irrklang::ISoundEngine * soundDevice = irrklang::createIrrKlangDevice();
 
-	if (!device/* || !soundDevice*/)
+	if (!device || !soundDevice)
 	{
 		return 1;
 	}
@@ -170,10 +167,6 @@ int GameManagerClass::run()
 		
 		driver->beginScene(true, true, SColor(255,100,150,040));
 
-//		irrklang::ISound * backgroundMusic = 
-//			soundDevice->play3D("../../media/Doctor Who - This Is Gallifrey, Our Childhood, Our Home.mp3",
-//			irrklang::vec3df(0,0,0), true, false, true);
-
 		toProcess =	currentScene->onFrame(toProcess);
 
 		//todo: handle it here or rather inside the scenes?
@@ -188,9 +181,8 @@ int GameManagerClass::run()
 		if(shouldDelete) delete currentScene;
 	}
 
-//	soundDevice->drop();
+
 	device->drop();
-	
 	return 0;
 }
 
@@ -207,7 +199,6 @@ Scene * GameManagerClass::changeState(states_t newState)
 	{
 		case menu: currentScene = MenuScene::getInstance(); break;
 		case practiceGame: currentScene = new PracticeGameScene; break;
-		case multiPlayerGame: currentScene = new MultiplayerGameScene; break;
 	}
 
 	assert(currentScene);
