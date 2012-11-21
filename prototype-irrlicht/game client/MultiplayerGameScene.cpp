@@ -54,6 +54,7 @@ void MultiplayerGameScene::onEnter()
 
 		if(netManager->getConnectionStatus() != net::EICS_FAILED){
 			
+			//netManager->update();
 			// Then you can use the streaming operator << to add new data to it.
 			packet << "Help I am stuck on a mountain!";
 			
