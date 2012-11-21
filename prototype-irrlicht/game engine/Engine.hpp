@@ -4,8 +4,12 @@
 #include "Vehicle.hpp"
 #include "TrackUtil.hpp"
 #include "TrackGenerator.hpp"
+#include "EngineObserver.hpp "
 
 #include "btBulletDynamicsCommon.h"
+
+using namespace irr;
+using namespace io;
 
 #define MAX_VEHICLES 4
 
@@ -28,8 +32,8 @@ public:
 	int numVehicles;
 	int currentSegment;
 
-	EngineListener* listener;
-
+	core::list<EngineObserver*> observers;
+	void notifyBodyNew();
 
 	Engine(void);
 	~Engine(void);
