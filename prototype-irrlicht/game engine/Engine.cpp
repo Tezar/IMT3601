@@ -133,15 +133,19 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 
 	for(core::list<ObjectRecord*>::ConstIterator it = record->children.begin(); it != record->children.end();it++)
 	{
-		switch( (*it)->type ){
+		ObjectRecord* object = (*it);
+		
+		switch( object->type ){
 		case EOT_CHASSIS:{
 			
 			//we shape our world
-			btCollisionShape* shape = new btBoxShape(  btVector3(1,1,1) );
+
+			btCollisionShape* shape = object->createShape();
+			assert(shape != 0);
 			vehicle->addShape(shape);
 
 			//for monitoring
-			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),object->position));
 			//physics stuff
 			btScalar mass = 1+10*currentVehicle;
 			btVector3 inertia(0,0,0);
@@ -158,7 +162,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			
 			dynamicsWorld->addRigidBody(rigidBody);
 
-			notifyBodyNew(rigidBody, (*it) );
+			notifyBodyNew(rigidBody, object );
 			
 			}
 			break;
@@ -166,11 +170,13 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			{
 				//(*it)->position
 			//we shape our world
-			btCollisionShape* shape = new btBoxShape(  btVector3(1,1,1) );
+			btCollisionShape* shape = object->createShape();
+			assert(shape != 0);
+			
 			vehicle->addShape(shape);
 
 			//for monitoring
-			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),(*it)->position));
+			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),object->position));
 			//physics stuff
 			btScalar mass = 1+10*currentVehicle;
 			btVector3 inertia(0,0,0);
@@ -187,7 +193,31 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 
 			dynamicsWorld->addRigidBody(rigidBody);
 
-			notifyBodyNew(rigidBody, (*it) );
+
+
+			// create a Hinge2 joint
+			// create two rigid bodies
+			// static bodyA (parent) on top:
+			btTransform tr;
+			tr.setIdentity();
+			tr.setOrigin(btVector3(btScalar(-20.), btScalar(4.), btScalar(0.)));
+
+			// add some data to build constraint frames
+			btVector3 parentAxis(0.f, 1.f, 0.f); 
+			btVector3 childAxis(1.f, 0.f, 0.f); 
+			
+			btHinge2Constraint* pHinge2 = new btHinge2Constraint(*rigidBody, *vehicle->chassis, object->position, parentAxis, childAxis);
+			//pHinge2->setLowerLimit(-SIMD_HALF_PI * 0.5f);
+			//pHinge2->setUpperLimit( SIMD_HALF_PI * 0.5f);
+			// add constraint to world
+			dynamicsWorld->addConstraint(pHinge2, true);
+
+
+
+
+
+
+			notifyBodyNew(rigidBody, object );
 			
 			}
 			break;
