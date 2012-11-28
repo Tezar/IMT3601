@@ -3,6 +3,7 @@
 #include <irrlicht.h>
 #include <string>
 #include <stdio.h>
+#include "btBulletDynamicsCommon.h"
 
 using namespace irr;
 using namespace core;
@@ -26,11 +27,18 @@ class ObjectRecord
 {
 public:
 	ObjectRecord(){
-		physics = true; collisionBox = 0;
+		physics = true; 
+		collisionBox = 0;
+		position.setZero();
+		rotation.setZero();
+
+		
 	
 	}
 	~ObjectRecord(){
 		if(collisionBox) delete collisionBox; 
+		//todo: iterate and delete children
+		
 	};
 
 	io::path model;
@@ -41,10 +49,10 @@ public:
 
 	core::list<ObjectRecord*> children;
 	aabbox3df* collisionBox;
-	vector3df position;
-	vector3df rotation;
-	vector3df scale;
-	vector3df extra;
+	btVector3 position;
+	btVector3 rotation;
+	btVector3 scale;
+	btVector3 extra;
 	
 
 };
@@ -60,18 +68,18 @@ public:
 	~ObjectReader(void);
 
 	/* get object from cache or read it if necessarily */
-	list<ObjectRecord*> getObjects(const char *);
+	list<ObjectRecord*>* getObjects(const char *);
 	void setBaseDir(const char * dir);
 
 protected:
 	std::string baseDir;
 
 	/* read object from file*/ 
-	list<ObjectRecord*> readObjects(const char *);
+	list<ObjectRecord*>* readObjects(const char *);
 
 	ObjectRecord* parseVehicle(IrrXMLReader*);
 
-	void readVec3d(const char * data, vector3df target);
+	void readVec3d(const char * data, btVector3& target);
 
 	//core::list<configCachePair> cache;
 	ObjectCacheMap cache;
