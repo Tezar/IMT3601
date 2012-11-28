@@ -77,6 +77,8 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 					child->model = xml->getAttributeValue("model");
 					child->texture = xml->getAttributeValue("texture");
 					
+					readShape(xml->getAttributeValue("shape"), child->shape);
+
 					break;
                 }
                 
@@ -89,9 +91,14 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 					child->model = xml->getAttributeValue("model");
 					child->texture = xml->getAttributeValue("texture");
 					
+					
 					readVec3d(xml->getAttributeValue("position"), child->position);
 					readVec3d(xml->getAttributeValue("rotation"), child->rotation);
 					readVec3d(xml->getAttributeValue("extra"), child->extra);
+
+					readShape(xml->getAttributeValue("shape"), child->shape);
+
+
 					
 					break;
                 }
@@ -109,9 +116,6 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 }
 
 
-
-
-
 void ObjectReader::readVec3d(const char * data,  btVector3& target)
 {
 	if(data == 0) return; //the attribute isn't present
@@ -121,4 +125,25 @@ void ObjectReader::readVec3d(const char * data,  btVector3& target)
 	success = sscanf(data, "%f,%f,%f", &x,&y,&z);
 
 	target.setValue(x,y,z);
+}
+
+void ObjectReader::readShape(const char * data,  E_SHAPE& shape)
+{
+	if(data == 0) return; //the attribute isn't present
+	
+	if(strcmp(data, "box") == 0){
+		shape = ES_BOX;
+		return;
+	}
+
+	if(strcmp(data, "sphere") == 0){
+		shape = ES_SPHERE;
+		return;
+	}
+
+	if(strcmp(data, "cylinder") == 0){
+		shape = ES_CYLINDER;
+		return;
+	}
+
 }

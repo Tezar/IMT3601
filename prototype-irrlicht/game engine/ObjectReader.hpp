@@ -12,22 +12,26 @@ using namespace io;
 using namespace std;
 
 enum E_OBJECT_TYPE{
-	EOT_BOX,
-	EOT_SPHERE,
-	EOT_MESH,
-
 	EOT_VEHICLE,
 	EOT_CHASSIS,
 	EOT_WHEEL,
-	
 };
+
+
+enum E_SHAPE{
+	ES_NONE,
+	ES_BOX,
+	ES_SPHERE,
+	ES_CYLINDER,
+};
+
 
 
 class ObjectRecord
 {
 public:
 	ObjectRecord(){
-		physics = true; 
+		shape = ES_NONE;
 		collisionBox = 0;
 		position.setZero();
 		rotation.setZero();
@@ -45,10 +49,9 @@ public:
 	io::path texture;
 	
 	E_OBJECT_TYPE type;
-	bool physics;
-
-	core::list<ObjectRecord*> children;
+	E_SHAPE shape;
 	aabbox3df* collisionBox;
+	core::list<ObjectRecord*> children;
 	btVector3 position;
 	btVector3 rotation;
 	btVector3 scale;
@@ -79,7 +82,8 @@ protected:
 
 	ObjectRecord* parseVehicle(IrrXMLReader*);
 
-	void readVec3d(const char * data, btVector3& target);
+	void readVec3d(const char *, btVector3&);
+	void readShape(const char *, E_SHAPE&);
 
 	//core::list<configCachePair> cache;
 	ObjectCacheMap cache;
