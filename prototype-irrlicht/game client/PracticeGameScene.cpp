@@ -29,15 +29,22 @@ PracticeGameScene::~PracticeGameScene(void)
 
 void PracticeGameScene::onEnter()
 {
+	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+
+
 	engine = new Engine();
+
+
+	//we have to create engine so soon, because otherwise the renderer cant react to creation of new bodies by inserting them to the scene
+	renderer = new GameRenderer(engine);
+	renderer->attach(device);
 
 	soundDevice = AudioManager::getInstance();
 	soundDevice->BackgroundMusic();
 
-	Vehicle * vehicle1 = engine->addVehicle( new Vehicle() );
-	//engine->addVehicle( new Vehicle() );
+	Vehicle * vehicle1 = engine->addVehicle( (*GameManager::getInstance()->getReader()->getObjects("vehicle")->begin()) );
 	
-	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+	
 	receiver = new Controller(vehicle1);
 	
 	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
@@ -48,8 +55,8 @@ void PracticeGameScene::onEnter()
 
 	engine->reset();
 	
-	renderer = new GameRenderer(engine);
-	renderer->attach(device);
+	
+	
 }
 
 int PracticeGameScene::onFrame(int toDo){
