@@ -64,7 +64,7 @@ public:
 		//// receive a char*, or vice-versa.
 		core::stringc str;
 		packet >> str;
-		context.listbox
+		//context.listbox
 
 		//// Support for a simple 3-dimensional vector class is there too. Both
 		//// vector3df and core::stringc are borrowed from Irrlicht and included
