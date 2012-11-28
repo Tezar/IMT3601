@@ -4,7 +4,6 @@
 #include <functional>
 #include "Engine.hpp"
 
-
 class EngineBodyState: public btMotionState {
 public:
     EngineBodyState(Engine * e, irr::u32 _id, const btTransform &initialpos) {
@@ -21,10 +20,8 @@ public:
     }
 
     virtual void setWorldTransform(const btTransform &worldTrans) {
-		if(engine->listener == NULL)
-				return; // we silently return as there is no handler to notify
+		engine->notifyBodyUpdate(btBody, worldTrans);
 
-		engine->listener->onBodyMovement(id, &worldTrans);
 		/*
         btQuaternion rot = worldTrans.getRotation();
         mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
@@ -33,19 +30,29 @@ public:
 		*/
     }
 
+	void setBody(btRigidBody* body)
+	{
+		btBody = body;
+	}
+
+	btRigidBody* getBody()
+	{
+		return btBody;
+	}
+
 protected:
 	irr::u32 id;
     Engine* engine;
+	btRigidBody* btBody;
     btTransform mPos1;
 };
 
 
 class EngineVehicleState: public btMotionState {
 public:
-    EngineVehicleState(Engine * e,irr::u32 _id, Vehicle* _vehicle, const btTransform &initialpos) {
+    EngineVehicleState(Engine * e,Vehicle* _vehicle, const btTransform &initialpos) {
         engine = e;
 		vehicle = _vehicle;
-		id = _id;
         mPos1 = initialpos;
     }
 
@@ -57,14 +64,14 @@ public:
     }
 
     virtual void setWorldTransform(const btTransform &worldTrans) {
-		if(engine->listener == NULL)
-				return; // we silently return as there is no handler to notify
+		//if(engine->listener == NULL)
+		//		return; // we silently return as there is no handler to notify
 
-		
-		btVector3 pos = worldTrans.getOrigin();
-		vehicle->position.set(pos.x(), pos.y(), pos.z());
+		//
+		//btVector3 pos = worldTrans.getOrigin();
+		//vehicle->position.set(pos.x(), pos.y(), pos.z());
 
-		engine->listener->onVehicleMovement(id, vehicle );
+		//engine->listener->onVehicleMovement(id, vehicle );
     }
 
 protected:
@@ -84,9 +91,6 @@ Engine::Engine(void)
 	track = new TrackGenerator(69696969);	//seed with randomly picked number...
 	averagePosition.set(0,0,0);
 
-	listener = NULL;
-
-
 	// Build the broadphase
     broadphase = new btDbvtBroadphase();
  
@@ -101,11 +105,6 @@ Engine::Engine(void)
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 
-
-	localDevice = 0;
-	device = 0;
-	
-	getDevice();
 }
 
 
@@ -121,27 +120,82 @@ Engine::~Engine(void)
 }
 
 
-Vehicle* Engine::addVehicle(Vehicle * vehicle)
+Vehicle* Engine::addVehicle(ObjectRecord* record)
 {
+	assert( record != 0);
+	assert( record->type == EOT_VEHICLE );
 	assert(numVehicles < MAX_VEHICLES);
+
+	Vehicle * vehicle = new Vehicle();
+
 	int currentVehicle = numVehicles++;
 	vehicles[currentVehicle] = vehicle;
 
+	for(core::list<ObjectRecord*>::ConstIterator it = record->children.begin(); it != record->children.end();it++)
+	{
+		switch( (*it)->type ){
+		case EOT_CHASSIS:{
+			
+			//we shape our world
+			btCollisionShape* shape = new btBoxShape(  btVector3(1,1,1) );
+			vehicle->addShape(shape);
 
-	//memmory leak
-    btCollisionShape* fallShape = new btSphereShape(0.5);
+			//for monitoring
+			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+			//physics stuff
+			btScalar mass = 1+10*currentVehicle;
+			btVector3 inertia(0,0,0);
+			shape->calculateLocalInertia(mass,inertia);
 
-	//MAKE_VEHICLE_ID(currentVehicle)
-	btMotionState* fallMotionState = new  EngineVehicleState(this, currentVehicle, vehicle, btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-    btScalar mass = 1+10*currentVehicle;
-    btVector3 fallInertia(0,0,0);
-    fallShape->calculateLocalInertia(mass,fallInertia);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
-    btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+			btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
+			//construct
+			btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
+			//loopback link
+			motionState->setBody(rigidBody);
 
-	bodies_vehicles[currentVehicle] = fallRigidBody;
+			//store reference for our chassis inside the vehicle
+			vehicle->chassis = rigidBody; 
+			
+			dynamicsWorld->addRigidBody(rigidBody);
 
-	dynamicsWorld->addRigidBody(fallRigidBody);
+			notifyBodyNew(rigidBody, (*it) );
+			
+			}
+			break;
+		case EOT_WHEEL:
+			{
+				//(*it)->position
+			//we shape our world
+			btCollisionShape* shape = new btBoxShape(  btVector3(1,1,1) );
+			vehicle->addShape(shape);
+
+			//for monitoring
+			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),(*it)->position));
+			//physics stuff
+			btScalar mass = 1+10*currentVehicle;
+			btVector3 inertia(0,0,0);
+			shape->calculateLocalInertia(mass,inertia);
+
+			btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
+			//construct
+			btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
+
+			//loopback link
+			motionState->setBody(rigidBody);
+			
+			//todo: add to list of bodies..
+
+			dynamicsWorld->addRigidBody(rigidBody);
+
+			notifyBodyNew(rigidBody, (*it) );
+			
+			}
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
 
 	return vehicle;
 }
@@ -171,9 +225,9 @@ int Engine::step(int toDo)
 	}
 	
 
-	recalculatePosition();
+	//recalculatePosition();
 	//that can be done not so often, maybe 0.5s?
-	checkLoadedSegments();
+	//checkLoadedSegments();
 
 	return toDo;
 }
@@ -292,9 +346,10 @@ void Engine::loadSegments(int min, int max)
 			dynamicsWorld->addRigidBody((*iterator));
 		}
 
-
+		/*
 		//inform listener that segment is loaded
 		if(listener != NULL) listener->afterSegmentLoaded(segment);
+		*/
 	}
 	
 }
@@ -304,14 +359,31 @@ core::list<TrackSegment*>* Engine::getSegments(){
 	return &segments;
 }
 
+void Engine::notifyBodyNew(btRigidBody* body, ObjectRecord* record)
+{
+	ENGINE_NOTIFY(onBodyNew(body, record));
+}
 
-IrrlichtDevice* Engine::getDevice(){
-	if(device != 0) return device;
-	if(localDevice != 0) return localDevice;
-	//we need to create local device so we can handle cache, filesystem and stuff even on multiple instances
-	//todo: not verified solution, to be checked when server is implemented
 
-	localDevice = createDevice( video::EDT_NULL, dimension2d<u32>(0, 0), 16, false, false, false, 0);
+void Engine::notifyBodyUpdate(btRigidBody* body, const btTransform &transform)
+{
+	ENGINE_NOTIFY(onBodyUpdate(body, transform));	
+}
+
+/*
+void Engine::notifyVehicleUpdate(const btTransform){
 	
-	return localDevice;
+}
+*/
+
+
+void Engine::addObserver(EngineObserver* o)
+{
+	observers.push_back(o);
+}
+
+
+void Engine::removeObserver(EngineObserver* o)
+{
+	//todo:
 }

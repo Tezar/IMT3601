@@ -2,6 +2,7 @@
 #include "irrlicht.h"
 
 #include "Vehicle.hpp"
+#include "ObjectReader.hpp"
 #include "TrackUtil.hpp"
 #include "TrackGenerator.hpp"
 #include "EngineObserver.hpp "
@@ -13,9 +14,12 @@ using namespace io;
 
 #define MAX_VEHICLES 4
 
-#define MAKE_VEHICLE_ID(x) (x | (1 << 31) )
-#define IS_VEHICLE_ID(x) (x & (1 << 31) ) ? true : false
-#define GET_VEHICLE_ID(x) (x & (~(1 << 31)) )
+#define ENGINE_NOTIFY(what) \
+	for(core::list<EngineObserver*>::ConstIterator it = observers.begin(); it != observers.end(); it++) \
+	{																									\
+		(*it)->what;																					\
+	}
+
 
 //!if you change this value it will mess up all unscaled physical constrains!
 #define ENGINE_STEP 20
@@ -32,9 +36,7 @@ public:
 	int numVehicles;
 	int currentSegment;
 
-	core::list<EngineObserver*> observers;
-	void notifyBodyNew();
-
+	
 	Engine(void);
 	~Engine(void);
 
@@ -42,8 +44,12 @@ public:
 	vector3df averagePosition;
 	
 
-	Vehicle* addVehicle(Vehicle*);
+	Vehicle* Engine::addVehicle(ObjectRecord* record);
 	
+	void addObserver(EngineObserver*);
+	void removeObserver(EngineObserver*);
+
+
 	/** consumes time to make simulation, returns any leftovers 
 		@par int time to be consumed
 		@return int time not consumed
@@ -56,9 +62,14 @@ public:
 	//get list of segments
 	core::list<TrackSegment*>* getSegments();
 
+
 	
+	void notifyBodyNew(btRigidBody*, ObjectRecord* );
+	void notifyBodyUpdate(btRigidBody*, const btTransform& );
 
 protected:
+	core::list<EngineObserver*> observers;
+
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
 
@@ -77,7 +88,6 @@ protected:
 	core::list<TrackSegment*> segments;
 
 
-	btRigidBody* bodies_vehicles[MAX_VEHICLES];	//references for vehicle bodies
 
 	//physics system
     btBroadphaseInterface* broadphase;

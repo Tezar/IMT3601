@@ -13,7 +13,7 @@ using namespace video;
 GameRenderer::GameRenderer(Engine* e)
 {
 	engine = e;
-	engine->listener = this;
+	engine->addObserver(this);
 	debug_arrows = 0;
 }
 
@@ -30,12 +30,9 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	IVideoDriver* driver = device->getVideoDriver();
 	
 
-	for (int nVehicle = 0; nVehicle < engine->numVehicles; nVehicle++){
-		IMeshSceneNode* node = engine->vehicles[nVehicle]->injectNode(device);
-		vehicleNodes[nVehicle] = node;
-	}
-		        // create a particle system
-		createPointParticle(vehicleNodes[0],25,255,255);
+    // create a particle system
+	//todo: make list of vehicle nodes
+	//createPointParticle(vehicleNodes[0],25,255,255);
 	//	createPointParticle(vehicleNodes[1],255,255,25);
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
@@ -112,21 +109,48 @@ void GameRenderer::update()
 
 	cameraNode->setTarget(engine->averagePosition);
 	//put camera on steady altitude, slighty offseted on X axis
-	vector3df cameraPosition = engine->averagePosition+core::vector3df(0,0,-5) ;
+	vector3df cameraPosition = engine->averagePosition+core::vector3df(-10,0,-5) ;
 	cameraPosition.Y = 0;
 	cameraNode->setPosition(cameraPosition);
 }
 
-void GameRenderer::onBodyMovement(irr::u32 id,const btTransform* transform){
 
-	if( IS_VEHICLE_ID(id)){
-		btVector3 pos = transform->getOrigin();
-		vector3df posVector = vector3df(pos.x(), pos.y(), pos.z());
-		int vid = GET_VEHICLE_ID(id);
-		vehicleNodes[vid]->setPosition(posVector);
+void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
+{
+	ISceneManager* smgr = device->getSceneManager();
+	IVideoDriver* driver = device->getVideoDriver();
+
+	IMesh* model = smgr->getMesh(config->model);
+	ISceneNode* node = smgr->addMeshSceneNode( model );
+	
+	
+	node->setMaterialFlag(EMF_LIGHTING, false);
+	if(config->texture != 0){
+		node->setMaterialTexture( 0, driver->getTexture(config->texture) );
 	}
+
+	body->setUserPointer( (void*) node );
 }
 
+void GameRenderer::onBodyUpdate(btRigidBody* body, const btTransform& transform)
+{
+	ISceneNode* node = (ISceneNode*) body->getUserPointer( );
+	btVector3 pos = transform.getOrigin();
+
+	vector3df posVector = vector3df(pos.x(), pos.y(), pos.z());
+	node->setPosition(posVector);
+
+	//todo:rotation
+}
+
+void GameRenderer::onBodyDelete(btRigidBody* body )
+{
+	ISceneNode* node = (ISceneNode*) body->getUserPointer( );
+	node->remove();
+}
+
+
+/*
 void GameRenderer::onVehicleMovement(irr::u32 id,Vehicle* vehicle)
 {
 	vehicleNodes[id]->setPosition(vehicle->position);
@@ -143,7 +167,7 @@ void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
 	segment->injectTrackNode(device);
 
 }
-
+*/
 void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
     
 	ISceneManager* smgr = device->getSceneManager();

@@ -6,7 +6,7 @@
 /* "interface" for listeners */
 class EngineObserver{
 	public:
-		virtual void onBodyNew(irr::u32 id,const btTransform* transform){};
-		virtual void onBodyUpdate(irr::u32 id,const btTransform* transform){};
-		virtual void onBodyDelete(irr::u32 id,const btTransform* transform){};
+		virtual void onBodyNew(btRigidBody*, ObjectRecord*){};
+		virtual void onBodyUpdate(btRigidBody*, const btTransform&){};
+		virtual void onBodyDelete(btRigidBody* ){};
 };

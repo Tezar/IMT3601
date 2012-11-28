@@ -4,9 +4,10 @@ using namespace irr;
 using namespace scene;
 
 #include "Engine.hpp"
+#include "EngineObserver.hpp"
 
 
-class GameRenderer: public EngineListener
+class GameRenderer: public EngineObserver
 {
 private:
 	//engine which we are going to render
@@ -34,9 +35,9 @@ public:
 	void detach();
 
 	//react to engine events
-	void onBodyMovement(irr::u32 id,const btTransform* transform);
-	void onVehicleMovement(irr::u32 id,Vehicle* vehicle);
-	void afterSegmentLoaded(TrackSegment * segment);
+	void GameRenderer::onBodyNew(btRigidBody*, ObjectRecord*);
+	void GameRenderer::onBodyUpdate(btRigidBody*, const btTransform&);
+	void GameRenderer::onBodyDelete(btRigidBody* );
 
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();
