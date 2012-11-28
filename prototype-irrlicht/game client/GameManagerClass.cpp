@@ -105,7 +105,7 @@ int GameManagerClass::run()
 	*/
 
 
-	objectReader = new ObjectReader("../congig");
+	objectReader = new ObjectReader("../config");
 
 	device =
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
