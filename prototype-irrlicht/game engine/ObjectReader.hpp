@@ -39,7 +39,7 @@ public:
 	E_OBJECT_TYPE type;
 	bool physics;
 
-	list<ObjectRecord*> children;
+	core::list<ObjectRecord*> children;
 	aabbox3df* collisionBox;
 	vector3df position;
 	vector3df rotation;
@@ -49,7 +49,8 @@ public:
 
 };
 
-typedef std::pair<const char *, list<ObjectRecord*> > configCachePair;
+typedef map<std::string, core::list<ObjectRecord*>> ObjectCacheMap;
+typedef std::pair<const char *, core::list<ObjectRecord*> > configCachePair;
 
 class ObjectReader
 {
@@ -60,7 +61,7 @@ public:
 
 	/* get object from cache or read it if necessarily */
 	list<ObjectRecord*> getObjects(const char *);
-
+	void setBaseDir(const char * dir);
 
 protected:
 	std::string baseDir;
@@ -72,6 +73,7 @@ protected:
 
 	void readVec3d(const char * data, vector3df target);
 
-	core::list<configCachePair> cache;
+	//core::list<configCachePair> cache;
+	ObjectCacheMap cache;
 };
 

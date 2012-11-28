@@ -1,9 +1,9 @@
-#include "ConfigReader.hpp"
+#include "ObjectReader.hpp"
 
 
 ObjectReader::ObjectReader(const char * dir)
 {
-	baseDir = dir;
+	setBaseDir(dir);
 }
 
 
@@ -12,12 +12,17 @@ ObjectReader::~ObjectReader(void)
 	//todo: clear all cached objects
 }
 
+
+void ObjectReader::setBaseDir(const char * dir)
+{
+	baseDir = dir;
+}
+
 list<ObjectRecord*> ObjectReader::getObjects(const char * name)
 {
-	for(core::list<configCachePair>::ConstIterator it = cache.begin(); it != cache.end(); it++)
-	{
-		if(strcmp((*it).first, name) == 0) return ((*it).second);
-	}
+	ObjectCacheMap::Node* cached = cache.find(name);
+
+	if(cached != 0 ) return cached->getValue();
 
 	return readObjects(name);
 }
@@ -47,8 +52,9 @@ list<ObjectRecord*> ObjectReader::readObjects(const char * name)
         }
     }
     delete xml;
-
-	cache.push_back( configCachePair(name, objects) );
+	
+	cache.insert(name, (*objects) );
+	return (*objects);
 }
 
 
