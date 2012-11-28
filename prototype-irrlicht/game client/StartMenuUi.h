@@ -27,6 +27,9 @@ enum
         GUI_ID_START_BUTTON,
 		GUI_ID_SINGLE_BUTTON,
 		GUI_ID_MULTY_BUTTON,
+		GUI_ID_MULTY_JOIN_BUTTON,
+		GUI_ID_MULTY_CREATE_BUTTON,
+		GUI_ID_MULTY_BACK_BUTTON,
         GUI_ID_SETTINGS_BUTTON,
 		GUI_ID_GAME_ENGINE_BUTTON,
 		GUI_ID_AUDIO_BUTTON,
@@ -65,6 +68,25 @@ public:
 								case GUI_ID_MULTY_BUTTON:
 										{
 											GameManager::getInstance()->changeState(multiPlayerGame);
+											return 0;
+										}
+										return true;
+
+								case GUI_ID_MULTY_JOIN_BUTTON:
+										{
+											return 0;
+										}
+										return true;
+
+								case GUI_ID_MULTY_CREATE_BUTTON:
+										{
+											return 0;
+										}
+										return true;
+
+								case GUI_ID_MULTY_BACK_BUTTON:
+										{
+											GameManager::getInstance()->changeState(menu);
 											return 0;
 										}
 										return true;

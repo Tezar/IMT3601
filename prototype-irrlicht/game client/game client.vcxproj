@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)include\irrlicht;$(SolutionDir)include\irrKlang;$(SolutionDir)\game engine\;$(SolutionDir)include\bullet;$(IncludePath)</IncludePath>
+    <IncludePath>$(solutionDir)include\IrrNetLite;$(SolutionDir)include\irrlicht;$(SolutionDir)include\irrKlang;$(SolutionDir)\game engine\;$(SolutionDir)include\bullet;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,11 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.hpp" />
-    <ClInclude Include="EventManager.h" />
+    <ClInclude Include="EventManager.hpp" />
     <ClInclude Include="GameManagerClass.hpp" />
     <ClInclude Include="GameRenderer.hpp" />
     <ClInclude Include="MenuSceneClass.hpp" />
     <ClInclude Include="MultiplayerGameScene.h" />
+    <ClInclude Include="Network_class_client.h" />
     <ClInclude Include="PracticeGameScene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="StartMenuUi.h" />
@@ -111,6 +112,9 @@
   <ItemGroup>
     <ProjectReference Include="..\game engine\game engine.vcxproj">
       <Project>{511fd3dc-2bc0-4e9d-a223-565d03bf2f87}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\lib IrrNetLite\IrrNetLite.vcxproj">
+      <Project>{25b7fb89-1dde-4ff1-b08f-a01c77880df3}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

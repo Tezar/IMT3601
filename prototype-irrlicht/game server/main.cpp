@@ -20,8 +20,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		// Create a server and pass in a new instance of our callback class. The default
 		// port that clients can connect to is set to 45000.
-		MyNetCallback* netCallback = new MyNetCallback();
-		net::INetManager* netManager = net::createIrrNetServer(netCallback);
+		net::INetManager* netManager = net::createIrrNetServer(0);
+		MyNetCallback* netCallback = new MyNetCallback(netManager);
+		netManager->setNetCallback(netCallback);
 
 		// Setting verbose to true makes irrNetLite spit out debug information to the console.
 		netManager->setVerbose(true);

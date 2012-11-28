@@ -4,7 +4,7 @@ parts based on irrlich example01
 #include "MenuSceneClass.hpp"
 #include "GameManagerClass.hpp"
 #include "StartMenuUi.h"
-#include "EventManager.h"
+#include "EventManager.hpp"
 
 //todo: remove unused
 using namespace core;

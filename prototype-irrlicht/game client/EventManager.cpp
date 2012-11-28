@@ -1,5 +1,5 @@
 #include <irrlicht.h>
-#include "EventManager.h"
+#include "EventManager.hpp"
 #include "Controller.hpp"
 
 using namespace irr;
