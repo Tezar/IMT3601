@@ -83,6 +83,7 @@
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="EngineObserver.hpp" />
     <ClInclude Include="ObjectReader.hpp" />
+    <ClInclude Include="ObjectRecord.hpp" />
     <ClInclude Include="TrackGenerator.hpp" />
     <ClInclude Include="TrackSegment.hpp" />
     <ClInclude Include="TrackUtil.hpp" />
