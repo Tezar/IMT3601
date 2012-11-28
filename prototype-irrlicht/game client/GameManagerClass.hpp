@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.hpp"
+#include "ObjectReader.hpp"
 #include "Scene.hpp"
 
 #include <irrlicht.h>
@@ -15,11 +16,13 @@ enum states_t
 
 class GameManagerClass
 {
+protected:
 	/* stores current scene */
 	Scene *currentScene;
 
 	/* stores active device for rendering */
 	IrrlichtDevice* device;
+	ObjectReader *  objectReader;
 
 public:
 	GameManagerClass(void);
@@ -34,6 +37,10 @@ public:
 	//getters
 
 	IrrlichtDevice * getDevice(void){ return device; }
+
+	ObjectReader * getReader(void){ return objectReader; }
+
+
 
 };
 

@@ -105,6 +105,8 @@ int GameManagerClass::run()
 	*/
 
 
+	objectReader = new ObjectReader("../congig");
+
 	device =
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
 			false, false, false, 0);
@@ -182,7 +184,10 @@ int GameManagerClass::run()
 	}
 
 
+	
 	device->drop();
+	delete objectReader;
+
 	return 0;
 }
 
