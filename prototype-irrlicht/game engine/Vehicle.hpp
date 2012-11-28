@@ -1,5 +1,7 @@
 #pragma once
 #include <irrlicht.h>
+#include "btBulletDynamicsCommon.h"
+
 using namespace irr;
 using namespace core;
 using namespace scene;
@@ -26,9 +28,26 @@ enum vehicle_turning_t
 class Vehicle
 {
 protected:
-	scene::IMeshSceneNode* vehicleNode;
+
 
 public:
+	Vehicle(void);
+	~Vehicle(void);
+
+	
+	btRigidBody* chassis;
+
+	//list of powered bodies
+	core::list<btRigidBody*> powered;
+
+	//list of turnable bodies
+	core::list<btRigidBody*> turnable;
+
+
+	core::list<btCollisionShape*> shapes;
+
+	void addShape(btCollisionShape*);
+
 	//currently applied force
 	vehicle_force_t force;
 	
@@ -37,10 +56,14 @@ public:
 
 	vector3df position;
 
-	scene::IMeshSceneNode* injectNode(IrrlichtDevice* device=0);
+
 	
 
-	Vehicle(void);
-	~Vehicle(void);
+
+
+
+
+
+
 };
 
