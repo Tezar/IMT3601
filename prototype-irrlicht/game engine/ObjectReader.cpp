@@ -78,6 +78,7 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 					child->texture = xml->getAttributeValue("texture");
 					
 					readShape(xml->getAttributeValue("shape"), child->shape);
+					readVec3d(xml->getAttributeValue("shapeDimensions"), child->shapeDimensions);
 
 					break;
                 }
@@ -96,8 +97,9 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 					readVec3d(xml->getAttributeValue("rotation"), child->rotation);
 					readVec3d(xml->getAttributeValue("extra"), child->extra);
 
+					
 					readShape(xml->getAttributeValue("shape"), child->shape);
-
+					readVec3d(xml->getAttributeValue("shapeDimensions"), child->shapeDimensions);
 
 					
 					break;
@@ -145,5 +147,8 @@ void ObjectReader::readShape(const char * data,  E_SHAPE& shape)
 		shape = ES_CYLINDER;
 		return;
 	}
+
+	//unknown
+	return;
 
 }

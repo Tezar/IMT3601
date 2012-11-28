@@ -29,12 +29,11 @@ class ObjectRecord
 public:
 	ObjectRecord(){
 		shape = ES_NONE;
-		collisionBox = 0;
+		shapeDimensions.setValue(1,1,1);
 		position.setZero();
 		rotation.setZero();
 	}
 	~ObjectRecord(){
-		if(collisionBox) delete collisionBox; 
 		//todo: iterate and delete children
 		
 	};
@@ -42,7 +41,19 @@ public:
 
 	btCollisionShape* createShape()
 	{
-		return new btBoxShape(  btVector3(1,1,1) );
+		switch(shape)
+		{
+		case ES_BOX:
+			return new btBoxShape( shapeDimensions );
+		case ES_CYLINDER:
+			return new btCylinderShapeX( shapeDimensions );
+
+
+		default:
+		case ES_NONE:
+			return 0;
+		}
+		
 	}
 
 	io::path model;
@@ -50,11 +61,10 @@ public:
 	
 	E_OBJECT_TYPE type;
 	E_SHAPE shape;
-	aabbox3df* collisionBox;
 	core::list<ObjectRecord*> children;
 	btVector3 position;
 	btVector3 rotation;
-	btVector3 scale;
+	btVector3 shapeDimensions;
 	btVector3 extra;
 	
 

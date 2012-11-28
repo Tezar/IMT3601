@@ -1,11 +1,9 @@
 <vehicle>
-<chassis model=	"../media/Car - Main Body.obj" texture="../media/Car - Main Body Texture.bmp"/>
-
-<wheel model="../media/Wheel.obj" position="-0.3,-0.3,-0.5"/>
-
-<wheel model="../media/Wheel.obj" position="-0.3,-0.3,0.5"/>
-
-<wheel model="../media/Wheel.obj" position="0.3,-0.3,-0.5"/>
-<wheel model="../media/Wheel.obj" position="0.3,-0.3,0.5"/>
-
+  <chassis model=	"../media/Car - Main Body.obj" texture="../media/Car - Main Body Texture.bmp" shape="box" shapeDimension="0.1,0.1,0.1" />
+  <wheel model="../media/Wheel.obj" position="-0.3,-0.3,-0.5" shape="cylinder" shapeDimension="0.1,0.1,0.1" />
+  <!--
+  <wheel model="../media/Wheel.obj" position="-0.3,-0.3,0.5" shape="cylinder" shapeDimension="0.1,0.1,0.1" />
+  <wheel model="../media/Wheel.obj" position="0.3,-0.3,-0.5" shape="cylinder" shapeDimension="0.1,0.1,0.1" />
+  <wheel model="../media/Wheel.obj" position="0.3,-0.3,0.5" shape="cylinder" shapeDimension="0.1,0.1,0.1" />
+  -->
 </vehicle>
