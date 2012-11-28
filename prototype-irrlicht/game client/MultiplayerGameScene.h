@@ -4,6 +4,7 @@
 #include "GameRenderer.hpp"
 #include "Controller.hpp"
 #include "Network_class_client.h"
+#include "StartMenuUi.h"
 
 #include <irrlicht.h>
 using namespace irr;
@@ -20,7 +21,9 @@ public:
 	MultiplayerGameScene(void);
 	~MultiplayerGameScene(void);
 
-	Controller* receiver;
+	SAppContext context;
+	MyEventReceiver* receiver;
+	//Controller* receiver;
 
 	void onEnter();
 	int onFrame(int);

@@ -5,6 +5,8 @@
 #include "Vehicle.hpp"
 #include "Controller.hpp"
 #include "EventManager.hpp"
+#include "StartMenuUi.h"
+#include "MenuSceneClass.hpp"
 
 //todo: remove unused
 using namespace core;
@@ -29,22 +31,41 @@ MultiplayerGameScene::~MultiplayerGameScene(void)
 
 void MultiplayerGameScene::onEnter()
 {
-	engine = new Engine();
-	Vehicle * vehicle1 = engine->addVehicle( new Vehicle() );
-	//engine->addVehicle( new Vehicle() );
-	
-	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
-	receiver = new Controller(vehicle1);
-	
-	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
+    IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 
+	receiver = new MyEventReceiver(context);
+	
+	EventManager::getInstance()->addEventReceiver(receiver);
 //	device->setEventReceiver(receiver);
 
-	engine->reset();
-	
-	renderer = new GameRenderer(engine);
-	renderer->attach(device);
+        video::IVideoDriver* driver = device->getVideoDriver();
+        IGUIEnvironment* env = device->getGUIEnvironment();
+		IGUISkin* skin = env->getSkin();
+		IGUIFont* font = env->getFont("../media/bigfont.png");
+        if (font)
+                skin->setFont(font);
+		env->addStaticText(L"Active games:", rect<s32>(100,100,700,100 + 72), true);
+		IGUIListBox* listbox = env->addListBox(rect<s32>(100,100 + 80,700,100 + 160 + 72));
 
+		context.device = device;
+		context.counter = 0;
+		context.listbox = listbox;
+
+		context.listbox->addItem(L"Text");
+		
+		for (u32 i=0; i<EGDC_COUNT ; ++i)
+			{
+				SColor col = env->getSkin()->getColor((EGUI_DEFAULT_COLOR)i);
+				col.setAlpha(200);
+				env->getSkin()->setColor((EGUI_DEFAULT_COLOR)i, col);
+			}
+
+		env->addButton(rect<s32>(100,100 + 240,360,100 + 240 + 72), 0, GUI_ID_MULTY_JOIN_BUTTON,
+                        L"Join", L"Joins the game");
+		env->addButton(rect<s32>(360 + 16,100 + 240,700,100 + 240 + 72), 0, GUI_ID_MULTY_CREATE_BUTTON,
+                        L"Create", L"Creates a game");
+		env->addButton(rect<s32>(100,100 + 320,700,100 + 320 + 72), 0, GUI_ID_MULTY_BACK_BUTTON,
+                        L"Back to start menu", L"goes back to the start menu");
 
 	//Network
 		netManager = net::createIrrNetClient(0, "127.0.0.1");
@@ -56,10 +77,10 @@ void MultiplayerGameScene::onEnter()
 			
 			//netManager->update();
 			// Then you can use the streaming operator << to add new data to it.
-			packet << "Help I am stuck on a mountain!";
+			packet << "blue";
 			
 			// You can even chain the << operators like so, just like with ostream.
-			packet << core::vector3df(50.0f, 30.0f, 20.0f) << 50.0f;
+			//packet << core::vector3df(50.0f, 30.0f, 20.0f) << 50.0f;
 			
 		//compressing and encrypting disabled atm because of a stack problem
 			// Compress the packet, not much to be said.
@@ -76,20 +97,23 @@ void MultiplayerGameScene::onEnter()
 
 int MultiplayerGameScene::onFrame(int toDo){
 
-	toDo = engine->step(toDo);
+	//toDo = engine->step(toDo);
 
-	renderer->update();
+	//renderer->update();
 
 	//netManager->sendOutPacket(packet);
 
 	//netManager->update();
-
-	return toDo;
+	return 0;
+	/*return toDo;*/
 }
 
 
 bool MultiplayerGameScene::onExit()
 {
+	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
+	//device->setEventReceiver(0);
+	device->getGUIEnvironment()->clear();
 	EventManager::getInstance()->removeEventReceiver(receiver);
 	//free this scene after exit
 	delete netManager;
