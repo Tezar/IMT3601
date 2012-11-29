@@ -43,10 +43,6 @@ public:
 	{
 		packet >> str;
 	}
-
-	void getStr(core::stringw netStr){
-		netStr = str;
-	}
 	
 };
 

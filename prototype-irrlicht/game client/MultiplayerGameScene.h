@@ -21,10 +21,8 @@ class MultiplayerGameScene :
 	GameRenderer* renderer;
 	Engine* engine;
 	net::INetManager* netManager;
-	net::INetManager* serverManager;
 	MyNetCallback* netCallback;
 	net::SOutPacket packet;
-	core::stringw netStr;
 
 	//video::IVideoDriver* driver = device->getVideoDriver();
 	//IGUIEnvironment* env = device->getGUIEnvironment();

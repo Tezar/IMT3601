@@ -69,8 +69,7 @@ void MultiplayerGameScene::onEnter()
 
 	//Network
 		netManager = net::createIrrNetClient(0, "127.0.0.1");
-		serverManager = net::createIrrNetServer(0);
-		serverManager->setNetCallback(netCallback);
+		netManager->setNetCallback(netCallback);
 		
 	// Enable debug messages.
 		netManager->setVerbose(true);
@@ -104,12 +103,13 @@ int MultiplayerGameScene::onFrame(int toDo){
 	//renderer->update();
 
 	//netManager->sendOutPacket(packet);
-	netCallback->getStr(netStr);
-	if(netStr != "0"){
+	//netCallback->getStr(netStr);
+	//if(netCallback->str != "0"){
 		context.listbox->clear();
-		context.listbox->addItem(netStr.c_str());	
-	}
-	serverManager->update();
+		context.listbox->addItem(netCallback->str.c_str());
+		//context.listbox->addItem(netStr.c_str());	
+	//}
+	netManager->update();
 	return 0;
 	/*return toDo;*/
 }
