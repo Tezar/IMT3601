@@ -4,6 +4,7 @@
 #include <irrlicht.h>
 #include "Vehicle.hpp"
 #include "EventManager.hpp"
+#include "AudioManager.hpp"
 
 using namespace irr;
 
@@ -20,13 +21,13 @@ private:
 	char Right;
 	char Fire;
 
+	AudioManagerClass * sounds; //Trying to use this won't let me use any functions...
 	Vehicle * ControllerVehicle;
-//	VehicleReference;
 
 public:
 	virtual bool OnEvent(const SEvent& event);
 	virtual bool IsKeyDown(EKEY_CODE keyCode) const;
-	Controller(Vehicle * vehicleReference);
+	Controller(Vehicle * vehicleReference, AudioManagerClass * soundManager);
 
 	void ChangeKeySettings(int direction, char keyboardKey);
 

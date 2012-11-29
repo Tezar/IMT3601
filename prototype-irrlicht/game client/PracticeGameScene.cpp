@@ -45,7 +45,7 @@ void PracticeGameScene::onEnter()
 	Vehicle * vehicle1 = engine->addVehicle( (*GameManager::getInstance()->getReader()->getObjects("vehicle")->begin()) );
 	
 	
-	receiver = new Controller(vehicle1);
+	receiver = new Controller(vehicle1, soundDevice);
 	
 	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 

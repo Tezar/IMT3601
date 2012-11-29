@@ -34,6 +34,8 @@ void MultiplayerGameScene::onEnter()
     IrrlichtDevice * device = GameManager::getInstance()->getDevice();
 
 	receiver = new MyEventReceiver(context);
+
+
 	
 	EventManager::getInstance()->addEventReceiver(receiver);
 //	device->setEventReceiver(receiver);

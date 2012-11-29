@@ -13,7 +13,11 @@ bool Controller::OnEvent(const SEvent& event)
 
 
 		if (IsKeyDown(KEY_KEY_W))
+		{
 			ControllerVehicle->force = force_forward;
+			sounds->PlaySound(E_TestSound, irrklang::vec3df(0,-1,1));
+			
+		}
 
 		else if (IsKeyDown(KEY_KEY_A))
 			ControllerVehicle->turning = turning_left;
@@ -51,9 +55,10 @@ bool Controller::IsKeyDown(EKEY_CODE keyCode) const
 	return KeyIsDown[keyCode];				//	held down.
 }
 
-Controller::Controller(Vehicle * vehicleReference)
+Controller::Controller(Vehicle * vehicleReference, AudioManagerClass * soundManager)
 {
 	ControllerVehicle = vehicleReference;
+	sounds = soundManager;
 
 	Forward = KEY_KEY_W;
 	Back	= KEY_KEY_S;
