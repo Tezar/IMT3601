@@ -69,36 +69,24 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
         switch(xml->getNodeType())
         {
             case EXN_ELEMENT:
-                if (!strcmp("chassis", xml->getNodeName()))
-                {
+					{
 					ObjectRecord* child = new ObjectRecord();
 					obj->children.push_back(child);
 
-					child->type = EOT_CHASSIS;
+					if (!strcmp("chassis", xml->getNodeName()))
+					{
+						child->type = EOT_CHASSIS;
+					}else if (!strcmp("wheel", xml->getNodeName()))
+					{
+						child->type = EOT_WHEEL;
+					}
+				
 					child->model = xml->getAttributeValue("model");
 					child->texture = xml->getAttributeValue("texture");
-					
-					readShape(xml->getAttributeValue("shape"), child->shape);
-					readVec3d(xml->getAttributeValue("shapeDimensions"), child->shapeDimensions);
-
-					break;
-                }
-                
-				if (!strcmp("wheel", xml->getNodeName()))
-                {
-					ObjectRecord* child = new ObjectRecord();
-					obj->children.push_back(child);
-
-					child->type = EOT_WHEEL;
-					child->model = xml->getAttributeValue("model");
-					child->texture = xml->getAttributeValue("texture");
-					
 					
 					readVec3d(xml->getAttributeValue("position"), child->position);
 					readVec3d(xml->getAttributeValue("rotation"), child->rotation);
 					readVec3d(xml->getAttributeValue("extra"), child->extra);
-
-					
 					readShape(xml->getAttributeValue("shape"), child->shape);
 
 					if(child->shape != ES_NONE)
@@ -115,23 +103,14 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 							child->shapeDimensions.setX( extens.X * 0.5);
 							child->shapeDimensions.setY( extens.Y * 0.5);
 							child->shapeDimensions.setZ( extens.Z * 0.5);
-
 						}else
 						{
 							//dimension defined
-						readVec3d(dimension, child->shapeDimensions);
+							readVec3d(dimension, child->shapeDimensions);
 						}
-						
-					}
-					
-
-					
-
-					
-					break;
-                }
-
-				break;
+					} //end if loading shape dimension
+				} // end case
+			break;
 
 			case EXN_ELEMENT_END:
 				return obj;
