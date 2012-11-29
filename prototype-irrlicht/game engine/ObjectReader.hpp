@@ -9,6 +9,7 @@
 
 using namespace irr;
 using namespace core;
+using namespace scene;
 using namespace io;
 
 using namespace std;
@@ -21,7 +22,7 @@ class ObjectReader
 {
 public:
 	/* create reader with base directory */
-	ObjectReader(const char *);
+	ObjectReader(const char *, IrrlichtDevice* );
 	~ObjectReader(void);
 
 	/* get object from cache or read it if necessarily */
@@ -30,6 +31,7 @@ public:
 
 protected:
 	std::string baseDir;
+	IrrlichtDevice* device;
 
 	/* read object from file*/ 
 	list<ObjectRecord*>* readObjects(const char *);
@@ -38,6 +40,7 @@ protected:
 
 	void readVec3d(const char *, btVector3&);
 	void readShape(const char *, E_SHAPE&);
+
 
 	//core::list<configCachePair> cache;
 	ObjectCacheMap cache;

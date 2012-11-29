@@ -1,9 +1,10 @@
 #include "ObjectReader.hpp"
 
 
-ObjectReader::ObjectReader(const char * dir)
+ObjectReader::ObjectReader(const char * dir, IrrlichtDevice* d)
 {
 	setBaseDir(dir);
+	device = d;
 }
 
 
@@ -99,7 +100,32 @@ ObjectRecord* ObjectReader::parseVehicle(IrrXMLReader* xml)
 
 					
 					readShape(xml->getAttributeValue("shape"), child->shape);
-					readVec3d(xml->getAttributeValue("shapeDimensions"), child->shapeDimensions);
+
+					if(child->shape != ES_NONE)
+					{
+						const char * dimension = xml->getAttributeValue("shapeDimensions");
+						if(dimension == 0)
+						{
+							//dimension from AABB
+							//!important - for now it works only if mesh is centered!
+							ISceneManager* smgr = device->getSceneManager();
+							IMesh* model = smgr->getMesh(child->model);
+							core::aabbox3df box = model->getBoundingBox();
+							vector3df extens = box.getExtent();
+							child->shapeDimensions.setX( extens.X * 0.5);
+							child->shapeDimensions.setY( extens.Y * 0.5);
+							child->shapeDimensions.setZ( extens.Z * 0.5);
+
+						}else
+						{
+							//dimension defined
+						readVec3d(dimension, child->shapeDimensions);
+						}
+						
+					}
+					
+
+					
 
 					
 					break;
@@ -152,3 +178,4 @@ void ObjectReader::readShape(const char * data,  E_SHAPE& shape)
 	return;
 
 }
+
