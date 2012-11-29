@@ -69,6 +69,8 @@ void MultiplayerGameScene::onEnter()
 
 	//Network
 		netManager = net::createIrrNetClient(0, "127.0.0.1");
+		serverManager = net::createIrrNetServer(0);
+		serverManager->setNetCallback(netCallback);
 		
 	// Enable debug messages.
 		netManager->setVerbose(true);
@@ -82,7 +84,7 @@ void MultiplayerGameScene::onEnter()
 			// You can even chain the << operators like so, just like with ostream.
 			//packet << core::vector3df(50.0f, 30.0f, 20.0f) << 50.0f;
 			
-		//compressing and encrypting disabled atm because of a stack problem
+			//compressing and encrypting disabled atm because of a stack problem
 			// Compress the packet, not much to be said.
 			//packet.compressPacket();
 			
@@ -102,8 +104,12 @@ int MultiplayerGameScene::onFrame(int toDo){
 	//renderer->update();
 
 	//netManager->sendOutPacket(packet);
-
-	//netManager->update();
+	netCallback->getStr(netStr);
+	if(netStr != "0"){
+		context.listbox->clear();
+		context.listbox->addItem(netStr.c_str());	
+	}
+	serverManager->update();
 	return 0;
 	/*return toDo;*/
 }

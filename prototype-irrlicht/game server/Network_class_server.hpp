@@ -51,7 +51,9 @@ public:
 					outPacket << "No Active Games";
 					netManager->sendOutPacket(outPacket);
 					netManager->update();
-				}else{
+				}
+			}else{
+				if(netManager->getConnectionStatus() != net::EICS_FAILED){
 					for(int i = 0; ant_game > i; i++){
 						outPacket << i;
 						netManager->sendOutPacket(outPacket);
