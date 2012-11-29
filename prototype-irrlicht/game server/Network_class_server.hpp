@@ -33,28 +33,32 @@ using namespace irr;
 // packet.getPlayerId().
 class MyNetCallback : public net::INetCallback
 {
+private:
 	net::INetManager* netManager;
+	int ant_game;
 
 public:
 	MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
 
 	virtual void handlePacket(net::SInPacket& packet)
 	{
-			
-		int ant_game;
+		ant_game = 0;
 		core::stringc str;
 		packet >> str;
-		net::SOutPacket outPacket;
+		net::SOutPacket opacket;
 		if (str == "blue"){
 			if(ant_game == 0){
 				if(netManager->getConnectionStatus() != net::EICS_FAILED){
-					outPacket << "No Active Games";
-					netManager->sendOutPacket(outPacket);
+					//outPacket << "No active games!";
+					opacket << "blue";
+					netManager->sendOutPacket(opacket);
 					netManager->update();
-				}else{
+				}
+			}else{
+				if(netManager->getConnectionStatus() != net::EICS_FAILED){
 					for(int i = 0; ant_game > i; i++){
-						outPacket << i;
-						netManager->sendOutPacket(outPacket);
+						opacket << i;
+						netManager->sendOutPacket(opacket);
 						netManager->update();
 					}
 				}

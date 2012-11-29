@@ -3,7 +3,6 @@
 #include "Singleton.hpp"
 
 using namespace irr;
-
 /*****************************************************************************
  *	This eventmanager was made by user chromdragon from the irrlicht forums, *
  *	http://irrlicht.sourceforge.net/forum//viewtopic.php?t=11785.			 *

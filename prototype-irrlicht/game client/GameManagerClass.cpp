@@ -1,6 +1,8 @@
+#pragma once
 #include <assert.h>
 #include <irrKlang.h>
 
+#include "MultiplayerGameScene.h"
 #include "Scene.hpp"
 #include "GameManagerClass.hpp"
 #include "MenuSceneClass.hpp"
@@ -204,6 +206,7 @@ Scene * GameManagerClass::changeState(states_t newState)
 	{
 		case menu: currentScene = MenuScene::getInstance(); break;
 		case practiceGame: currentScene = new PracticeGameScene; break;
+		case multiPlayerGame: currentScene = new MultiplayerGameScene; break;
 	}
 
 	assert(currentScene);
