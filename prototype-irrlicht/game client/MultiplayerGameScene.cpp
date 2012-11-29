@@ -105,8 +105,9 @@ int MultiplayerGameScene::onFrame(int toDo){
 	//netManager->sendOutPacket(packet);
 	//netCallback->getStr(netStr);
 	//if(netCallback->str != "0"){
+
 		context.listbox->clear();
-		context.listbox->addItem(netCallback->str.c_str());
+		//context.listbox->addItem(netCallback->str);
 		//context.listbox->addItem(netStr.c_str());	
 	//}
 	netManager->update();
