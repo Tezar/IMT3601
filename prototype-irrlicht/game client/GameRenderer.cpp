@@ -135,12 +135,17 @@ void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
 void GameRenderer::onBodyUpdate(btRigidBody* body, const btTransform& transform)
 {
 	ISceneNode* node = (ISceneNode*) body->getUserPointer( );
-	btVector3 pos = transform.getOrigin();
+	btVector3 tmpVecBt = transform.getOrigin();
 
-	vector3df posVector = vector3df(pos.x(), pos.y(), pos.z());
-	node->setPosition(posVector);
+	vector3df tempVector = vector3df(tmpVecBt.x(), tmpVecBt.y(), tmpVecBt.z());
+	node->setPosition(tempVector);
 
-	//todo:rotation
+	btQuaternion tmpQuat = transform.getRotation();
+	tempVector.X = tmpQuat.x()/PI*180;
+	tempVector.Y = tmpQuat.y()/PI*180;
+	tempVector.Z = tmpQuat.z()/PI*180;
+
+	node->setRotation(tempVector);
 }
 
 void GameRenderer::onBodyDelete(btRigidBody* body )
