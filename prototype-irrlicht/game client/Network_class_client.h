@@ -36,16 +36,18 @@ using namespace irr;
 //const wchar_t * chr = 0;
 class MyNetCallback : public net::INetCallback
 {
-private:
-	net::INetManager* netManager;
+//private:
+	//net::INetManager* netManager;
 
 public:
-	MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
+	//MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
 
 	core::stringc str;
+	//int clientNr;
 
 	virtual void handlePacket(net::SInPacket& packet)
 	{
+		//packet >> clientNr;
 		packet >> str;
 	}
 	

@@ -68,8 +68,10 @@ void MultiplayerGameScene::onEnter()
                         L"Back to start menu", L"goes back to the start menu");
 
 	//Network
-		netManager = net::createIrrNetClient(0, "127.0.0.1");
-		netManager->setNetCallback(netCallback);
+		//MyNetCallback* netCallback = new MyNetCallback();
+		netCallback = new MyNetCallback();
+		netManager = net::createIrrNetClient(netCallback, "127.0.0.1");
+		//netManager->setNetCallback(netCallback);
 		
 	// Enable debug messages.
 		netManager->setVerbose(true);
@@ -108,7 +110,8 @@ int MultiplayerGameScene::onFrame(int toDo){
 
 		context.listbox->clear();
 		//context.listbox->addItem(netCallback->str);
-		//context.listbox->addItem(netStr.c_str());	
+	//info.setText( irr::core::stringw( CollMan->getSceneNodeFromScreenCoordinatesBB(blah)->getName() ).c_str() );
+		context.listbox->addItem(stringw(netCallback->str).c_str());	
 	//}
 	netManager->update();
 	return 0;

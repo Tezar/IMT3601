@@ -40,17 +40,23 @@ private:
 public:
 	MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
 
+
+
+	//virtual void onConnect(const u16 playerId)
+	//{
+	//	opacket << playerId;	
+	//}
+
 	virtual void handlePacket(net::SInPacket& packet)
 	{
-		ant_game = 0;
 		core::stringc str;
-		packet >> str;
 		net::SOutPacket opacket;
+		ant_game = 0;
+		packet >> str;
 		if (str == "blue"){
 			if(ant_game == 0){
 				if(netManager->getConnectionStatus() != net::EICS_FAILED){
-					//outPacket << "No active games!";
-					opacket << "blue";
+					opacket << "No active games!";
 					netManager->sendOutPacket(opacket);
 					netManager->update();
 				}
