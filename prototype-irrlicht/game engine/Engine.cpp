@@ -213,10 +213,6 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			dynamicsWorld->addConstraint(pHinge2, true);
 
 
-
-
-
-
 			notifyBodyNew(rigidBody, object );
 			
 			}
@@ -239,22 +235,9 @@ int Engine::step(int toDo)
 	while(toDo > ENGINE_STEP){
 		i++;
 		dynamicsWorld->stepSimulation(ENGINE_STEP/1000.0,10);
-		/*
-		//simulation!
-		for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
-			
-			
-			//todo: change to reflect behaviour, maybe implement it as strategy pattern to please Simon ? :-)
-			Vehicle* v = vehicles[nVehicle];
-			if(v->force == force_forward){
-				v->position.X += f32(0.00);
-				v->position.Z += f32(0.01);
-			}
-		}*/
 		toDo -= ENGINE_STEP;
 	}
 	
-
 	//recalculatePosition();
 	//that can be done not so often, maybe 0.5s?
 	//checkLoadedSegments();
@@ -278,7 +261,16 @@ void Engine::reset()
 			* = vehicle
 	*/
 
-	
+	//memmory leaks!!!
+	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0.1,0),1);
+	btDefaultMotionState* groundMotionState =
+                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-3,0)));
+
+	btRigidBody::btRigidBodyConstructionInfo
+                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
+
+	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	dynamicsWorld->addRigidBody(groundRigidBody);
 
 }
 
