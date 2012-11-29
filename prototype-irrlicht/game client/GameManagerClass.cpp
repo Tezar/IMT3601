@@ -105,11 +105,11 @@ int GameManagerClass::run()
 	*/
 
 
-	objectReader = new ObjectReader("../config");
-
 	device =
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
 			false, false, false, 0);
+
+	objectReader = new ObjectReader("../config", device);
 
 	irrklang::ISoundEngine * soundDevice = irrklang::createIrrKlangDevice();
 
