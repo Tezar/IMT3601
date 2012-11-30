@@ -39,8 +39,7 @@ private:
 
 public:
 	MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
-
-
+	
 
 	//virtual void onConnect(const u16 playerId)
 	//{
@@ -51,7 +50,8 @@ public:
 	{
 		core::stringc str;
 		net::SOutPacket opacket;
-		ant_game = 0;
+		if(ant_game > 0){}else{ant_game = 0;}
+		//ant_game = 0;
 		packet >> str;
 		if (str == "blue"){
 			if(ant_game == 0){
@@ -62,11 +62,22 @@ public:
 				}
 			}else{
 				if(netManager->getConnectionStatus() != net::EICS_FAILED){
+					opacket << ant_game;
 					for(int i = 0; ant_game > i; i++){
 						opacket << i;
 						netManager->sendOutPacket(opacket);
 						netManager->update();
 					}
+				}
+			}
+		}else{
+			++ant_game;
+			if(netManager->getConnectionStatus() != net::EICS_FAILED){
+				opacket << ant_game;
+				for(int i = 0; ant_game > i; i++){
+					opacket << i;
+					netManager->sendOutPacket(opacket);
+					netManager->update();
 				}
 			}
 		}

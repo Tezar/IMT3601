@@ -19,6 +19,7 @@ examples subdirectory.
 // Alternatively you can add "using namespace net" after
 // this so that net:: doesn't have to be used either.
 using namespace irr;
+using namespace std;
 
 // These pragmas are for MSVC users, they ease the linking of librarys.
 // "ws2_32.lib" is part of the Windows Platform SDK and must be linked
@@ -43,12 +44,20 @@ public:
 	//MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
 
 	core::stringc str;
+	core::stringc ant_game;
+	core::stringc games[100];
 	//int clientNr;
 
 	virtual void handlePacket(net::SInPacket& packet)
 	{
-		//packet >> clientNr;
 		packet >> str;
+		if(str != "No active games!"){
+			packet >> ant_game;
+			for(int i = 0; i < stoi(ant_game.c_str()); ++i){
+				packet >> games[i];
+			}
+
+		}
 	}
 	
 };

@@ -10,11 +10,9 @@
 #include "StartMenuUi.h"
 
 
-
-#ifdef _IRR_WINDOWS_
 #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
-#endif
+
 
 
 /** from Example 001 HelloWorld
@@ -110,6 +108,7 @@ int GameManagerClass::run()
 	device =
 		createDevice( video::EDT_OPENGL, dimension2d<u32>(800, 600), 16,
 			false, false, false, 0);
+
 
 	objectReader = new ObjectReader("../config", device);
 
