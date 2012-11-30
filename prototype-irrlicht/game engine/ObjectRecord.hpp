@@ -12,6 +12,8 @@ enum E_OBJECT_TYPE{
 	EOT_VEHICLE,
 	EOT_CHASSIS,
 	EOT_WHEEL,
+	EOT_BODY,	//general body
+	EOT_BOX,	
 };
 
 
@@ -44,11 +46,9 @@ public:
 		switch(shape)
 		{
 		case ES_BOX:
-			return new btBoxShape( shapeDimensions );
+			return new btBoxShape( shapeDimensions *0.5 );
 		case ES_CYLINDER:
-			return new btCylinderShapeX( shapeDimensions );
-
-
+			return new btCylinderShapeX( shapeDimensions *0.5 );
 		default:
 		case ES_NONE:
 			return 0;

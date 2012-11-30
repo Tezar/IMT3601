@@ -47,7 +47,23 @@ list<ObjectRecord*>* ObjectReader::readObjects(const char * name)
                 {
 					ObjectRecord* parsed = parseVehicle(xml);
 					objects->push_back( parsed ); 
+					continue;
                 }
+				else if (!strcmp("body", xml->getNodeName()))
+                {
+					ObjectRecord* obj = new ObjectRecord();
+					obj->type = EOT_BOX;
+
+					objects->push_back( obj ); 
+
+					readVec3d(xml->getAttributeValue("position"), obj->position);
+					readVec3d(xml->getAttributeValue("rotation"), obj->rotation);
+					readShape(xml->getAttributeValue("shape"), obj->shape);
+					readVec3d(xml->getAttributeValue("shapeDimensions"), obj->shapeDimensions);
+
+					continue;
+                }
+
             }
             break;
         }
