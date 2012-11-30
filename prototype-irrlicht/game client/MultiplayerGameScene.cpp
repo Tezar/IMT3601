@@ -80,19 +80,8 @@ void MultiplayerGameScene::onEnter()
 
 		if(netManager->getConnectionStatus() != net::EICS_FAILED){
 			
-			//netManager->update();
-			// Then you can use the streaming operator << to add new data to it.
 			packet << "blue";
-			
-			// You can even chain the << operators like so, just like with ostream.
-			//packet << core::vector3df(50.0f, 30.0f, 20.0f) << 50.0f;
-			
-			//compressing and encrypting disabled atm because of a stack problem
-			// Compress the packet, not much to be said.
-			//packet.compressPacket();
-			
-			//packet.encryptPacket("hushthisissecret");
-			// A simple call to "sendOutPacket" will send the packet to the server.
+
 			netManager->sendOutPacket(packet);
 			netManager->update();
 			
@@ -109,11 +98,16 @@ int MultiplayerGameScene::onFrame(int toDo){
 	//netManager->sendOutPacket(packet);
 	//netCallback->getStr(netStr);
 	//if(netCallback->str != "0"){
-
-		context.listbox->clear();
-		//context.listbox->addItem(netCallback->str);
+	//context.listbox->addItem(netCallback->str);
 	//info.setText( irr::core::stringw( CollMan->getSceneNodeFromScreenCoordinatesBB(blah)->getName() ).c_str() );
-		context.listbox->addItem(stringw(netCallback->str).c_str());	
+	//if(stoi(netCallback->ant_game.c_str()) > 0){
+	//	context.listbox->clear();
+	//	for(int i = 0; stoi(netCallback->ant_game.c_str()) >= i; ++i){
+	//		context.listbox->addItem(stringw(netCallback->games[i]).c_str());
+	//	}
+	//}else{
+		context.listbox->clear();
+		context.listbox->addItem(stringw(netCallback->str).c_str());
 	//}
 	netManager->update();
 	return 0;
