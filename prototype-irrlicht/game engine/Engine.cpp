@@ -17,17 +17,13 @@ public:
 
 	virtual void getWorldTransform(btTransform &worldTrans) const {
         worldTrans = mPos1;
+		
     }
 
     virtual void setWorldTransform(const btTransform &worldTrans) {
 		engine->notifyBodyUpdate(btBody, worldTrans);
+		mPos1 = worldTrans;
 
-		/*
-        btQuaternion rot = worldTrans.getRotation();
-        mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
-        btVector3 pos = worldTrans.getOrigin();
-        mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
-		*/
     }
 
 	void setBody(btRigidBody* body)
@@ -46,42 +42,6 @@ protected:
 	btRigidBody* btBody;
     btTransform mPos1;
 };
-
-
-class EngineVehicleState: public btMotionState {
-public:
-    EngineVehicleState(Engine * e,Vehicle* _vehicle, const btTransform &initialpos) {
-        engine = e;
-		vehicle = _vehicle;
-        mPos1 = initialpos;
-    }
-
-    virtual ~EngineVehicleState() {
-    }
-
-	virtual void getWorldTransform(btTransform &worldTrans) const {
-        worldTrans = mPos1;
-    }
-
-    virtual void setWorldTransform(const btTransform &worldTrans) {
-		//if(engine->listener == NULL)
-		//		return; // we silently return as there is no handler to notify
-
-		//
-		//btVector3 pos = worldTrans.getOrigin();
-		//vehicle->position.set(pos.x(), pos.y(), pos.z());
-
-		//engine->listener->onVehicleMovement(id, vehicle );
-    }
-
-protected:
-	Vehicle* vehicle;
-	irr::u32 id;
-    Engine* engine;
-    btTransform mPos1;
-};
-
-
 
 
 Engine::Engine(void)
@@ -195,6 +155,13 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 
 
 
+			
+			
+
+/*			A is the chassis and B is the tyre. 
+				The pivot in A is the mount point for the tyre on the chassis, the pivot in B is just the centre of the tyre (i.e. zero vector).
+				The axis in A should be equal to to the axis in B and point away from the car off to the side.*/
+/*
 			// create a Hinge2 joint
 			// create two rigid bodies
 			// static bodyA (parent) on top:
@@ -211,7 +178,9 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			//pHinge2->setUpperLimit( SIMD_HALF_PI * 0.5f);
 			// add constraint to world
 			dynamicsWorld->addConstraint(pHinge2, true);
-
+*/
+			//btHingeConstraint pHinge = btHingeConstraint(*vehicle->chassis,*rigidBody, object->position , btVector3(0,0,0), btVector3(object->position.x(),0,0), btVector3(object->position.x(),0,0) , false );
+			//dynamicsWorld->addConstraint(pHinge, true);
 
 			notifyBodyNew(rigidBody, object );
 			
@@ -238,7 +207,7 @@ int Engine::step(int toDo)
 		toDo -= ENGINE_STEP;
 	}
 	
-	//recalculatePosition();
+	recalculatePosition();
 	//that can be done not so often, maybe 0.5s?
 	//checkLoadedSegments();
 
@@ -262,7 +231,7 @@ void Engine::reset()
 	*/
 
 	//memmory leaks!!!
-	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0.1,0),1);
+	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0.1,0.1),1);
 	btDefaultMotionState* groundMotionState =
                 new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-3,0)));
 
@@ -287,9 +256,15 @@ inline void Engine::recalculatePosition()
 
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
-		posX += v->position.X;
-		posY += v->position.Y;
-		posZ += v->position.Z;
+		btTransform trans;
+
+		v->chassis->getMotionState()->getWorldTransform(trans);
+		
+		btVector3 pos = trans.getOrigin();
+
+		posX += pos.x();
+		posY += pos.y();
+		posZ += pos.z();
 	}
 	averagePosition.set(posX/numVehicles, posY/numVehicles, posZ/numVehicles);
 }
