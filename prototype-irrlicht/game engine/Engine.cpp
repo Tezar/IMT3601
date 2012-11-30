@@ -231,6 +231,8 @@ void Engine::reset()
 	*/
 
 	//memmory leaks!!!
+	
+	/*
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0.1,0.1),1);
 	btDefaultMotionState* groundMotionState =
                 new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-3,0)));
@@ -240,7 +242,7 @@ void Engine::reset()
 
 	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	dynamicsWorld->addRigidBody(groundRigidBody);
-
+	*/
 }
 
 
@@ -352,6 +354,36 @@ void Engine::loadSegments(int min, int max)
 }
 
 
+void Engine::loadSegment(ObjectRecord* record)
+{
+	assert( record != 0 );
+
+	//memmory leak
+	btCollisionShape* shape = record->createShape();
+	assert(shape != 0);
+
+	//for monitoring
+	EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),record->position));
+	//physics stuff
+	btScalar mass = 0;	//static
+	btVector3 inertia(0,0,0);
+	shape->calculateLocalInertia(mass,inertia);
+
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
+	//construct
+	btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
+	//loopback link
+	motionState->setBody(rigidBody);
+
+	rigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+	dynamicsWorld->addRigidBody(rigidBody);
+	
+	notifyBodyNew(rigidBody, record );
+}
+
+
+
 core::list<TrackSegment*>* Engine::getSegments(){
 	return &segments;
 }
@@ -359,6 +391,14 @@ core::list<TrackSegment*>* Engine::getSegments(){
 void Engine::notifyBodyNew(btRigidBody* body, ObjectRecord* record)
 {
 	ENGINE_NOTIFY(onBodyNew(body, record));
+
+	//static object don't raise BodyUpdate, so we force the first one upon the creation so the node can be placed to appropriate positon
+	btTransform t;
+	body->getMotionState()->getWorldTransform(t) ;
+	notifyBodyUpdate(body, t);
+
+	ENGINE_NOTIFY(onBodyUpdate(body, t));	
+
 }
 
 

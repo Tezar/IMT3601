@@ -67,6 +67,9 @@ public:
 	void notifyBodyNew(btRigidBody*, ObjectRecord* );
 	void notifyBodyUpdate(btRigidBody*, const btTransform& );
 
+	/* load single segment based on record */
+	void Engine::loadSegment(ObjectRecord* record);
+
 protected:
 	core::list<EngineObserver*> observers;
 
@@ -84,6 +87,8 @@ protected:
 	void checkLoadedSegments(); 
 	/* loads segments*/
 	void loadSegments(int min, int max);
+
+
 
 	core::list<TrackSegment*> segments;
 
