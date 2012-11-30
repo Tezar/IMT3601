@@ -140,6 +140,7 @@ void GameRenderer::onBodyUpdate(btRigidBody* body, const btTransform& transform)
 	vector3df tempVector = vector3df(tmpVecBt.x(), tmpVecBt.y(), tmpVecBt.z());
 	node->setPosition(tempVector);
 
+	//todo: fix this madness
 	btQuaternion tmpQuat = transform.getRotation();
 	tempVector.X = tmpQuat.x()/PI*180;
 	tempVector.Y = tmpQuat.y()/PI*180;
