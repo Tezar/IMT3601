@@ -120,14 +120,31 @@ void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
 	ISceneManager* smgr = device->getSceneManager();
 	IVideoDriver* driver = device->getVideoDriver();
 
-	IMesh* model = smgr->getMesh(config->model);
-	ISceneNode* node = smgr->addMeshSceneNode( model );
+	ISceneNode* node;
+
+	switch(config->type)
+	{
 	
-	
-	node->setMaterialFlag(EMF_LIGHTING, false);
-	if(config->texture != 0){
-		node->setMaterialTexture( 0, driver->getTexture(config->texture) );
+	case EOT_BOX:
+		node = smgr->addCubeSceneNode();
+		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
+		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
+
+		break;
+
+	default:
+
+		IMesh* model = smgr->getMesh(config->model);
+		node = smgr->addMeshSceneNode( model );
+
+		if(config->texture != 0){
+			node->setMaterialTexture( 0, driver->getTexture(config->texture) );
+		}
 	}
+
+	node->setMaterialFlag(EMF_LIGHTING, false);
+
+	
 
 	body->setUserPointer( (void*) node );
 }
