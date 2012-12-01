@@ -43,9 +43,9 @@ class MyNetCallback : public net::INetCallback
 public:
 	//MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
 
-	core::stringc str;
-	core::stringc ant_game;
-	core::stringc games[100];
+	stringc str;
+	stringc ant_game;
+	stringc games[100];
 	//int clientNr;
 
 	virtual void handlePacket(net::SInPacket& packet)

@@ -97,17 +97,40 @@ int MultiplayerGameScene::onFrame(int toDo){
 
 	//netManager->sendOutPacket(packet);
 	//netCallback->getStr(netStr);
-	//if(netCallback->str != "0"){
-	//context.listbox->addItem(netCallback->str);
-	//info.setText( irr::core::stringw( CollMan->getSceneNodeFromScreenCoordinatesBB(blah)->getName() ).c_str() );
+	
+	/*	failed atempts	*/
+	//if(netCallback->str == L"No active games!"){
+	//if(stringw(netCallback->str).c_str() == L"No active games!"){
+	//if(netCallback->str.c_str() == "No active games!"){
+
+	//if(netCallback->str.size() > 3){
+	//if(stringw(netCallback->str).size() > 3){
+
+	//msg = stringw(netCallback->str).c_str();
+	//if(msg.size() > 3){
+	
+	//msg = netCallback->str;
+	//if(msg.size() > 3){
+
+	//msg = netCallback->str.c_str();
+	//if(msg.size() > 3){
+	
 	//if(stoi(netCallback->ant_game.c_str()) > 0){
 	//	context.listbox->clear();
 	//	for(int i = 0; stoi(netCallback->ant_game.c_str()) >= i; ++i){
 	//		context.listbox->addItem(stringw(netCallback->games[i]).c_str());
 	//	}
 	//}else{
+	//	context.listbox->clear();
+	//	context.listbox->addItem(stringw(netCallback->str).c_str());
+	//}
 		context.listbox->clear();
 		context.listbox->addItem(stringw(netCallback->str).c_str());
+	//}else{
+	//	context.listbox->clear();
+	//	for(int i = 0; stoi(netCallback->ant_game.c_str()) >= i; ++i){
+	//		context.listbox->addItem(stringw(netCallback->games[i]).c_str());
+	//	}
 	//}
 	netManager->update();
 	return 0;
