@@ -35,19 +35,20 @@ bool CIrrDeviceStubclass::OnEvent(const SEvent& event)
 
    return false;
 }
-//void CIrrDeviceStub::postEventFromUser(SEvent event)
-//{
+
+void CIrrDeviceStubclass::postEventFromUser(const SEvent& event)
+{
 //   bool absorbed = false;
+
+ //  if (UserReceiver)
+ //     absorbed = UserReceiver->OnEvent(event);
+
+   for(u32 i=0; i<ReceiverList.size(); i++)
+      ReceiverList[i]->OnEvent(event);
+   
+//  if (!absorbed && GUIEnvironment)
+//     absorbed = GUIEnvironment->postEventFromUser(event);
 //
-//   if (UserReceiver)
-//      absorbed = UserReceiver->OnEvent(event);
-//
-//   for(u32 i=0; i<ReceiverList.size(); i++)
-//      ReceiverList[i]->OnEvent(event);
-//   
-//   if (!absorbed && GUIEnvironment)
-//      absorbed = GUIEnvironment->postEventFromUser(event);
-//
-//   if (!absorbed && SceneManager)
-//      absorbed = SceneManager->postEventFromUser(event);
-//}
+//  if (!absorbed && SceneManager)
+//     absorbed = SceneManager->postEventFromUser(event);
+}

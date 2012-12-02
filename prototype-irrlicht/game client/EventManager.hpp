@@ -19,7 +19,7 @@ public:
 
 	virtual bool OnEvent(const SEvent& event);
 
-//	void postEventFromUser(SEvent event);
+	void postEventFromUser(const SEvent& event);
 };
 
 typedef Singleton<CIrrDeviceStubclass> EventManager;   // Global declaration
