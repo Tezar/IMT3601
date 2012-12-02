@@ -12,8 +12,12 @@
 #include "StartMenuUi.h"
 #include "MenuSceneClass.hpp"
 
+#include <iostream>
+#include <string>
 #include <irrlicht.h>
+
 using namespace irr;
+using namespace std;
 
 class MultiplayerGameScene :
 	public Scene
@@ -23,6 +27,8 @@ class MultiplayerGameScene :
 	net::INetManager* netManager;
 	MyNetCallback* netCallback;
 	net::SOutPacket packet;
+	stringc msg;
+	
 
 	//video::IVideoDriver* driver = device->getVideoDriver();
 	//IGUIEnvironment* env = device->getGUIEnvironment();
@@ -36,9 +42,12 @@ public:
 	SAppContext context;
 	MyEventReceiver* receiver;
 	//Controller* receiver;
-
+	
+	//void createLobby();
 	void onEnter();
 	int onFrame(int);
 	bool onExit();
 };
+
+//typedef Singleton<MultiplayerGameScene> MultiplayerManager;   // Global declaration
 

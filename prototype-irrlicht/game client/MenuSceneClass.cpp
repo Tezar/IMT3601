@@ -1,6 +1,7 @@
 /*
 parts based on irrlich example01
 */
+#pragma once
 #include "MenuSceneClass.hpp"
 #include "GameManagerClass.hpp"
 #include "StartMenuUi.h"

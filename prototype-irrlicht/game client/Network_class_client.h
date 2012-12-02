@@ -43,9 +43,9 @@ class MyNetCallback : public net::INetCallback
 public:
 	//MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
 
-	core::stringc str;
-	core::stringc ant_game;
-	core::stringc games[100];
+	stringc str;
+	f32 ant_game;
+	f32 games[100];
 	//int clientNr;
 
 	virtual void handlePacket(net::SInPacket& packet)
@@ -53,7 +53,7 @@ public:
 		packet >> str;
 		if(str != "No active games!"){
 			packet >> ant_game;
-			for(int i = 0; i < stoi(ant_game.c_str()); ++i){
+			for(int i = 0; i < ant_game; ++i){
 				packet >> games[i];
 			}
 
