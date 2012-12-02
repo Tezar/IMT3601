@@ -80,7 +80,7 @@ public:
 
 								case GUI_ID_MULTY_CREATE_BUTTON:
 										{
-											//MultiplayerManager::getInstance()->createLobby();
+												
 											return 0;
 										}
 										return true;
