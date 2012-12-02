@@ -357,32 +357,40 @@ void Engine::loadSegments(int min, int max)
 void Engine::loadSegment(ObjectRecord* record)
 {
 	assert( record != 0 );
+	assert( record->type == EOT_SEGMENT );
 
-	//memmory leak
-	btCollisionShape* shape = record->createShape();
-	assert(shape != 0);
+	for(core::list<ObjectRecord*>::ConstIterator it = record->children.begin(); it != record->children.end();it++)
+	{
+		ObjectRecord* object = (*it);
+		
+		switch( object->type ){
+			case EOT_BOX:
+				{
+				//memmory leak
+				btCollisionShape* shape = object->createShape();
+				assert(shape != 0); 
+				//for monitoring
+				EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),object->position));
+				//physics stuff
+				btVector3 inertia(0,0,0);
+				btScalar mass = object->mass;
+				shape->calculateLocalInertia(mass,inertia);
 
-	//for monitoring
-	EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),record->position));
-	//physics stuff
-	btScalar mass = 0;	//static
-	btVector3 inertia(0,0,0);
-	shape->calculateLocalInertia(mass,inertia);
+				btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
+				//construct
+				btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
+				//loopback link
+				motionState->setBody(rigidBody);
+				dynamicsWorld->addRigidBody(rigidBody);
+				notifyBodyNew(rigidBody, object );
 
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
-	//construct
-	btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
-	//loopback link
-	motionState->setBody(rigidBody);
+				} break; //end EOT_BOX
+			default:
+				assert(false);
+		} //end switch
+	} //end iterating children
 
-	rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-	dynamicsWorld->addRigidBody(rigidBody);
-	
-	notifyBodyNew(rigidBody, record );
 }
-
-
 
 core::list<TrackSegment*>* Engine::getSegments(){
 	return &segments;

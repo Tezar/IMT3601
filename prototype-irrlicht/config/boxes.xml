@@ -1,1 +1,4 @@
- <body shape="box" shapeDimensions="1, 0.1, 1" position="0,-10,0"/>
+<segment>
+	<body shape="box" shapeDimensions="1, 0.1, 1" position="0,-5,0"/>
+	<body shape="box" shapeDimensions="0.5, 0.5, 0.5" position="0,5,0" mass="1"/>
+</segment>

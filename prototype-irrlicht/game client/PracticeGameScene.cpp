@@ -42,9 +42,9 @@ void PracticeGameScene::onEnter()
 	soundDevice = AudioManager::getInstance();
 	soundDevice->BackgroundMusic();
 
-	Vehicle * vehicle1 = engine->addVehicle( (*GameManager::getInstance()->getReader()->getObject("vehicle") ) );
+	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
-	engine->loadSegment( (*GameManager::getInstance()->getReader()->getObject("boxes")) );
+	engine->loadSegment( GameManager::getInstance()->getReader()->getObject("boxes") );
 
 	
 	receiver = new Controller(vehicle1, soundDevice);
