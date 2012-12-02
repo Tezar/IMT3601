@@ -34,6 +34,7 @@ public:
 	Vehicle(void);
 	~Vehicle(void);
 
+	btRaycastVehicle* pointer;
 	
 	btRigidBody* chassis;
 
@@ -44,7 +45,7 @@ public:
 	core::list<btRigidBody*> turnable;
 
 
-	core::list<btCollisionShape*> shapes;
+	core::array<btCollisionShape*> shapes;
 
 	void addShape(btCollisionShape*);
 

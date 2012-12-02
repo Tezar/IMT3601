@@ -12,11 +12,8 @@ Vehicle::Vehicle(void)
 
 Vehicle::~Vehicle(void)
 {
-	//delete all shapes
-	for(list<btCollisionShape*>::ConstIterator it = shapes.begin(); it != shapes.end(); it++)
-	{
-		delete (*it);
-	}
+	//todo:delete all shapes
+
 }
 
 
