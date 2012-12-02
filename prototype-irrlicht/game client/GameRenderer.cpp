@@ -36,6 +36,11 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	//	createPointParticle(vehicleNodes[1],255,255,25);
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
+
+	smgr->addLightSceneNode(0, core::vector3df(0,0,0),
+				video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 800.0f);
+
+	smgr->setAmbientLight(video::SColorf(0.9,0.9,0.9,1));
 }
 
 void GameRenderer::debug_createTrackArrows()
@@ -146,7 +151,8 @@ void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
 		}
 	}
 
-	node->setMaterialFlag(EMF_LIGHTING, false);
+	node->setMaterialFlag(EMF_LIGHTING, true);
+	node->getMaterial(0).SpecularColor.set(0,0,1,1);
 
 	
 
