@@ -110,7 +110,7 @@ void GameRenderer::update()
 	cameraNode->setTarget(engine->averagePosition);
 	//put camera on steady altitude, slighty offseted on X axis
 	vector3df cameraPosition = engine->averagePosition+core::vector3df(-10,0,-5) ;
-	cameraPosition.Y = 0;
+	cameraPosition.Y = -5;
 	cameraNode->setPosition(cameraPosition);
 }
 
@@ -126,11 +126,15 @@ void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
 	{
 	
 	case EOT_BOX:
-		node = smgr->addCubeSceneNode();
-		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
-		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
+		{
 
-		break;
+		//node =  smgr->addEmptySceneNode();
+			
+		node = smgr->addCubeSceneNode(1.f);
+		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
+		//node->setPosition(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z())*(-0.5));
+
+		} break;	//end case EOT_BOX
 
 	default:
 
