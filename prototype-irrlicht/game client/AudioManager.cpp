@@ -10,7 +10,8 @@ AudioManagerClass::AudioManagerClass()
 
 void AudioManagerClass::UpdateListenerPosition(Engine * engine)
 {
-	audioDevice->setListenerPosition(engine->averagePosition+core::vector3df(0,0,-5), irrklang::vec3df(0,-1,1));
+	irrklang::vec3df listenerPosition = GameRenderer::calculateCameraPosition(engine->averagePosition);
+	audioDevice->setListenerPosition(listenerPosition, engine->averagePosition);
 }
 
 //void AudioManagerClass::CreateAudioManager()
@@ -32,7 +33,7 @@ void AudioManagerClass::AddAllSoundSources()
 void AudioManagerClass::BackgroundMusic()
 {
 	
-	audioDevice->play3D(BackgroundSong, irrklang::vec3df(0,0,0), true, false, true);
+	audioDevice->play2D(BackgroundSong, true, false, true);
 }
 
 
@@ -57,20 +58,26 @@ void AudioManagerClass::BackgroundMusic()
 
 void AudioManagerClass::PlaySound(E_sounds sounds, irrklang::vec3df position)
 {
-//	irrklang::ISoundSource * sound;
-//
-////	switch(sounds)
-////	{
-////	case E_IncreaseSpeed:	sound = IncreaseSpeed;	break;
-////	case E_DecreaseSpeed:	sound = DecreaseSpeed;	break;
-////	case E_Breaking:		sound = Breaking;		break;
-////	case E_Crashing:		sound = Crashing;		break;
-////	case E_TestSound:		sound = TestSound;		break;
-////	default:				sound = TestSound;		break;
-////	}
-//
-//	//sound = audioDevice->addSoundSourceFromFiwle("../media/chord.wav");
-//
+	//irrklang::ISoundSource * sound;
+
+	switch(sounds)
+	{
+	case E_IncreaseSpeed:	audioDevice->play3D(IncreaseSpeed,
+								position, false, false, false);	break;
+	case E_DecreaseSpeed:	audioDevice->play3D(DecreaseSpeed,
+								position, false, false, false);	break;
+	case E_Breaking:		audioDevice->play3D(Breaking,
+								position, false, false, false);	break;
+	case E_Crashing:		audioDevice->play3D(Crashing,
+								position, false, false, false);	break;
+	case E_TestSound:		audioDevice->play3D(TestSound,
+								position, false, false, false);	break;
+	default:				audioDevice->play3D(TestSound,
+								position, false, false, false);	break;
+	}
+
+	//sound = audioDevice->addSoundSourceFromFile("../media/chord.wav");
+
 //	if(audioDevice->isCurrentlyPlaying(sound))
 //	{
 //		// Stop the current playback of the sound
@@ -79,8 +86,8 @@ void AudioManagerClass::PlaySound(E_sounds sounds, irrklang::vec3df position)
 //	
 //	else
 //		audioDevice->play3D(sound, position, false, false, false);
-//
-//	audioDevice->removeSoundSource("../media/chord.wav");
+
+	//audioDevice->removeSoundSource("../media/chord.wav");
 }
 
 AudioManagerClass::~AudioManagerClass()

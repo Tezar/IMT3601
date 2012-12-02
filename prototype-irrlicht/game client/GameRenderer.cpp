@@ -114,9 +114,15 @@ void GameRenderer::update()
 
 	cameraNode->setTarget(engine->averagePosition);
 	//put camera on steady altitude, slighty offseted on X axis
-	vector3df cameraPosition = engine->averagePosition+core::vector3df(-10,0,-5) ;
-	cameraPosition.Y = -5;
-	cameraNode->setPosition(cameraPosition);
+
+	cameraNode->setPosition(calculateCameraPosition(engine->averagePosition));
+}
+
+vector3df GameRenderer::calculateCameraPosition(vector3df& averagePosition)
+{
+	vector3df cameraPosition = averagePosition+core::vector3df(-10,0,-5) ;
+	cameraPosition.Y = 0;
+	return cameraPosition;
 }
 
 

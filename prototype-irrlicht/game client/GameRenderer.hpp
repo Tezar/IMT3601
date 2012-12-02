@@ -5,6 +5,7 @@ using namespace scene;
 
 #include "Engine.hpp"
 #include "EngineObserver.hpp"
+#include "AudioManager.hpp"
 
 
 class GameRenderer: public EngineObserver
@@ -45,4 +46,6 @@ public:
 	void createPointParticle(IMeshSceneNode*,int red ,int green ,int blue);
 
 	void update();
+
+	static vector3df calculateCameraPosition(vector3df& averagePosition);
 };

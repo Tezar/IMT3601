@@ -37,8 +37,8 @@ void MultiplayerGameScene::onEnter()
 
 
 	
-	EventManager::getInstance()->addEventReceiver(receiver);
-//	device->setEventReceiver(receiver);
+//	EventManager::getInstance()->addEventReceiver(receiver);
+	EventManager::getInstance()->addEventReceiver(this);
 
         video::IVideoDriver* driver = device->getVideoDriver();
         IGUIEnvironment* env = device->getGUIEnvironment();
@@ -77,7 +77,7 @@ void MultiplayerGameScene::onEnter()
 		
 	// Enable debug messages.
 		netManager->setVerbose(true);
-
+		net::SOutPacket packet;
 		if(netManager->getConnectionStatus() != net::EICS_FAILED){
 			
 			packet << "blue";
@@ -90,63 +90,60 @@ void MultiplayerGameScene::onEnter()
 }
 
 int MultiplayerGameScene::onFrame(int toDo){
-
-	//toDo = engine->step(toDo);
-
-	//renderer->update();
-
-	//netManager->sendOutPacket(packet);
-	//netCallback->getStr(netStr);
-	
-	/*	failed atempts	*/
-	//if(netCallback->str == L"No active games!"){
-	//if(stringw(netCallback->str).c_str() == L"No active games!"){
-	//if(netCallback->str.c_str() == "No active games!"){
-
-	//if(netCallback->str.size() > 3){
-	//if(stringw(netCallback->str).size() > 3){
-
-	//msg = stringw(netCallback->str).c_str();
-	//if(msg.size() > 3){
-	
-	//msg = netCallback->str;
-	//if(msg.size() > 3){
-
-	//msg = netCallback->str.c_str();
-	//if(msg.size() > 3){
 	
 	if(netCallback->ant_game > 0){
 		context.listbox->clear();
-		for(int i = 0; netCallback->ant_game >= i; ++i){
-			context.listbox->addItem(stringw(netCallback->games[i]).c_str());
+		for(int i = 1; netCallback->ant_game >= i; ++i){
+			context.listbox->addItem(stringw(netCallback->games[i-1]).c_str());
 		}
 	}else{
 		context.listbox->clear();
 		context.listbox->addItem(stringw(netCallback->str).c_str());
 	}
-		//context.listbox->clear();
-		//context.listbox->addItem(stringw(netCallback->str).c_str());
-	//}else{
-	//	context.listbox->clear();
-	//	for(int i = 0; stoi(netCallback->ant_game.c_str()) >= i; ++i){
-	//		context.listbox->addItem(stringw(netCallback->games[i]).c_str());
-	//	}
-	//}
+
 	netManager->update();
 	return 0;
-	/*return toDo;*/
 }
 
 
 bool MultiplayerGameScene::onExit()
 {
 	IrrlichtDevice * device = GameManager::getInstance()->getDevice();
-	//device->setEventReceiver(0);
 	device->getGUIEnvironment()->clear();
 	EventManager::getInstance()->removeEventReceiver(receiver);
-	//free this scene after exit
+
 	delete netManager;
 	return true;
+}
+
+bool MultiplayerGameScene::OnEvent(const SEvent& event)
+{
+	if (event.EventType == EET_GUI_EVENT){
+		s32 id = event.GUIEvent.Caller->getID();
+			switch(event.GUIEvent.EventType){
+				case EGET_BUTTON_CLICKED:
+					switch(id){
+						case GUI_ID_MULTY_CREATE_BUTTON:
+							{
+								net::SOutPacket lobbypacket;
+								lobbypacket << "Not blue";
+
+								netManager->sendOutPacket(lobbypacket);
+								netManager->update();
+								return 0;
+							}
+								return true;
+								
+						default:
+							return false;
+					}
+					break;
+
+				default:
+					break;
+			}
+	}
+	return false;
 }
 
 //void MultiplayerGameScene::createLobby()

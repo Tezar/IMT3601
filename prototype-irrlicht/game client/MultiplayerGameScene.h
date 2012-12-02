@@ -20,34 +20,28 @@ using namespace irr;
 using namespace std;
 
 class MultiplayerGameScene :
-	public Scene
+	public Scene, IEventReceiver
 {
 	GameRenderer* renderer;
 	Engine* engine;
 	net::INetManager* netManager;
 	MyNetCallback* netCallback;
-	net::SOutPacket packet;
 	stringc msg;
 	
 
-	//video::IVideoDriver* driver = device->getVideoDriver();
-	//IGUIEnvironment* env = device->getGUIEnvironment();
-	//IrrlichtDevice * device = GameManager::getInstance()->getDevice();
-
 public:
-
+	
 	MultiplayerGameScene(void);
 	~MultiplayerGameScene(void);
 
+	virtual bool OnEvent(const SEvent& event);
+
 	SAppContext context;
 	MyEventReceiver* receiver;
-	//Controller* receiver;
-	
-	//void createLobby();
+
 	void onEnter();
 	int onFrame(int);
 	bool onExit();
 };
 
-//typedef Singleton<MultiplayerGameScene> MultiplayerManager;   // Global declaration
 
