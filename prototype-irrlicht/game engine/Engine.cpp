@@ -52,6 +52,11 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 	int currentVehicle = numVehicles++;
 	vehicles[currentVehicle] = vehicle;
 
+	//tuning 
+	btRaycastVehicle::btVehicleTuning vehicleTuning;
+
+	btRaycastVehicle* rayVehicle = 0;
+
 	for(core::list<ObjectRecord*>::ConstIterator it = record->children.begin(); it != record->children.end();it++)
 	{
 		ObjectRecord* object = (*it);
@@ -60,13 +65,12 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 		case EOT_CHASSIS:{
 			
 			//we shape our world
-
 			btCollisionShape* shape = object->createShape();
 			assert(shape != 0);
-			vehicle->addShape(shape);
+
 
 			//for monitoring
-			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),object->position));
+			EngineBodyState* motionState = new  EngineVehicleState(this, vehicle, btTransform(btQuaternion(0,0,0,1),object->position));
 			//physics stuff
 			btScalar mass = 1+10*currentVehicle;
 			btVector3 inertia(0,0,0);
@@ -77,73 +81,58 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
 			//loopback link
 			motionState->setBody(rigidBody);
-
+			
 			//store reference for our chassis inside the vehicle
 			vehicle->chassis = rigidBody; 
-			
-			dynamicsWorld->addRigidBody(rigidBody);
+
+			//ve create our vehicle from our body
+			btVehicleRaycaster* vehicleRayCaster = new btDefaultVehicleRaycaster(dynamicsWorld);
+			rayVehicle = new btRaycastVehicle(vehicleTuning,rigidBody,vehicleRayCaster);
+
+			vehicle->pointer = rayVehicle;
+
+			//add our body to the world and deactivate deactivation
 			rigidBody->setActivationState(DISABLE_DEACTIVATION);
+			dynamicsWorld->addRigidBody(rigidBody);
+
+			//is this necessary?
+			rayVehicle->setCoordinateSystem(0,1,2);
+
 			notifyShapeNew(shape, object );
 			
 			}
 			break;
 		case EOT_WHEEL:
 			{
-				//(*it)->position
-			//we shape our world
-			btCollisionShape* shape = object->createShape();
-			assert(shape != 0);
+				//when we want to add wheels, we have to have defined vehicle
+				assert(rayVehicle != 0); 
+				//object->position
+				btWheelInfo& wheel =  rayVehicle->addWheel( object->position , btVector3(0,-1,0),btVector3 (-1,0,0), 0.5, 6, vehicleTuning,false);
+
+				float	gVehicleSteering = 0.f;
+				float	steeringIncrement = 0.04f;
+				float	steeringClamp = 0.3f;
+				float	wheelRadius = 0.5f;
+				float	wheelWidth = 0.4f;
+				float	wheelFriction = 1000;//BT_LARGE_FLOAT;
+				float	suspensionStiffness = 20.f;
+				float	suspensionDamping = 2.3f;
+				float	suspensionCompression = 4.4f;
+				float	rollInfluence = 0.1f;//1.0f;
+
+				wheel.m_suspensionStiffness = suspensionStiffness;
+				wheel.m_wheelsDampingRelaxation = suspensionDamping;
+				wheel.m_wheelsDampingCompression = suspensionCompression;
+				wheel.m_frictionSlip = wheelFriction;
+				wheel.m_rollInfluence = rollInfluence;
+
+				//we shape our world, and it is for our eyes only
+				btCollisionShape* shape = object->createShape();
+				assert(shape != 0);
+
+				vehicle->addShape(shape);
 			
-			vehicle->addShape(shape);
-
-			//for monitoring
-			EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),object->position));
-			//physics stuff
-			btScalar mass = 1+10*currentVehicle;
-			btVector3 inertia(0,0,0);
-			shape->calculateLocalInertia(mass,inertia);
-
-			btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
-			//construct
-			btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
-
-			//loopback link
-			motionState->setBody(rigidBody);
-			
-			//todo: add to list of bodies..
-
-			dynamicsWorld->addRigidBody(rigidBody);
-			rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-
-			
-			
-
-/*			A is the chassis and B is the tyre. 
-				The pivot in A is the mount point for the tyre on the chassis, the pivot in B is just the centre of the tyre (i.e. zero vector).
-				The axis in A should be equal to to the axis in B and point away from the car off to the side.*/
-/*
-			// create a Hinge2 joint
-			// create two rigid bodies
-			// static bodyA (parent) on top:
-			btTransform tr;
-			tr.setIdentity();
-			tr.setOrigin(btVector3(btScalar(-20.), btScalar(4.), btScalar(0.)));
-
-			// add some data to build constraint frames
-			btVector3 parentAxis(0.f, 1.f, 0.f); 
-			btVector3 childAxis(1.f, 0.f, 0.f); 
-			
-			btHinge2Constraint* pHinge2 = new btHinge2Constraint(*rigidBody, *vehicle->chassis, object->position, parentAxis, childAxis);
-			//pHinge2->setLowerLimit(-SIMD_HALF_PI * 0.5f);
-			//pHinge2->setUpperLimit( SIMD_HALF_PI * 0.5f);
-			// add constraint to world
-			dynamicsWorld->addConstraint(pHinge2, true);
-*/
-			//btHingeConstraint pHinge = btHingeConstraint(*vehicle->chassis,*rigidBody, object->position , btVector3(0,0,0), btVector3(object->position.x(),0,0), btVector3(object->position.x(),0,0) , false );
-			//dynamicsWorld->addConstraint(pHinge, true);
-
-			notifyShapeNew(shape, object );
+				notifyShapeNew(shape, object);
 			
 			}
 			break;
@@ -151,6 +140,13 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			assert(false);
 			break;
 		}
+	}
+
+	vehicle->pointer->resetSuspension();
+	for (int i=0;i<vehicle->pointer->getNumWheels();i++)
+	{
+		//synchronize the wheels with the (interpolated) chassis worldtransform
+		vehicle->pointer->updateWheelTransform(i,true);
 	}
 
 	return vehicle;
