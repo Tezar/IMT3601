@@ -10,6 +10,7 @@ using namespace io;
 
 enum E_OBJECT_TYPE{
 	EOT_VEHICLE,
+	EOT_SEGMENT,
 	EOT_CHASSIS,
 	EOT_WHEEL,
 	EOT_BODY,	//general body
@@ -34,6 +35,7 @@ public:
 		shapeDimensions.setValue(1,1,1);
 		position.setZero();
 		rotation.setZero();
+		mass = 0;
 	}
 	~ObjectRecord(){
 		//todo: iterate and delete children
@@ -66,6 +68,8 @@ public:
 	btVector3 rotation;
 	btVector3 shapeDimensions;
 	btVector3 extra;
+	btScalar mass;
+
 	
 
 };

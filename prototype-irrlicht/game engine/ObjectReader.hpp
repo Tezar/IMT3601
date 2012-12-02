@@ -15,8 +15,7 @@ using namespace io;
 using namespace std;
 
 
-typedef map<std::string, core::list<ObjectRecord*>> ObjectCacheMap;
-typedef std::pair<const char *, core::list<ObjectRecord*> > configCachePair;
+typedef map<std::string, ObjectRecord*> ObjectCacheMap;
 
 class ObjectReader
 {
@@ -26,7 +25,7 @@ public:
 	~ObjectReader(void);
 
 	/* get object from cache or read it if necessarily */
-	list<ObjectRecord*>* getObjects(const char *);
+	ObjectRecord* getObject(const char *);
 	void setBaseDir(const char * dir);
 
 protected:
@@ -34,9 +33,10 @@ protected:
 	IrrlichtDevice* device;
 
 	/* read object from file*/ 
-	list<ObjectRecord*>* readObjects(const char *);
+	ObjectRecord* readObject(const char *);
 
 	ObjectRecord* parseVehicle(IrrXMLReader*);
+	ObjectRecord* parseSegment(IrrXMLReader* xml);
 
 	void readVec3d(const char *, btVector3&);
 	void readShape(const char *, E_SHAPE&);
