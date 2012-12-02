@@ -126,7 +126,7 @@ vector3df GameRenderer::calculateCameraPosition(vector3df& averagePosition)
 }
 
 
-void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
+void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 {
 	ISceneManager* smgr = device->getSceneManager();
 	IVideoDriver* driver = device->getVideoDriver();
@@ -160,12 +160,12 @@ void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
 	node->setMaterialFlag(EMF_LIGHTING, true);
 
 
-	body->setUserPointer( (void*) node );
+	shape->setUserPointer( (void*) node );
 }
 
-void GameRenderer::onBodyUpdate(btRigidBody* body, const btTransform& transform)
+void GameRenderer::onShapeUpdate(btCollisionShape* shape, const btTransform& transform)
 {
-	ISceneNode* node = (ISceneNode*) body->getUserPointer( );
+	ISceneNode* node = (ISceneNode*) shape->getUserPointer( );
 
 	irr::core::matrix4 matr;
 	transform.getOpenGLMatrix(matr.pointer());
@@ -174,9 +174,9 @@ void GameRenderer::onBodyUpdate(btRigidBody* body, const btTransform& transform)
 	node->setRotation( matr.getRotationDegrees() );
 }
 
-void GameRenderer::onBodyDelete(btRigidBody* body )
+void GameRenderer::onShapeDelete(btCollisionShape* shape )
 {
-	ISceneNode* node = (ISceneNode*) body->getUserPointer( );
+	ISceneNode* node = (ISceneNode*) shape->getUserPointer( );
 	node->remove();
 }
 

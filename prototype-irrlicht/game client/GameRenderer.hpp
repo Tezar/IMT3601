@@ -36,9 +36,9 @@ public:
 	void detach();
 
 	//react to engine events
-	void GameRenderer::onBodyNew(btRigidBody*, ObjectRecord*);
-	void GameRenderer::onBodyUpdate(btRigidBody*, const btTransform&);
-	void GameRenderer::onBodyDelete(btRigidBody* );
+	void GameRenderer::onShapeNew(btCollisionShape*, ObjectRecord*);
+	void GameRenderer::onShapeUpdate(btCollisionShape*, const btTransform&);
+	void GameRenderer::onShapeDelete(btCollisionShape* );
 
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();

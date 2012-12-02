@@ -6,7 +6,7 @@
 /* "interface" for listeners */
 class EngineObserver{
 	public:
-		virtual void onBodyNew(btRigidBody*, ObjectRecord*){};
-		virtual void onBodyUpdate(btRigidBody*, const btTransform&){};
-		virtual void onBodyDelete(btRigidBody* ){};
+		virtual void onShapeNew(btCollisionShape*, ObjectRecord*){};
+		virtual void onShapeUpdate(btCollisionShape*, const btTransform&){};
+		virtual void onShapeDelete(btCollisionShape* ){};
 };

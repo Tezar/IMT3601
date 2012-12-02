@@ -83,7 +83,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			
 			dynamicsWorld->addRigidBody(rigidBody);
 			rigidBody->setActivationState(DISABLE_DEACTIVATION);
-			notifyBodyNew(rigidBody, object );
+			notifyShapeNew(shape, object );
 			
 			}
 			break;
@@ -143,7 +143,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			//btHingeConstraint pHinge = btHingeConstraint(*vehicle->chassis,*rigidBody, object->position , btVector3(0,0,0), btVector3(object->position.x(),0,0), btVector3(object->position.x(),0,0) , false );
 			//dynamicsWorld->addConstraint(pHinge, true);
 
-			notifyBodyNew(rigidBody, object );
+			notifyShapeNew(shape, object );
 			
 			}
 			break;
@@ -343,7 +343,7 @@ void Engine::loadSegment(ObjectRecord* record)
 				//loopback link
 				motionState->setBody(rigidBody);
 				dynamicsWorld->addRigidBody(rigidBody);
-				notifyBodyNew(rigidBody, object );
+				notifyShapeNew(shape, object, mass ? 0 : rigidBody);
 
 				} break; //end EOT_BOX
 			default:
@@ -357,23 +357,24 @@ core::list<TrackSegment*>* Engine::getSegments(){
 	return &segments;
 }
 
-void Engine::notifyBodyNew(btRigidBody* body, ObjectRecord* record)
+void Engine::notifyShapeNew(btCollisionShape* shape, ObjectRecord* record, btRigidBody* body)
 {
-	ENGINE_NOTIFY(onBodyNew(body, record));
+	ENGINE_NOTIFY(onShapeNew(shape, record));
 
-	//static object don't raise BodyUpdate, so we force the first one upon the creation so the node can be placed to appropriate positon
-	btTransform t;
-	body->getMotionState()->getWorldTransform(t) ;
-	notifyBodyUpdate(body, t);
-
-	ENGINE_NOTIFY(onBodyUpdate(body, t));	
+	//static object don't raise ShapeUpdate, so we force the first one upon the creation so the node can be placed to appropriate positon
+	if(body != 0)
+	{
+		btTransform t;
+		body->getMotionState()->getWorldTransform(t) ;
+		ENGINE_NOTIFY(onShapeUpdate(shape, t));	
+	}
 
 }
 
 
-void Engine::notifyBodyUpdate(btRigidBody* body, const btTransform &transform)
+void Engine::notifyShapeUpdate(btCollisionShape* shape, const btTransform &transform)
 {
-	ENGINE_NOTIFY(onBodyUpdate(body, transform));	
+	ENGINE_NOTIFY(onShapeUpdate(shape, transform));	
 }
 
 /*

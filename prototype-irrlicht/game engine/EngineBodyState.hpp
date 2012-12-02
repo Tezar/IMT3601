@@ -21,7 +21,7 @@ public:
     }
 
     virtual void setWorldTransform(const btTransform &worldTrans) {
-		engine->notifyBodyUpdate(btBody, worldTrans);
+		engine->notifyShapeUpdate(btBody->getCollisionShape(), worldTrans);
 		mPos1 = worldTrans;
 
     }

@@ -65,8 +65,9 @@ public:
 
 
 	
-	void notifyBodyNew(btRigidBody*, ObjectRecord* );
-	void notifyBodyUpdate(btRigidBody*, const btTransform& );
+	//rigid body is needed for extracting transform matrix for first update of static body
+	void notifyShapeNew(btCollisionShape*, ObjectRecord*, btRigidBody* = 0 );
+	void notifyShapeUpdate(btCollisionShape*, const btTransform& );
 
 	/* load single segment based on record */
 	void Engine::loadSegment(ObjectRecord* record);
