@@ -1,6 +1,6 @@
 #pragma once
 #include "GameManagerClass.hpp"
-
+//#include "MultiplayerGameScene.h"
 
 using namespace irr;
 
@@ -41,7 +41,7 @@ class MyEventReceiver : public IEventReceiver
 {
 public:
         MyEventReceiver(SAppContext & context) : Context(context) { }
-
+		
         virtual bool OnEvent(const SEvent& event)
         {
                 if (event.EventType == EET_GUI_EVENT)
@@ -80,6 +80,7 @@ public:
 
 								case GUI_ID_MULTY_CREATE_BUTTON:
 										{
+											//MultiplayerManager::getInstance()->createLobby();
 											return 0;
 										}
 										return true;

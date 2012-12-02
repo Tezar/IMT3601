@@ -35,7 +35,7 @@ class MyNetCallback : public net::INetCallback
 {
 private:
 	net::INetManager* netManager;
-	int ant_game;
+	f32 ant_game;
 
 public:
 	MyNetCallback(net::INetManager* netManagerIn) : netManager(netManagerIn) {}
@@ -72,6 +72,7 @@ public:
 			}
 		}else{
 			++ant_game;
+			opacket << "1";
 			if(netManager->getConnectionStatus() != net::EICS_FAILED){
 				opacket << ant_game;
 				for(int i = 0; ant_game > i; i++){

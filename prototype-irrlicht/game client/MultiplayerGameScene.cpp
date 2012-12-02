@@ -115,17 +115,17 @@ int MultiplayerGameScene::onFrame(int toDo){
 	//msg = netCallback->str.c_str();
 	//if(msg.size() > 3){
 	
-	//if(stoi(netCallback->ant_game.c_str()) > 0){
-	//	context.listbox->clear();
-	//	for(int i = 0; stoi(netCallback->ant_game.c_str()) >= i; ++i){
-	//		context.listbox->addItem(stringw(netCallback->games[i]).c_str());
-	//	}
-	//}else{
-	//	context.listbox->clear();
-	//	context.listbox->addItem(stringw(netCallback->str).c_str());
-	//}
+	if(netCallback->ant_game > 0){
+		context.listbox->clear();
+		for(int i = 0; netCallback->ant_game >= i; ++i){
+			context.listbox->addItem(stringw(netCallback->games[i]).c_str());
+		}
+	}else{
 		context.listbox->clear();
 		context.listbox->addItem(stringw(netCallback->str).c_str());
+	}
+		//context.listbox->clear();
+		//context.listbox->addItem(stringw(netCallback->str).c_str());
 	//}else{
 	//	context.listbox->clear();
 	//	for(int i = 0; stoi(netCallback->ant_game.c_str()) >= i; ++i){
@@ -149,3 +149,10 @@ bool MultiplayerGameScene::onExit()
 	return true;
 }
 
+//void MultiplayerGameScene::createLobby()
+//{
+//	packet << "Not blue";
+//
+//	netManager->sendOutPacket(packet);
+//	netManager->update();
+//}

@@ -42,9 +42,12 @@ public:
 	SAppContext context;
 	MyEventReceiver* receiver;
 	//Controller* receiver;
-
+	
+	//void createLobby();
 	void onEnter();
 	int onFrame(int);
 	bool onExit();
 };
+
+//typedef Singleton<MultiplayerGameScene> MultiplayerManager;   // Global declaration
 
