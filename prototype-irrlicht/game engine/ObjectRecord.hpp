@@ -50,7 +50,7 @@ public:
 		case ES_BOX:
 			return new btBoxShape( shapeDimensions *0.5 );
 		case ES_CYLINDER:
-			return new btCylinderShapeX( shapeDimensions *0.5 );
+			return new btCylinderShapeX( shapeDimensions  );
 		default:
 		case ES_NONE:
 			return 0;

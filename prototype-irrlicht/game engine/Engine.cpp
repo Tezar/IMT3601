@@ -121,7 +121,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			vehicle->chassis = rigidBody; 
 			
 			dynamicsWorld->addRigidBody(rigidBody);
-
+			rigidBody->setActivationState(DISABLE_DEACTIVATION);
 			notifyBodyNew(rigidBody, object );
 			
 			}
@@ -152,7 +152,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			//todo: add to list of bodies..
 
 			dynamicsWorld->addRigidBody(rigidBody);
-
+			rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
 
 			

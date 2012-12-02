@@ -38,9 +38,9 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 
 	smgr->addLightSceneNode(0, core::vector3df(0,0,0),
-				video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 800.0f);
+				video::SColorf(1.0f, 0.6f, 0.7f, 1.f), 800.0f);
 
-	smgr->setAmbientLight(video::SColorf(0.9,0.9,0.9,1));
+	 smgr->setAmbientLight(video::SColor(255,60,60,60));
 }
 
 void GameRenderer::debug_createTrackArrows()
@@ -120,8 +120,8 @@ void GameRenderer::update()
 
 vector3df GameRenderer::calculateCameraPosition(vector3df& averagePosition)
 {
-	vector3df cameraPosition = averagePosition+core::vector3df(-10,0,-5) ;
-	cameraPosition.Y = 0;
+	vector3df cameraPosition = averagePosition+core::vector3df(-3,0,-3) ;
+	cameraPosition.Y = -5;
 	return cameraPosition;
 }
 
@@ -158,9 +158,7 @@ void GameRenderer::onBodyNew(btRigidBody* body, ObjectRecord* config)
 	}
 
 	node->setMaterialFlag(EMF_LIGHTING, true);
-	node->getMaterial(0).SpecularColor.set(0,0,1,1);
 
-	
 
 	body->setUserPointer( (void*) node );
 }
