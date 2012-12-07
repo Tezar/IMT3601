@@ -28,7 +28,7 @@ enum vehicle_turning_t
 class Vehicle
 {
 protected:
-
+	int maxForce;
 
 public:
 	Vehicle(void);
@@ -44,6 +44,8 @@ public:
 	//list of turnable bodies
 	core::list<btRigidBody*> turnable;
 
+
+	void updatePhysics();
 
 	core::array<btCollisionShape*> shapes;
 

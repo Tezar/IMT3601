@@ -3,8 +3,11 @@
 
 Vehicle::Vehicle(void)
 {
-	force = force_forward;
+	force = force_none;
 	turning = turning_none;
+
+	maxForce= 1;
+
 	position.set(0,0,0);
 
 }
@@ -13,7 +16,6 @@ Vehicle::Vehicle(void)
 Vehicle::~Vehicle(void)
 {
 	//todo:delete all shapes
-
 }
 
 
@@ -21,6 +23,21 @@ void Vehicle::addShape(btCollisionShape* shape)
 {
 	shapes.push_back(shape);
 }
+
+void Vehicle::updatePhysics()
+{
+	int engineForce = force == force_forward ? maxForce : 0;
+	int breakForce = force == force_backward ? maxForce : 0;
+
+	int wheelIndex = 0;
+	pointer->applyEngineForce(engineForce, wheelIndex);
+	pointer->setBrake(breakForce,wheelIndex);
+
+	wheelIndex = 2;
+	pointer->applyEngineForce(engineForce, wheelIndex);
+	pointer->setBrake(breakForce,wheelIndex);
+}
+
 
 //
 //scene::IMeshSceneNode* Vehicle::injectNode(IrrlichtDevice* device)

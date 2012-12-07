@@ -54,6 +54,8 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 
 	//tuning 
 	btRaycastVehicle::btVehicleTuning vehicleTuning;
+	vehicleTuning.m_maxSuspensionForce = 1000;
+	
 
 	btRaycastVehicle* rayVehicle = 0;
 
@@ -69,18 +71,26 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			assert(shape != 0);
 
 
-			//for monitoring
+			//for reporting back the position
+			//special state, it will update wheel positions and notify liteners about them as well
 			EngineBodyState* motionState = new  EngineVehicleState(this, vehicle, btTransform(btQuaternion(0,0,0,1),object->position));
+			
 			//physics stuff
-			btScalar mass = 1+10*currentVehicle;
+			btScalar mass = 1;
 			btVector3 inertia(0,0,0);
 			shape->calculateLocalInertia(mass,inertia);
 
+			//our construction info
 			btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
 			//construct
 			btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
 			//loopback link
 			motionState->setBody(rigidBody);
+
+			//add our body to the world and deactivate deactivation
+			rigidBody->setActivationState(DISABLE_DEACTIVATION);
+			dynamicsWorld->addRigidBody(rigidBody);
+
 			
 			//store reference for our chassis inside the vehicle
 			vehicle->chassis = rigidBody; 
@@ -89,11 +99,14 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			btVehicleRaycaster* vehicleRayCaster = new btDefaultVehicleRaycaster(dynamicsWorld);
 			rayVehicle = new btRaycastVehicle(vehicleTuning,rigidBody,vehicleRayCaster);
 
+			//pointer to our vehicle
 			vehicle->pointer = rayVehicle;
 
-			//add our body to the world and deactivate deactivation
-			rigidBody->setActivationState(DISABLE_DEACTIVATION);
-			dynamicsWorld->addRigidBody(rigidBody);
+
+			//now, this is crucial, rayVehicle is form of constrain and needs to be added to the world
+			dynamicsWorld->addVehicle(rayVehicle);
+
+
 
 			//is this necessary?
 			rayVehicle->setCoordinateSystem(0,1,2);
@@ -104,16 +117,24 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			break;
 		case EOT_WHEEL:
 			{
+
+				//we shape our world, and it is for our eyes only
+				btCollisionShape* shape = object->createShape();
+				assert(shape != 0);
+
+				vehicle->addShape(shape);
+
+
 				//when we want to add wheels, we have to have defined vehicle
 				assert(rayVehicle != 0); 
 				//object->position
-				btWheelInfo& wheel =  rayVehicle->addWheel( object->position , btVector3(0,-1,0),btVector3 (-1,0,0), 0.5, 6, vehicleTuning,false);
+				btWheelInfo& wheel =  rayVehicle->addWheel( btVector3(object->position.x(), 0, object->position.z() ) , btVector3(0,-1,0),btVector3 (-1,0,0), object->position.y() , object->shapeDimensions.x() , vehicleTuning,true);
 
 				float	gVehicleSteering = 0.f;
 				float	steeringIncrement = 0.04f;
 				float	steeringClamp = 0.3f;
-				float	wheelRadius = 0.5f;
-				float	wheelWidth = 0.4f;
+				float	wheelRadius = 5.f;
+				float	wheelWidth = 4.f;
 				float	wheelFriction = 1000;//BT_LARGE_FLOAT;
 				float	suspensionStiffness = 20.f;
 				float	suspensionDamping = 2.3f;
@@ -126,11 +147,6 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 				wheel.m_frictionSlip = wheelFriction;
 				wheel.m_rollInfluence = rollInfluence;
 
-				//we shape our world, and it is for our eyes only
-				btCollisionShape* shape = object->createShape();
-				assert(shape != 0);
-
-				vehicle->addShape(shape);
 			
 				notifyShapeNew(shape, object);
 			
@@ -158,10 +174,17 @@ int Engine::step(int toDo)
 	//todo:physics
 	//todo:collisions
 	int i = 0;
-	while(toDo > ENGINE_STEP){
+	while(toDo > ENGINE_STEP)
+	{
 		i++;
 		dynamicsWorld->stepSimulation(ENGINE_STEP/1000.0,10);
 		toDo -= ENGINE_STEP;
+
+		for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++)
+		{
+			vehicles[nVehicle]->updatePhysics();
+		}
+			
 	}
 	
 	recalculatePosition();
@@ -185,20 +208,6 @@ void Engine::reset()
 				*  *  *  *
 			point1
 			* = vehicle
-	*/
-
-	//memmory leaks!!!
-	
-	/*
-	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,0.1,0.1),1);
-	btDefaultMotionState* groundMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-3,0)));
-
-	btRigidBody::btRigidBodyConstructionInfo
-                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-
-	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	dynamicsWorld->addRigidBody(groundRigidBody);
 	*/
 }
 
