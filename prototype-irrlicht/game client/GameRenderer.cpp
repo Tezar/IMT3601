@@ -37,7 +37,7 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 
-	smgr->addLightSceneNode(0, core::vector3df(0,0,0),
+	smgr->addLightSceneNode(cameraNode, core::vector3df(1,1,-1),
 				video::SColorf(1.0f, 0.6f, 0.7f, 1.f), 800.0f);
 
 	 smgr->setAmbientLight(video::SColor(255,60,60,60));
