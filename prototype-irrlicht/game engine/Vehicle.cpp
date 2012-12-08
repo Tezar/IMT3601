@@ -1,12 +1,18 @@
 #include "Vehicle.hpp"
 
 
+
+
 Vehicle::Vehicle(void)
 {
 	force = force_none;
 	turning = turning_none;
 
 	maxForce= 1;
+
+	steering = 0;
+	steeringIncrement = 0.04f;
+	steeringClamp = 0.3f;
 
 	position.set(0,0,0);
 
@@ -26,16 +32,43 @@ void Vehicle::addShape(btCollisionShape* shape)
 
 void Vehicle::updatePhysics()
 {
-	int engineForce = force == force_forward ? maxForce : 0;
-	int breakForce = force == force_backward ? maxForce : 0;
+	int engineForce = 0;
+
+	switch(force)
+	{
+		case force_forward:  engineForce = maxForce; break;
+		case force_backward:  engineForce = -maxForce; break;
+	}
+	 //= force == force_forward ? maxForce : 0;
+	//int breakForce = force == force_backward ? maxForce : 0;
 
 	int wheelIndex = 0;
 	pointer->applyEngineForce(engineForce, wheelIndex);
-	pointer->setBrake(breakForce,wheelIndex);
+	//pointer->setBrake(breakForce,wheelIndex);
 
-	wheelIndex = 2;
+	wheelIndex = 1;
 	pointer->applyEngineForce(engineForce, wheelIndex);
-	pointer->setBrake(breakForce,wheelIndex);
+	//pointer->setBrake(breakForce,wheelIndex);
+
+
+	switch(turning)
+	{
+		case turning_right:
+			steering += steeringIncrement;
+			if(steering > steeringClamp) steering = steeringClamp;
+		break;
+		case turning_left:
+			steering -= steeringIncrement;
+			if(steering < -steeringClamp) steering = -steeringClamp;
+		break;
+	}
+
+	wheelIndex = 0;
+	pointer->setSteeringValue(steering,wheelIndex);
+	wheelIndex = 1;
+	pointer->setSteeringValue(steering,wheelIndex);
+
+
 }
 
 

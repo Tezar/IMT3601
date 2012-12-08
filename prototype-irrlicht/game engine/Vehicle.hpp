@@ -29,6 +29,10 @@ class Vehicle
 {
 protected:
 	int maxForce;
+	float steering;
+
+	float steeringIncrement;
+	float steeringClamp;
 
 public:
 	Vehicle(void);
