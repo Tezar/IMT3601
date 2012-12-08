@@ -64,6 +64,10 @@ void Vehicle::updatePhysics()
 			steering -= steeringIncrement;
 			if(steering < -steeringClamp) steering = -steeringClamp;
 		break;
+		case turning_none: //relaxation
+			if(abs(steering) < (steeringIncrement*0.5)  ) break;	//skip if it's too small
+			//go for zero
+			steering += ((steering < 0) ? steeringIncrement : -steeringIncrement) *0.5;
 	}
 
 	wheelIndex = 0;
