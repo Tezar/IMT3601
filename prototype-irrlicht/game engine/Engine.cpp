@@ -47,6 +47,10 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 	assert( record->type == EOT_VEHICLE );
 	assert(numVehicles < MAX_VEHICLES);
 
+
+	btScalar centerOfMassOffset = 0.5f;
+
+
 	Vehicle * vehicle = new Vehicle();
 
 	int currentVehicle = numVehicles++;
@@ -71,6 +75,16 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			assert(shape != 0);
 
 
+			btCompoundShape* compound = new btCompoundShape();
+			btTransform localTrans;
+			localTrans.setIdentity();
+			//localTrans effectively shifts the center of mass with respect to the chassis
+			localTrans.setOrigin(btVector3(0,centerOfMassOffset,0));
+
+			compound->addChildShape(localTrans,shape);
+
+
+
 			//for reporting back the position
 			//special state, it will update wheel positions and notify liteners about them as well
 			EngineBodyState* motionState = new  EngineVehicleState(this, vehicle, btTransform(btQuaternion(0,0,0,1),object->position));
@@ -81,7 +95,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			shape->calculateLocalInertia(mass,inertia);
 
 			//our construction info
-			btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,shape,inertia);
+			btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass,motionState,compound,inertia);
 			//construct
 			btRigidBody* rigidBody = new btRigidBody(rigidBodyCI);
 			//loopback link
@@ -111,7 +125,7 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			//is this necessary?
 			rayVehicle->setCoordinateSystem(0,1,2);
 
-			notifyShapeNew(shape, object );
+			notifyShapeNew(compound, object );
 			
 			}
 			break;
@@ -128,7 +142,14 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 				//when we want to add wheels, we have to have defined vehicle
 				assert(rayVehicle != 0); 
 				//object->position
-				btWheelInfo& wheel =  rayVehicle->addWheel( btVector3(object->position.x(), 0, object->position.z() ) , btVector3(0,-1,0),btVector3 (-1,0,0), object->position.y() , object->shapeDimensions.x() , vehicleTuning,true);
+				btWheelInfo& wheel =  rayVehicle->addWheel( btVector3(object->position.x(),centerOfMassOffset, object->position.z() ),	//position of wheel
+																	  btVector3(0,-1,0),	//orientation of wheel
+																	  btVector3 (-1,0,0),	//orientation  axes
+																	  object->position.y(),	//suspension length 
+																	  object->shapeDimensions.x(),	//wheel radius
+																	  vehicleTuning,	//tuning params
+																	  false // isFrontWheel
+																	  );
 
 				float	gVehicleSteering = 0.f;
 				float	steeringIncrement = 0.04f;

@@ -120,8 +120,8 @@ void GameRenderer::update()
 
 vector3df GameRenderer::calculateCameraPosition(vector3df& averagePosition)
 {
-	vector3df cameraPosition = averagePosition+core::vector3df(-3,0,-3) ;
-	cameraPosition.Y = -5;
+	vector3df cameraPosition = averagePosition+core::vector3df(-1,0,-3) ;
+	cameraPosition.Y = 2;
 	return cameraPosition;
 }
 
@@ -132,6 +132,16 @@ void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 	IVideoDriver* driver = device->getVideoDriver();
 
 	ISceneNode* node;
+	ISceneNode* parent = 0;
+
+	//compound shape is used to offset shape from body
+	//only one child is used
+	if( shape->isCompound() )
+	{
+		//we create parent node which will be then moved
+		parent = smgr->addEmptySceneNode();
+	}
+
 
 	switch(config->type)
 	{
@@ -141,16 +151,15 @@ void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 
 		//node =  smgr->addEmptySceneNode();
 			
-		node = smgr->addCubeSceneNode(1.f);
+		node = smgr->addCubeSceneNode(1.f, parent);
 		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
 		//node->setPosition(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z())*(-0.5));
 
 		} break;	//end case EOT_BOX
 
 	default:
-
 		IMesh* model = smgr->getMesh(config->model);
-		node = smgr->addMeshSceneNode( model );
+		node = smgr->addMeshSceneNode( model , parent);
 
 		if(config->texture != 0){
 			node->setMaterialTexture( 0, driver->getTexture(config->texture) );
@@ -159,8 +168,20 @@ void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 
 	node->setMaterialFlag(EMF_LIGHTING, true);
 
+	//if this is compound shape we offset node inside the parent node
+	//only first child is considered!
+	if( shape->isCompound() )
+	{
+		btCompoundShape* compound = (btCompoundShape*) shape;
 
-	shape->setUserPointer( (void*) node );
+		irr::core::matrix4 matr;
+		compound->getChildTransform(0).getOpenGLMatrix(matr.pointer());
+
+		node->setPosition(  matr.getTranslation() );
+		node->setRotation( matr.getRotationDegrees() );
+	}
+
+	shape->setUserPointer( (void*) (parent ? parent : node) );
 }
 
 void GameRenderer::onShapeUpdate(btCollisionShape* shape, const btTransform& transform)
@@ -169,8 +190,9 @@ void GameRenderer::onShapeUpdate(btCollisionShape* shape, const btTransform& tra
 
 	irr::core::matrix4 matr;
 	transform.getOpenGLMatrix(matr.pointer());
+	
 
-	node->setPosition( matr.getTranslation() );
+	node->setPosition(  matr.getTranslation() );
 	node->setRotation( matr.getRotationDegrees() );
 }
 
@@ -181,24 +203,7 @@ void GameRenderer::onShapeDelete(btCollisionShape* shape )
 }
 
 
-/*
-void GameRenderer::onVehicleMovement(irr::u32 id,Vehicle* vehicle)
-{
-	vehicleNodes[id]->setPosition(vehicle->position);
-	//todo:rotation
-}
 
-
-void GameRenderer::afterSegmentLoaded(TrackSegment * segment) {
-	
-	debug_createTrackArrows();
-
-	ISceneManager* smgr = device->getSceneManager();
-
-	segment->injectTrackNode(device);
-
-}
-*/
 void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
     
 	ISceneManager* smgr = device->getSceneManager();
