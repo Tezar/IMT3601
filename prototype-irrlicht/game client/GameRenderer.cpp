@@ -148,22 +148,24 @@ void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 	
 	case EOT_BOX:
 		{
-
-		//node =  smgr->addEmptySceneNode();
-			
 		node = smgr->addCubeSceneNode(1.f, parent);
 		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
-		//node->setPosition(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z())*(-0.5));
 
 		} break;	//end case EOT_BOX
 
 	default:
 		IMesh* model = smgr->getMesh(config->model);
-		node = smgr->addMeshSceneNode( model , parent);
+
+		//we need mesh node in order to be able to generate shadows
+		IMeshSceneNode* meshNode;
+		meshNode = smgr->addMeshSceneNode( model , parent);
+		meshNode->addShadowVolumeSceneNode();
 
 		if(config->texture != 0){
-			node->setMaterialTexture( 0, driver->getTexture(config->texture) );
+			meshNode->setMaterialTexture( 0, driver->getTexture(config->texture) );
 		}
+
+		node = (ISceneNode*) meshNode;
 	}
 
 	node->setMaterialFlag(EMF_LIGHTING, true);
