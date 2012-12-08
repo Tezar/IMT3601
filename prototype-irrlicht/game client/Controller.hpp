@@ -8,6 +8,8 @@
 
 using namespace irr;
 
+//BUG: when acc key is pressed steering is not changed (ie you cannont accelerate and turn at same time) /Aleš 8.12. 21:33
+//REQUEST: add hand break (vehicle.breaking = true) /Aleš 8.12. 21:33
 
 
 class Controller : public IEventReceiver
