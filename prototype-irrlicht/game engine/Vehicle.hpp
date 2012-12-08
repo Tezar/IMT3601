@@ -61,6 +61,8 @@ public:
 	//currently applied turning
 	vehicle_turning_t turning;
 
+	bool breaking;
+
 	vector3df position;
 
 

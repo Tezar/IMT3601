@@ -14,6 +14,7 @@ Vehicle::Vehicle(void)
 	steeringIncrement = 0.04f;
 	steeringClamp = 0.3f;
 
+	breaking = false;
 	position.set(0,0,0);
 
 }
@@ -39,6 +40,8 @@ void Vehicle::updatePhysics()
 		case force_forward:  engineForce = maxForce; break;
 		case force_backward:  engineForce = -maxForce; break;
 	}
+
+	//todo:breaking
 	 //= force == force_forward ? maxForce : 0;
 	//int breakForce = force == force_backward ? maxForce : 0;
 
