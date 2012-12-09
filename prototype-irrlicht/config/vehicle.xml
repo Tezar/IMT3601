@@ -1,12 +1,12 @@
 <vehicle>
   <chassis model="../media/Car - Main Body.obj" texture="../media/Car - Main Body Texture.bmp" shape="box" />
   <!-- front wheels, left, right-->
-  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="-0.3, 0.5, 0.5" shape="cylinder" />
-  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="0.3, 0.5, 0.5" shape="cylinder" />
+  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="-0.4, 0.35, 0.55" shape="cylinder" />
+  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="0.4, 0.35, 0.55" shape="cylinder" />
 
   <!-- back wheels -->
-  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="-0.3, 0.7, -0.5" shape="cylinder" />
-  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="0.3, 0.7, -0.5" shape="cylinder" />
+  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="-0.4, 0.45, -0.4" shape="cylinder" />
+  <wheel model="../media/Wheel.obj" texture="../media/Car - Wheel Texture.bmp" position="0.4, 0.45, -0.4" shape="cylinder" />
 
 
 
