@@ -151,6 +151,7 @@ ObjectRecord* ObjectReader::parseSegment(IrrXMLReader* xml)
 						child->type = EOT_BOX;
 
 						child->mass = xml->getAttributeValueAsFloat("mass");
+						child->texture = xml->getAttributeValue("texture");
 
 						readVec3d(xml->getAttributeValue("position"), child->position);
 						readVec3d(xml->getAttributeValue("rotation"), child->rotation);
