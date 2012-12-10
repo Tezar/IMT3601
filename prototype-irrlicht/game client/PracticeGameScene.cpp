@@ -67,9 +67,7 @@ void PracticeGameScene::onEnter()
 int PracticeGameScene::onFrame(int toDo){
 
 	toDo = engine->step(toDo);
-
 	renderer->update();
-	
 	soundDevice->UpdateListenerPosition(engine);
 
 	return toDo;

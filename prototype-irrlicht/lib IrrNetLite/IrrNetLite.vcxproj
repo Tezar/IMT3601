@@ -75,7 +75,7 @@
     <OutDir>$(SolutionDir)lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetExt>lib</TargetExt>
+    <TargetExt>.lib</TargetExt>
     <IncludePath>$(ProjectDir)\include;$(ProjectDir)\source\enet\include;$(IncludePath)</IncludePath>
     <TargetName>IrrNetLite</TargetName>
   </PropertyGroup>
