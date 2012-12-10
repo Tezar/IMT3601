@@ -292,6 +292,10 @@ void Engine::loadSegment(ObjectRecord* record)
 				notifyShapeNew(shape, object, mass ? 0 : rigidBody);
 
 				} break; //end EOT_BOX
+			case EOT_WAYPOINT:
+				waypoints.push_back( object->position );
+
+				break;
 			default:
 				//unknown
 				assert(false);
