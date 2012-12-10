@@ -36,11 +36,7 @@ protected:
 	ObjectRecord* readObject(const char *);
 
 	ObjectRecord* parseVehicle(IrrXMLReader*);
-	ObjectRecord* parseSegment(IrrXMLReader* xml);
-
-	void readVec3d(const char *, btVector3&);
-	void readShape(const char *, E_SHAPE&);
-
+	ObjectRecord* parseSegment(IrrXMLReader*);
 
 	//core::list<configCachePair> cache;
 	ObjectCacheMap cache;

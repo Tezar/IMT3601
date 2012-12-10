@@ -1,11 +1,15 @@
 #pragma once
 #include <irrlicht.h>
+
+#include <string>
 #include <stdio.h>
 #include "btBulletDynamicsCommon.h"
 
 using namespace irr;
 using namespace core;
+using namespace scene;
 using namespace io;
+
 
 
 enum E_OBJECT_TYPE{
@@ -29,47 +33,36 @@ enum E_SHAPE{
 
 class ObjectRecord
 {
+protected: 
+	map<std::string, std::string> extra; 
+
+
+	void readVec3d(const char *, btVector3&);
+	void readShape(const char *, E_SHAPE&);
+
+	void ObjectRecord::readType(const char *,  E_OBJECT_TYPE& );
+
+
 public:
-	ObjectRecord(){
-		shape = ES_NONE;
-		shapeDimensions.setValue(1,1,1);
-		position.setZero();
-		rotation.setZero();
-		mass = 0;
-	}
-	~ObjectRecord(){
-		//todo: iterate and delete children
-		
-	};
+	ObjectRecord();
+	~ObjectRecord();
+
+	btCollisionShape* createShape();
+	void parse(IrrXMLReader* xml,  IrrlichtDevice* device );
 
 
-	btCollisionShape* createShape()
-	{
-		switch(shape)
-		{
-		case ES_BOX:
-			return new btBoxShape( shapeDimensions *0.5 );
-		case ES_CYLINDER:
-			return new btCylinderShapeX( shapeDimensions  );
-		default:
-		case ES_NONE:
-			return 0;
-		}
-		
-	}
-
-	io::path model;
-	io::path texture;
+	const char * getExtra(const char * name);
 	
+	const char * getModel(){ return getExtra("model"); };
+	const char * getTexture(){ return getExtra("texture"); };
+
+
 	E_OBJECT_TYPE type;
 	E_SHAPE shape;
 	core::list<ObjectRecord*> children;
 	btVector3 position;
 	btVector3 rotation;
 	btVector3 shapeDimensions;
-	btVector3 extra;
 	btScalar mass;
-
-	
-
 };
+

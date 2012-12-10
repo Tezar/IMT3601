@@ -94,6 +94,7 @@
     <ClCompile Include="CongruentGenerator.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ObjectReader.cpp" />
+    <ClCompile Include="ObjectRecord.cpp" />
     <ClCompile Include="TrackGenerator.cpp" />
     <ClCompile Include="TrackSegment.cpp" />
     <ClCompile Include="Vehicle.cpp" />
