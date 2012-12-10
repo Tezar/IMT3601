@@ -420,3 +420,8 @@ void Engine::removeObserver(EngineObserver* o)
 {
 	//todo:
 }
+
+void checkWaypoint(Vehicle* vehicle)
+{
+
+}
