@@ -45,6 +45,12 @@ void ObjectRecord::parse(IrrXMLReader* xml, IrrlichtDevice* device = 0)
 		extra.set(name, val);
 	}
 
+	//default box type
+	if(shape == ES_NONE)
+	{
+		if(type == EOT_BOX) shape = ES_BOX;
+	}
+
 	const char * model = getExtra("model");
 
 	if(model)
