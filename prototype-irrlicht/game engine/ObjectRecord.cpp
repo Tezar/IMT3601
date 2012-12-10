@@ -63,9 +63,9 @@ void ObjectRecord::parse(IrrXMLReader* xml, IrrlichtDevice* device = 0)
 		IMesh* mesh = smgr->getMesh( io::path(model) );
 		core::aabbox3df box = mesh->getBoundingBox();
 		vector3df extens = box.getExtent();
-		shapeDimensions.setX( extens.X * 0.5);
-		shapeDimensions.setY( extens.Y * 0.5);
-		shapeDimensions.setZ( extens.Z * 0.5);
+		shapeDimensions.setX( extens.X );
+		shapeDimensions.setY( extens.Y);
+		shapeDimensions.setZ( extens.Z);
 	} //end if loading shape dimension
 
 }
