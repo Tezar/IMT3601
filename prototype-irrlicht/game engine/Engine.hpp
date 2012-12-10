@@ -50,7 +50,6 @@ public:
 	void addObserver(EngineObserver*);
 	void removeObserver(EngineObserver*);
 
-
 	/** consumes time to make simulation, returns any leftovers 
 		@par int time to be consumed
 		@return int time not consumed
@@ -78,6 +77,7 @@ protected:
 	/** averages position of vehicles and updates member variable */
 	inline void recalculatePosition();
 
+	core::array<btVector3> waypoints;
 
 	IrrlichtDevice* getDevice();
 
@@ -89,8 +89,8 @@ protected:
 	void checkLoadedSegments(); 
 	/* loads segments*/
 	void loadSegments(int min, int max);
-
-
+	
+	void checkWaypoint(Vehicle* vehicle);
 
 	core::list<TrackSegment*> segments;
 
