@@ -363,6 +363,10 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 	btVector3 vector = waypoints[vehicle->nextWaypoint];
 	btVector3 nextVector = waypoints[vehicle->nextWaypoint + 1];
 	vector = nextVector - vector;
-	btVector3 pos = waypoints[vehicle->position];
+	btVector3 pos = btVector3(vehicle->position.X, vehicle->position.Y, vehicle->position.Z);
 
+	float product = vector.dot(pos - waypoints[vehicle->nextWaypoint]);
+
+	if(product > 0)
+		vehicle->nextWaypoint += 1;
 }
