@@ -33,11 +33,13 @@ protected:
 
 	float steeringIncrement;
 	float steeringClamp;
-	int nextWaypoint;
+	
 
 public:
 	Vehicle(void);
 	~Vehicle(void);
+
+	int nextWaypoint;
 
 	btRaycastVehicle* pointer;
 	
