@@ -43,66 +43,10 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	 smgr->setAmbientLight(video::SColor(255,60,60,60));
 }
 
-void GameRenderer::debug_createTrackArrows()
-{
-	debug_clearTrackArrows();	//first we clear all previous
-
-	ISceneManager* smgr = device->getSceneManager();
-
-	IMeshSceneNode* node;
-	IMeshSceneNode* previousNode = 0;
-
-
-	core::list<TrackSegment*>* segments = engine->getSegments();
-	int i=0;
-	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments->begin(); segment_iterator != segments->end(); segment_iterator++)
-	{
-		//memmory leak but its only for debugging so dont worry for now...
-		IMesh* arrowMesh = smgr->addArrowMesh( stringc("arrow")+core::stringc(i),
-                                video::SColor(255, 30, 0, 0),
-                                video::SColor(255, 200*(1+i), 100*i, 150*i),
-                                16,16,
-                                1.f, 0.6f,
-                                0.05f, 0.2f
-                                );
-
-		i++;
-
-		TrackPointList * track = (*segment_iterator)->getTrack();
-
-		for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
-		{
-			node = smgr->addMeshSceneNode(arrowMesh);
-			node->setPosition((*iterator)->position);
-			node->setRotation(vector3df(((*iterator)->direction+90),0,90));
-			node->setMaterialFlag(video::EMF_LIGHTING, false);
-
-			debug_arrows->push_back(node);
-
-		} //end trackpoint loop
-	}	//end segment loop
-} //end method
-
-void GameRenderer::debug_clearTrackArrows()
-{
-	if(debug_arrows == 0){
-		debug_arrows = new core::list<IMeshSceneNode*>();
-		return;
-	}
-
-	for (core::list<IMeshSceneNode*>::ConstIterator iterator = debug_arrows->begin(), end = debug_arrows->end(); iterator != end; ++iterator) {
-		(*iterator)->remove();
-	}
-	
-	debug_arrows->clear();
-
-	
-}
-
 
 void GameRenderer::detach()
 {
-
+	//todo:
 }
 
 void GameRenderer::update()

@@ -3,8 +3,6 @@
 
 #include "Vehicle.hpp"
 #include "ObjectReader.hpp"
-#include "TrackUtil.hpp"
-#include "TrackGenerator.hpp"
 #include "EngineObserver.hpp "
 
 
@@ -32,7 +30,6 @@ class Engine
 	
 public:
 	Vehicle* vehicles[MAX_VEHICLES];
-	TrackGenerator * track;
 
 	int numVehicles;
 	int currentSegment;
@@ -59,11 +56,7 @@ public:
 	/** resets state of engine to initial conditions */
 	void reset();
 
-	//get list of segments
-	core::list<TrackSegment*>* getSegments();
 
-
-	
 	//rigid body is needed for extracting transform matrix for first update of static body
 	void notifyShapeNew(btCollisionShape*, ObjectRecord*, btRigidBody* = 0 );
 	void notifyShapeUpdate(btCollisionShape*, const btTransform& );
@@ -91,10 +84,6 @@ protected:
 	void loadSegments(int min, int max);
 	
 	void checkWaypoint(Vehicle* vehicle);
-
-	core::list<TrackSegment*> segments;
-
-
 
 	//physics system
     btBroadphaseInterface* broadphase;

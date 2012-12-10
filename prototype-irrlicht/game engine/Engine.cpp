@@ -9,7 +9,6 @@ Engine::Engine(void)
 {
 	numVehicles = 0;
 
-	track = new TrackGenerator(69696969);	//seed with randomly picked number...
 	averagePosition.set(0,0,0);
 
 	// Build the broadphase
@@ -37,7 +36,8 @@ Engine::~Engine(void)
     delete collisionConfiguration;
     delete broadphase;
 
-	delete track;
+	//todo: delete bodies, shapes, motionstates...
+
 }
 
 
@@ -260,87 +260,6 @@ inline void Engine::recalculatePosition()
 
 
 
-
-void Engine::checkLoadedSegments()
-{
-	int segment = -1; //segments vehicles are in
-
-	vector3df planarAveragedPosition = vector3df(averagePosition);
-	planarAveragedPosition.Y = 0; //we ignore elevation for this calculation
-
-	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments.begin(); segment_iterator != segments.end(); segment_iterator++)
-	{
-		TrackPointList * track = (*segment_iterator)->getTrack();
-
-		for(TrackPointList::ConstIterator iterator = track->begin(); iterator != track->end();  iterator++)
-		{
-			irr::f32 dist =	planarAveragedPosition.getDistanceFrom( (*iterator)->position);
-			if(dist < 5.f)
-			{
-				segment = (*segment_iterator)->id;
-				break;
-			}
-		} //end trackpoint loop
-
-		if(segment >= 0) break;	//we have found our segment
-	}	//end segment loop
-
-	if( (segment != currentSegment) || currentSegment < 0)
-	{
-		loadSegments(segment-1, segment+3);
-		currentSegment = segment;
-	}
-}
-
-void Engine::loadSegments(int min, int max)
-{
-	min = min < 0 ? 0 : min;
-	assert(max > min);
-	
-	std::list<int> toBeLoaded;
-
-	//add all segments to be loaded
-	for(int i = min; i <= max; i++) toBeLoaded.push_back(i);
-
-	//iterate thru loaded segments and remove them from toBeLoaded list, or from game when they are out of region
-	for(core::list<TrackSegment*>::ConstIterator segment_iterator = segments.begin(); segment_iterator != segments.end(); segment_iterator++)
-	{
-		int id = (*segment_iterator)->id;
-
-		if( id >= min && id <= max)
-		{
-			toBeLoaded.remove(id);
-		}else
-		{
-			//inform listener that segment is about to be unloaded
-			//todo remove it from list
-		}
-	}
-
-	//load all loadables
-	for(std::list<int>::const_iterator iterator = toBeLoaded.begin(); iterator != toBeLoaded.end(); iterator++)
-	{
-		//add point at the end
-		TrackSegment* segment = track->getSegment( (*iterator) ) ;
-		segments.push_back( segment );
-
-		core::list<btRigidBody*>* bodies = segment->getTrackBodies();
-
-		//load all bodies from segment into engine
-		for(core::list<btRigidBody*>::ConstIterator iterator = bodies->begin(); iterator != bodies->end(); iterator++)
-		{
-			dynamicsWorld->addRigidBody((*iterator));
-		}
-
-		/*
-		//inform listener that segment is loaded
-		if(listener != NULL) listener->afterSegmentLoaded(segment);
-		*/
-	}
-	
-}
-
-
 void Engine::loadSegment(ObjectRecord* record)
 {
 	assert( record != 0 );
@@ -356,6 +275,7 @@ void Engine::loadSegment(ObjectRecord* record)
 				//memmory leak
 				btCollisionShape* shape = object->createShape();
 				assert(shape != 0); 
+
 				//for monitoring
 				EngineBodyState* motionState = new  EngineBodyState(this, 0, btTransform(btQuaternion(0,0,0,1),object->position));
 				//physics stuff
@@ -373,14 +293,11 @@ void Engine::loadSegment(ObjectRecord* record)
 
 				} break; //end EOT_BOX
 			default:
+				//unknown
 				assert(false);
 		} //end switch
 	} //end iterating children
 
-}
-
-core::list<TrackSegment*>* Engine::getSegments(){
-	return &segments;
 }
 
 void Engine::notifyShapeNew(btCollisionShape* shape, ObjectRecord* record, btRigidBody* body)

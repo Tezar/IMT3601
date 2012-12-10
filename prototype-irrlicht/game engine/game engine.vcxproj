@@ -85,9 +85,6 @@
     <ClInclude Include="EngineObserver.hpp" />
     <ClInclude Include="ObjectReader.hpp" />
     <ClInclude Include="ObjectRecord.hpp" />
-    <ClInclude Include="TrackGenerator.hpp" />
-    <ClInclude Include="TrackSegment.hpp" />
-    <ClInclude Include="TrackUtil.hpp" />
     <ClInclude Include="Vehicle.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -95,8 +92,6 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ObjectReader.cpp" />
     <ClCompile Include="ObjectRecord.cpp" />
-    <ClCompile Include="TrackGenerator.cpp" />
-    <ClCompile Include="TrackSegment.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
