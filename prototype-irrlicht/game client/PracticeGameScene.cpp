@@ -44,6 +44,9 @@ void PracticeGameScene::onEnter()
 
 	engine->loadSegment( GameManager::getInstance()->getReader()->getObject("boxes") );
 
+	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 
 	

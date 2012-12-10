@@ -230,6 +230,22 @@ void Engine::reset()
 			point1
 			* = vehicle
 	*/
+
+	btVector3 pos;
+	pos.setZero();
+	btTransform trans;
+
+	btScalar offset = -numVehicles*0.5;
+	
+	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
+		Vehicle* v = vehicles[nVehicle];
+		
+		trans.setIdentity();
+		pos.setX(offset+2*nVehicle);
+		trans.setOrigin(pos);
+		v->chassis->setWorldTransform(trans);
+	}
+
 }
 
 
