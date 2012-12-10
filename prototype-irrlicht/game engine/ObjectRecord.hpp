@@ -15,10 +15,13 @@ using namespace io;
 enum E_OBJECT_TYPE{
 	EOT_VEHICLE,
 	EOT_SEGMENT,
+
 	EOT_CHASSIS,
 	EOT_WHEEL,
+
 	EOT_BODY,	//general body
 	EOT_BOX,	
+	EOT_WAYPOINT,	
 };
 
 

@@ -136,7 +136,7 @@ void ObjectRecord::readType(const char * data,  E_OBJECT_TYPE& type)
 	setTypeIfMatch("wheel",EOT_WHEEL);
 	setTypeIfMatch("body",EOT_BODY);
 	setTypeIfMatch("box",EOT_BOX);
-
+	setTypeIfMatch("waypoint",EOT_WAYPOINT);
 	//unknown
 	return;
 }
