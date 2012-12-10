@@ -24,6 +24,9 @@ protected:
 	IrrlichtDevice* device;
 	ObjectReader *  objectReader;
 
+	/* member variable so we can reset it on change scene*/
+	irr::u32 toProcess;
+
 public:
 	GameManagerClass(void);
 	~GameManagerClass(void);

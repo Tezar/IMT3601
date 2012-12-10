@@ -149,14 +149,13 @@ int GameManagerClass::run()
 	ITimer * timer = device->getTimer();
 	//using u32 as proposed @http://irrlicht.sourceforge.net/forum/viewtopic.php?t=723 and @http://irrlicht.sourceforge.net/forum/viewtopic.php?t=35143
 	irr::u32 lastRun = timer->getTime();
-	irr::u32 toProcess = 0;
+	toProcess = 0;
 	//run forrest run!
 	while(device->run())
 	{
 		irr::u32 now = timer->getTime();
 		toProcess += (now - lastRun);
 		lastRun = now;
-
 
 		/*
 		Anything can be drawn between a beginScene() and an endScene()
@@ -205,10 +204,9 @@ Scene * GameManagerClass::changeState(states_t newState)
 		case practiceGame: currentScene = new PracticeGameScene; break;
 		case multiPlayerGame: currentScene = new MultiplayerGameScene; break;
 	}
-
 	assert(currentScene);
-
 	currentScene->onEnter();
-
+	//reset counter, so it
+	toProcess = 0;
 	return currentScene;
 }
