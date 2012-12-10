@@ -10,6 +10,8 @@ Vehicle::Vehicle(void)
 
 	maxForce= 1;
 
+	nextWaypoint = 0;
+
 	steering = 0;
 	steeringIncrement = 0.04f;
 	steeringClamp = 0.3f;

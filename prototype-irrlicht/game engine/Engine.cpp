@@ -273,6 +273,9 @@ inline void Engine::recalculatePosition()
 
 		v->position.set(pos.x(), pos.y(), pos.z());
 
+
+		checkWaypoint(v);
+
 	}
 	averagePosition.set(posX/numVehicles, posY/numVehicles, posZ/numVehicles);
 }
@@ -370,6 +373,6 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 
 	float product = vector.dot(pos - waypoints[vehicle->nextWaypoint]);
 
-	if(product > 0)
+	if(product < 0)
 		vehicle->nextWaypoint += 1;
 }
