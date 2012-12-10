@@ -358,7 +358,11 @@ void Engine::removeObserver(EngineObserver* o)
 	//todo:
 }
 
-void checkWaypoint(Vehicle* vehicle)
+void Engine::checkWaypoint(Vehicle* vehicle)
 {
+	btVector3 vector = waypoints[vehicle->nextWaypoint];
+	btVector3 nextVector = waypoints[vehicle->nextWaypoint + 1];
+	vector = nextVector - vector;
+	btVector3 pos = waypoints[vehicle->position];
 
 }
