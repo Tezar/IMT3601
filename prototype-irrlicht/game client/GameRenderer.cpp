@@ -36,10 +36,10 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	//	createPointParticle(vehicleNodes[1],255,255,25);
 		
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
-
+	
 	smgr->addLightSceneNode(cameraNode, core::vector3df(1,1,-1),
-				video::SColorf(1.0f, 0.6f, 0.7f, 1.f), 800.0f);
-
+				video::SColorf(1.0f, 0.6f, 0.7f, 0.5f), 50.0f);
+				
 	 smgr->setAmbientLight(video::SColor(255,60,60,60));
 }
 
@@ -120,8 +120,9 @@ void GameRenderer::update()
 
 vector3df GameRenderer::calculateCameraPosition(vector3df& averagePosition)
 {
+	//todo: calculate elevation so everyone is visible
 	vector3df cameraPosition = averagePosition+core::vector3df(-1,0,-3) ;
-	cameraPosition.Y = 2;
+	cameraPosition.Y = 15;
 	return cameraPosition;
 }
 
@@ -131,7 +132,7 @@ void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 	ISceneManager* smgr = device->getSceneManager();
 	IVideoDriver* driver = device->getVideoDriver();
 
-	ISceneNode* node;
+	IMeshSceneNode* node;
 	ISceneNode* parent = 0;
 
 	//compound shape is used to offset shape from body
@@ -145,30 +146,44 @@ void GameRenderer::onShapeNew(btCollisionShape* shape, ObjectRecord* config)
 
 	switch(config->type)
 	{
-	
-	case EOT_BOX:
-		{
-		node = smgr->addCubeSceneNode(1.f, parent);
-		node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
+		case EOT_BOX:
+			node = smgr->addCubeSceneNode(1.f, parent);
+			node->setScale(vector3df(config->shapeDimensions.x(),config->shapeDimensions.y(),config->shapeDimensions.z()));
+			break;	//end case EOT_BOX
 
-		} break;	//end case EOT_BOX
-
-	default:
-		IMesh* model = smgr->getMesh(config->model);
-
-		//we need mesh node in order to be able to generate shadows
-		IMeshSceneNode* meshNode;
-		meshNode = smgr->addMeshSceneNode( model , parent);
-		meshNode->addShadowVolumeSceneNode();
-
-		if(config->texture != 0){
-			meshNode->setMaterialTexture( 0, driver->getTexture(config->texture) );
-		}
-
-		node = (ISceneNode*) meshNode;
+		default:
+			IMesh* model = smgr->getMesh(config->getModel());
+			node = smgr->addMeshSceneNode( model , parent);
 	}
 
+	const char * texturePath = config->getTexture();
+	if(texturePath){
+		ITexture* texture =  driver->getTexture(texturePath);
+
+		node->setMaterialTexture( 0, texture);
+	
+		node->getMaterial(0).AmbientColor.set(255,255,255,255);
+		node->getMaterial(0).DiffuseColor.set(255,255,255,255);
+		node->getMaterial(0).SpecularColor.set(255,255,255,255);
+		
+
+		node->setMaterialType(EMT_SOLID);
+	}
+
+
+	const char * bumbPath = config->getExtra("bump");
+	if(bumbPath){
+		ITexture* normalMap =  driver->getTexture(bumbPath); 
+		driver->makeNormalMapTexture(normalMap, 9.0f);
+		node->setMaterialTexture(1, normalMap);
+
+		node->setMaterialType(EMT_PARALLAX_MAP_SOLID);
+	}
+
+
+	node->addShadowVolumeSceneNode();
 	node->setMaterialFlag(EMF_LIGHTING, true);
+
 
 	//if this is compound shape we offset node inside the parent node
 	//only first child is considered!

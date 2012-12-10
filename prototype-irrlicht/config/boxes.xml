@@ -1,4 +1,5 @@
 <segment>
-	<body shape="box" shapeDimensions="50, 0.5, 50" texture="../media/wood1.png" position="0,-2,0"/>
-	<body shape="box" shapeDimensions="0.5, 0.5, 0.5" position="0,10,0" mass="1"/>
+	<box shape="box" shapeDimensions="50, 0.5, 50" texture="../media/wood1.png" bump="../media/wood1_normal.png" position="0,-2,0"/>
+	<box shape="box" shapeDimensions="0.5, 0.5, 0.5" position="0,10,0" mass="1"/>
+
 </segment>
