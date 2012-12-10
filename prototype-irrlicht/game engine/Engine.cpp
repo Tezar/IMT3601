@@ -270,6 +270,9 @@ inline void Engine::recalculatePosition()
 		posX += pos.x();
 		posY += pos.y();
 		posZ += pos.z();
+
+		v->position.set(pos.x(), pos.y(), pos.z());
+
 	}
 	averagePosition.set(posX/numVehicles, posY/numVehicles, posZ/numVehicles);
 }
