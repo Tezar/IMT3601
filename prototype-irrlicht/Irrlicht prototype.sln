@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game engine", "game engine\game engine.vcxproj", "{511FD3DC-2BC0-4E9D-A223-565D03BF2F87}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game editor", "game editor\game editor.vcxproj", "{D0FFD17D-D432-42BC-99BD-DCFE524BE712}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -33,6 +35,10 @@ Global
 		{511FD3DC-2BC0-4E9D-A223-565D03BF2F87}.Debug|Win32.Build.0 = Debug|Win32
 		{511FD3DC-2BC0-4E9D-A223-565D03BF2F87}.Release|Win32.ActiveCfg = Release|Win32
 		{511FD3DC-2BC0-4E9D-A223-565D03BF2F87}.Release|Win32.Build.0 = Release|Win32
+		{D0FFD17D-D432-42BC-99BD-DCFE524BE712}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D0FFD17D-D432-42BC-99BD-DCFE524BE712}.Debug|Win32.Build.0 = Debug|Win32
+		{D0FFD17D-D432-42BC-99BD-DCFE524BE712}.Release|Win32.ActiveCfg = Release|Win32
+		{D0FFD17D-D432-42BC-99BD-DCFE524BE712}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
