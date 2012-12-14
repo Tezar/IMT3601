@@ -1,10 +1,28 @@
 #include <irrlicht.h>
 #include <iostream>
 
+#include "ObjectReader.hpp"
+#include "ObjectRecord.hpp"
+
 using namespace irr;
 using namespace gui;
 
 #pragma comment(lib, "Irrlicht.lib")
+
+enum
+{
+	GUI_ID_LOAD_FILE,
+	GUI_ID_QUIT,
+
+	GUI_ID_SHOW_TOOLBOX,
+};
+
+enum eFileAction
+{
+	EOF_LOAD_SCENE,
+	EOF_LOAD_MODEL,
+	EOF_LOAD_TEXTURE,
+};
 
 IrrlichtDevice *Device = 0;
 core::stringc StartUpModelFile;
@@ -13,14 +31,77 @@ core::stringw Caption;
 scene::IAnimatedMeshSceneNode* Model = 0;
 scene::ISceneNode* SkyBox = 0;
 
-enum
+eFileAction openAction; 
+
+
+void showInfoBox(core::stringw msg, const core::stringw title)
 {
-	GUI_ID_LOAD_FILE,
-	GUI_ID_QUIT,
+	Device->getGUIEnvironment()->addMessageBox(
+		title.c_str(), msg.c_str());
+}
 
-	GUI_ID_SHOW_TOOLBOX,
+//load object itself
+void loadObject(ObjectRecord* object)
+{
+	ISceneManager* smgr = Device->getSceneManager();
+	video::IVideoDriver* driver = Device->getVideoDriver();
+	ISceneNode * node;
+	
+	if( object->type != EOT_SEGMENT)
+	{
 
-};
+		switch(object->type)
+		{
+			case EOT_BOX:
+				node = smgr->addCubeSceneNode(1.f);
+				node->setScale(vector3df(object->shapeDimensions.x(),object->shapeDimensions.y(),object->shapeDimensions.z()));
+				break;	//end case EOT_BOX
+
+			default:
+				IMesh* model = smgr->getMesh(object->getModel());
+				node = smgr->addMeshSceneNode( model );
+		}
+
+		const char * texturePath = object->getTexture();
+		if(texturePath){
+			video::ITexture* texture =  driver->getTexture(texturePath);
+
+			node->setMaterialTexture( 0, texture);
+	
+			node->getMaterial(0).AmbientColor.set(255,255,255,255);
+			node->getMaterial(0).DiffuseColor.set(255,255,255,255);
+			node->getMaterial(0).SpecularColor.set(255,255,255,255);
+		
+
+			node->setMaterialType(video::EMT_SOLID);
+		}
+	}
+
+	int size = object->children.size();
+	if(size > 0){
+		for(core::list<ObjectRecord*>::ConstIterator it = object->children.begin(); it != object->children.end();it++)
+		{
+			ObjectRecord* child = (*it);
+			loadObject(child);
+		}
+	}
+}
+
+void loadScene(core::stringc path)
+{
+	ObjectReader reader(0, Device);
+	ObjectRecord* object = reader.readObjectFromFile(path);
+
+	if(object->type != EOT_SEGMENT)
+	{
+		showInfoBox(core::stringw("unsupported format"), core::stringw("error"));
+		return;
+	}
+
+
+	loadObject(object);
+
+}
 
 
 void createToolBox()
@@ -73,6 +154,7 @@ public:
 					switch(id)
 					{
 					case GUI_ID_LOAD_FILE: // File -> Open Model
+						openAction =  EOF_LOAD_SCENE;
 						env->addFileOpenDialog(L"Please select a model file to open");
 						break;
 					case GUI_ID_QUIT: // File -> Quit
@@ -83,6 +165,21 @@ public:
 				}
 			case EGET_FILE_SELECTED:
 				{
+					switch(openAction)
+					{
+					case EOF_LOAD_SCENE:
+						{
+							IGUIFileOpenDialog* dialog = (IGUIFileOpenDialog*)event.GUIEvent.Caller;
+							loadScene(core::stringc(dialog->getFileName()).c_str());
+
+						}
+						break;
+					default:
+
+						break;
+					}
+
+					break;
 				}
 			case EGET_BUTTON_CLICKED:
 				switch(id)
@@ -100,6 +197,9 @@ public:
 		return false;
 	}
 };
+
+
+
 
 
 int main()
