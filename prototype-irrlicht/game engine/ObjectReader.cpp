@@ -25,13 +25,21 @@ ObjectRecord* ObjectReader::getObject(const char * name)
 
 	if(cached != 0 ) return cached->getValue();
 
+	ObjectRecord* object = readObject(baseDir+"/"+name+".xml");
 	
-	return readObject(name);
+	cache.insert(name, object );
+
+	return object;
 }
 
-ObjectRecord* ObjectReader::readObject(const char * name)
+ObjectRecord* ObjectReader::readObjectFromFile(core::stringc path)
 {
-	std::string path = baseDir+"/"+name+".xml";
+	return readObject(path);
+
+}
+
+ObjectRecord* ObjectReader::readObject(core::stringc path)
+{
 	const char * cstr = path.c_str();
 	IrrXMLReader* xml = createIrrXMLReader( cstr );
 
@@ -62,7 +70,6 @@ ObjectRecord* ObjectReader::readObject(const char * name)
     }
     delete xml;
 	
-	cache.insert(name, object );
 	return object;
 }
 

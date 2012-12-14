@@ -26,14 +26,20 @@ public:
 
 	/* get object from cache or read it if necessarily */
 	ObjectRecord* getObject(const char *);
+
+	/* read object from file if given absolute path*/ 
+	ObjectRecord* readObjectFromFile(core::stringc);
+
+
 	void setBaseDir(const char * dir);
 
 protected:
-	std::string baseDir;
+	core::stringc baseDir;
 	IrrlichtDevice* device;
 
 	/* read object from file*/ 
-	ObjectRecord* readObject(const char *);
+	ObjectRecord* readObject(core::stringc);
+
 
 	ObjectRecord* parseVehicle(IrrXMLReader*);
 	ObjectRecord* parseSegment(IrrXMLReader*);
