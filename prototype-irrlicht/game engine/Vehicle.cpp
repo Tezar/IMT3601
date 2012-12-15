@@ -40,18 +40,18 @@ void Vehicle::updatePhysics()
 		case force_forward:  engineForce = maxForce; break;
 		case force_backward:  engineForce = -maxForce; break;
 	}
-
-	//todo:breaking
-	 //= force == force_forward ? maxForce : 0;
-	//int breakForce = force == force_backward ? maxForce : 0;
+		
+	int breakForce = breaking ?  maxForce : 0;
 
 	int wheelIndex = 0;
-	pointer->applyEngineForce(engineForce, wheelIndex);
-	//pointer->setBrake(breakForce,wheelIndex);
+	pointer->applyEngineForce(engineForce, 0);
+	pointer->applyEngineForce(engineForce, 1);
 
-	wheelIndex = 1;
-	pointer->applyEngineForce(engineForce, wheelIndex);
-	//pointer->setBrake(breakForce,wheelIndex);
+
+	pointer->setBrake(breakForce,2);
+	pointer->setBrake(breakForce,3);
+
+
 
 
 	switch(turning)
