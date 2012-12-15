@@ -21,6 +21,7 @@ private:
 	char Back;
 	char Left;
 	char Right;
+	char HandBreak;
 	char Fire;
 
 	AudioManagerClass * sounds; //Trying to use this won't let me use any functions...
