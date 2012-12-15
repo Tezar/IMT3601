@@ -16,86 +16,28 @@ bool Controller::OnEvent(const SEvent& event)
 		{
 			ControllerVehicle->force = force_forward;
 			sounds->PlaySound(E_TestSound, irrklang::vec3df(0,-1,1));
-
-			if (IsKeyDown(KEY_KEY_A))
-				ControllerVehicle->turning = turning_left;
-			else if (IsKeyDown(KEY_KEY_D))
-				ControllerVehicle->turning = turning_right;
-			else if (IsKeyDown(KEY_SPACE))
-				ControllerVehicle->breaking = true;
-			else
-			{
-				ControllerVehicle->turning = turning_none;
-				ControllerVehicle->breaking = false;
-			}
 		}
-
-		else if (IsKeyDown(KEY_KEY_A))
-		{
-			ControllerVehicle->turning = turning_left;
-
-			if(IsKeyDown(KEY_KEY_W))
-				ControllerVehicle->force = force_forward;
-			else if(IsKeyDown(KEY_KEY_S))
-				ControllerVehicle->force = force_backward;
-			else if(IsKeyDown(KEY_SPACE))
-				ControllerVehicle->breaking = true;
-			else
-			{
-				ControllerVehicle->force = force_none;
-				ControllerVehicle->breaking = false;
-			}
-		}
-
 		else if (IsKeyDown(KEY_KEY_S))
-		{
 			ControllerVehicle->force = force_backward;
-
-			if (IsKeyDown(KEY_KEY_A))
-				ControllerVehicle->turning = turning_left;
-			else if (IsKeyDown(KEY_KEY_D))
-				ControllerVehicle->turning = turning_right;
-			else if (IsKeyDown(KEY_SPACE))
-				ControllerVehicle->breaking = true;
-			else
-			{
-				ControllerVehicle->turning = turning_none;
-				ControllerVehicle->breaking = false;
-			}
-		}
-
-		else if (IsKeyDown(KEY_KEY_D))
-		{
-			ControllerVehicle->turning = turning_right;
-
-			if(IsKeyDown(KEY_KEY_W))
-				ControllerVehicle->force = force_forward;
-			else if(IsKeyDown(KEY_KEY_S))
-				ControllerVehicle->force = force_backward;
-			else if(IsKeyDown(KEY_SPACE))
-				ControllerVehicle->breaking = true;
-			else
-			{
-				ControllerVehicle->force = force_none;
-				ControllerVehicle->breaking = false;
-			}
-		}
-		
-		else if (IsKeyDown(KEY_SPACE))
-			ControllerVehicle->breaking = true;
-
-		//else if (IsKeyDown(KEY_CONTROL))
-		//	RequestingPermissionToLaunchNukes;
-
-		//else if (IsKeyDown(KEY_ESCAPE))
-		//	OpenMenu;
-
 		else
-		{
 			ControllerVehicle->force = force_none;
+
+
+
+		if (IsKeyDown(KEY_KEY_A))
+			ControllerVehicle->turning = turning_left;
+		else if (IsKeyDown(KEY_KEY_D))
+			ControllerVehicle->turning = turning_right;
+		else
 			ControllerVehicle->turning = turning_none;
+
+
+		
+		if (IsKeyDown(KEY_SPACE))
+			ControllerVehicle->breaking = true;
+		else
 			ControllerVehicle->breaking = false;
-		}
+
 	}
 	
 
