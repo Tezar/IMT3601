@@ -46,11 +46,15 @@ void PracticeGameScene::onEnter()
 
 	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 
 	
-	receiver = new Controller(vehicle1, soundDevice);
+	receiver = new Controller(vehicle1, soundDevice, false);
+
+	EventManager::getInstance()->addEventReceiver(receiver);
+
+	receiver = new Controller(vehicle2, soundDevice, true);
 	
 	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 

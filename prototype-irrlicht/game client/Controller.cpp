@@ -12,28 +12,28 @@ bool Controller::OnEvent(const SEvent& event)
 		KeyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
 
 
-		if (IsKeyDown(KEY_KEY_W))
+		if (IsKeyDown(Forward))
 		{
 			ControllerVehicle->force = force_forward;
 			sounds->PlaySound(E_TestSound, irrklang::vec3df(0,-1,1));
 		}
-		else if (IsKeyDown(KEY_KEY_S))
+		else if (IsKeyDown(Back))
 			ControllerVehicle->force = force_backward;
 		else
 			ControllerVehicle->force = force_none;
 
 
 
-		if (IsKeyDown(KEY_KEY_A))
+		if (IsKeyDown(Left))
 			ControllerVehicle->turning = turning_left;
-		else if (IsKeyDown(KEY_KEY_D))
+		else if (IsKeyDown(Right))
 			ControllerVehicle->turning = turning_right;
 		else
 			ControllerVehicle->turning = turning_none;
 
 
 		
-		if (IsKeyDown(KEY_SPACE))
+		if (IsKeyDown(HandBreak))
 			ControllerVehicle->breaking = true;
 		else
 			ControllerVehicle->breaking = false;
@@ -54,23 +54,36 @@ bool Controller::IsKeyDown(EKEY_CODE keyCode) const
 	return KeyIsDown[keyCode];				//	held down.
 }
 
-Controller::Controller(Vehicle * vehicleReference, AudioManagerClass * soundManager)
+Controller::Controller(Vehicle * vehicleReference, AudioManagerClass * soundManager, bool player2)
 {
 	ControllerVehicle = vehicleReference;
 	sounds = soundManager;
 
-	Forward		= KEY_KEY_W;
-	Back		= KEY_KEY_S;
-	Left		= KEY_KEY_A;
-	Right		= KEY_KEY_W;
-	HandBreak	= KEY_SPACE;
-	Fire		= KEY_CONTROL;
+	if (player2)
+	{
+		Forward		= KEY_UP;
+		Back		= KEY_DOWN;
+		Left		= KEY_LEFT;
+		Right		= KEY_RIGHT;
+		HandBreak	= KEY_NUMPAD0;
+		Fire		= KEY_RCONTROL;
+	}
+
+	else
+	{
+		Forward		= KEY_KEY_W;
+		Back		= KEY_KEY_S;
+		Left		= KEY_KEY_A;
+		Right		= KEY_KEY_D;
+		HandBreak	= KEY_SPACE;
+		Fire		= KEY_LCONTROL;
+	}
 
 	for (u32 i = 0; i < KEY_KEY_CODES_COUNT; i++)
 		KeyIsDown[i] = false;
 }
 
-void Controller::ChangeKeySettings(int direction, char keyboardKey)
+void Controller::ChangeKeySettings(int direction, irr::EKEY_CODE keyboardKey)
 {
 	switch(direction)
 	{
