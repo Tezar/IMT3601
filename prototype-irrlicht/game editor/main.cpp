@@ -31,6 +31,8 @@ core::stringw Caption;
 scene::IAnimatedMeshSceneNode* Model = 0;
 scene::ISceneNode* SkyBox = 0;
 
+scene::ICameraSceneNode * camera = 0;
+
 eFileAction openAction; 
 
 
@@ -128,9 +130,6 @@ void createToolBox()
 	env->addEditBox(L"1.0", core::rect<s32>(40,110,130,130), true, t1, 903);
 	env->addButton(core::rect<s32>(10,150,100,190), t1, 1101, L"set");
 
-	// bring irrlicht engine logo to front, because it
-	// now may be below the newly created toolbox
-	root->bringToFront(root->getElementFromId(666, true));
 }
 
 
@@ -139,7 +138,22 @@ class MyEventReceiver : public IEventReceiver
 public:
 	virtual bool OnEvent(const SEvent& event)
 	{
-		if (event.EventType == EET_GUI_EVENT)
+		if (event.EventType == EET_MOUSE_INPUT_EVENT)
+		{
+			//when right clicked enable camera
+			switch(event.MouseInput.Event)
+			{
+			case EMIE_RMOUSE_PRESSED_DOWN:
+				camera->setInputReceiverEnabled(true);
+				break;
+			case EMIE_RMOUSE_LEFT_UP:
+				camera->setInputReceiverEnabled(false);
+				break;
+			default:
+				break;
+			}
+		}
+		else if (event.EventType == EET_GUI_EVENT)
 		{
 			s32 id = event.GUIEvent.Caller->getID();
 			IGUIEnvironment* env = Device->getGUIEnvironment();
@@ -256,8 +270,14 @@ int main()
 	Caption += "]";
 	Device->setWindowCaption(Caption.c_str());
 
+
+	smgr->setAmbientLight(video::SColor(255,200,200,200));
+
 	// add a camera scene node 
-	smgr->addCameraSceneNodeMaya();
+	camera = smgr->addCameraSceneNodeFPS(0,100.0F, 0.2F);
+	camera->setTarget(core::vector3df(0,2,1));
+
+	smgr->addCubeSceneNode()->setPosition(core::vector3df(10,0,0));
 	
 	// draw everything
 	while(Device->run() && driver)
