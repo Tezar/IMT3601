@@ -73,10 +73,15 @@ void loadObject(ObjectRecord* object)
 			node->getMaterial(0).AmbientColor.set(255,255,255,255);
 			node->getMaterial(0).DiffuseColor.set(255,255,255,255);
 			node->getMaterial(0).SpecularColor.set(255,255,255,255);
-		
-
+			
 			node->setMaterialType(video::EMT_SOLID);
 		}
+
+		btVector3 position = object->position; 
+		node->setPosition(vector3df(position.x(),position.y(),position.y()));
+		btVector3 rotation = object->rotation; 
+		node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.y()));
+
 	}
 
 	int size = object->children.size();
