@@ -54,7 +54,7 @@ void loadObject(ObjectRecord* object)
 {
 	ISceneManager* smgr = Device->getSceneManager();
 	video::IVideoDriver* driver = Device->getVideoDriver();
-	ISceneNode * node;
+	ISceneNode * node = 0;
 	
 	if( object->type != EOT_SEGMENT)
 	{
@@ -84,10 +84,14 @@ void loadObject(ObjectRecord* object)
 			node->setMaterialType(video::EMT_SOLID);
 		}
 
-		btVector3 position = object->position; 
-		node->setPosition(vector3df(position.x(),position.y(),position.y()));
-		btVector3 rotation = object->rotation; 
-		node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.y()));
+		if(node != 0)
+		{
+			btVector3 position = object->position; 
+			node->setPosition(vector3df(position.x(),position.y(),position.y()));
+			
+			btVector3 rotation = object->rotation; 
+			node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.y()));
+		}
 
 	}
 
