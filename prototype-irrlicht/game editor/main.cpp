@@ -42,6 +42,13 @@ void showInfoBox(core::stringw msg, const core::stringw title)
 		title.c_str(), msg.c_str());
 }
 
+void showLoadSceneDialog()
+{
+	IGUIEnvironment* env = Device->getGUIEnvironment();
+	openAction =  EOF_LOAD_SCENE;
+	env->addFileOpenDialog(L"Please select a model file to open", true, 0, -1, false, "../config/");
+}
+
 //load object itself
 void loadObject(ObjectRecord* object)
 {
@@ -173,8 +180,7 @@ public:
 					switch(id)
 					{
 					case GUI_ID_LOAD_FILE: // File -> Open Model
-						openAction =  EOF_LOAD_SCENE;
-						env->addFileOpenDialog(L"Please select a model file to open");
+						showLoadSceneDialog();
 						break;
 					case GUI_ID_QUIT: // File -> Quit
 						Device->closeDevice();
@@ -204,7 +210,7 @@ public:
 				switch(id)
 				{
 				case GUI_ID_LOAD_FILE:
-					env->addFileOpenDialog(L"Please select a model file to open");
+					showLoadSceneDialog();
 					break;
 				case GUI_ID_SHOW_TOOLBOX:
 					createToolBox();
