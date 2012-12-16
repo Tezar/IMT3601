@@ -34,7 +34,10 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	//todo: make list of vehicle nodes
 	//createPointParticle(vehicleNodes[0],25,255,255);
 	//	createPointParticle(vehicleNodes[1],255,255,25);
-		
+	//createPointParticle(0,0,0,255,255,25);
+	//createPointParticle(1,0,0,255,255,25);
+	//createPointParticle(2,0,1,255,255,25);
+
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 	
 	smgr->addLightSceneNode(cameraNode, core::vector3df(1,1,-1),
@@ -165,22 +168,24 @@ void GameRenderer::onShapeDelete(btCollisionShape* shape )
 
 
 
-void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int green,int blue) {
+/*void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int green,int blue) {*/
+void GameRenderer::createPointParticle(int one,int two,int three,int red,int green,int blue) {
     
 	ISceneManager* smgr = device->getSceneManager();
 
 	IParticleSystemSceneNode* pss =
-		smgr->addParticleSystemSceneNode(false,vehicleNodes);
+		//smgr->addParticleSystemSceneNode(false,vehicleNodes);
+		smgr->addParticleSystemSceneNode(false);
 
-    IParticleEmitter* ems = pss->createPointEmitter(
-                /*core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size*/
+    IParticleEmitter* ems = pss->createBoxEmitter(
+                core::aabbox3d<f32>(-7,0,-7,7,1,7), // emitter size
                 core::vector3df(0.0f,0.006f,0.0f),   // initial direction
-                8,10,                             // emit rate
+                8,100,                             // emit rate
                 video::SColor(0,0,0,0),       // darkest color
                 video::SColor(0,red,green,blue),       // brightest color /red,green,blue
                 800,2000,0,                         // min and max age, angle
-                core::dimension2df(1.f,1.f),         // min size
-                core::dimension2df(2.f,2.f));        // max size
+                core::dimension2df(10.f,10.f),         // min size
+                core::dimension2df(20.f,20.f));        // max size
 	
 	pss->setEmitter(ems); // this grabs the emitter
     ems->drop(); // so we can drop it here without deleting it
@@ -189,7 +194,8 @@ void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int
     pss->addAffector(pafs); // same goes for the affector
     pafs->drop();
 	
-    pss->setScale(core::vector3df(0.1,0.1,0.1)); // size of squares
+	pss->setPosition(core::vector3df(one,two,three));
+    pss->setScale(core::vector3df(2,2,2)); // size of squares
 	pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
     pss->setMaterialFlag(video::EMF_LIGHTING, false);
     pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);

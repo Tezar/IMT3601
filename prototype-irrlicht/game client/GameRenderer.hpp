@@ -43,7 +43,8 @@ public:
 	void debug_createTrackArrows();
 	void debug_clearTrackArrows();
 
-	void createPointParticle(IMeshSceneNode*,int red ,int green ,int blue);
+	/*void createPointParticle(IMeshSceneNode*,int red ,int green ,int blue);*/
+	void createPointParticle(int one,int two,int three,int red ,int green ,int blue);
 
 	void update();
 
