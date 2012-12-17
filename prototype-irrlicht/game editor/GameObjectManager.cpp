@@ -35,6 +35,7 @@ void GameObjectManagerClass::load(ObjectRecord* object)
 	switch(object->type)
 	{
 		case EOT_SEGMENT:
+			masterRecord = object;
 			//segment got no representation...
 			break;
 		case EOT_WAYPOINT:
@@ -75,6 +76,8 @@ void GameObjectManagerClass::load(ObjectRecord* object)
 			
 			btVector3 rotation = object->rotation; 
 			node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.z()));
+
+			nodesRecord.set( node->getID(), object );
 	}
 
 	int size = object->children.size();
@@ -87,6 +90,16 @@ void GameObjectManagerClass::load(ObjectRecord* object)
 	}
 }
 
+
+ObjectRecord* GameObjectManagerClass::getById(int id)
+{
+	nodeDict::Node* node = nodesRecord.find(id);
+	
+	//not found
+	if(node == 0) return 0;
+
+	return node->getValue();
+}
 
 GameObjectManagerClass::~GameObjectManagerClass(void)
 {

@@ -10,6 +10,11 @@ using namespace irr;
 using namespace gui;
 
 
+using namespace std;
+
+
+typedef map<int, ObjectRecord*> nodeDict;
+
 
 class GameObjectManagerClass
 {
@@ -19,17 +24,23 @@ protected:
 
 	unsigned int nextId(){ return counter++; };
 
+	//master object which is loaded righ now
+	ObjectRecord* masterRecord;
+
+	nodeDict nodesRecord;
+
 public:
 	GameObjectManagerClass(IrrlichtDevice * = 0);
 
 	void clear();
 	void load(ObjectRecord* object);
 
+	ObjectRecord* getById(int);
+
 	//todo:
-	//load object
 	//remove objects
 	//save objects
-	//get object by id
+	
 
 	~GameObjectManagerClass(void);
 
