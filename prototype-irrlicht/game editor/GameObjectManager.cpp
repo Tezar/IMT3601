@@ -37,6 +37,10 @@ void GameObjectManagerClass::load(ObjectRecord* object)
 		case EOT_SEGMENT:
 			//segment got no representation...
 			break;
+		case EOT_WAYPOINT:
+			node = smgr->addCubeSceneNode(1.f);
+			node->setScale(vector3df(0.1f,2.f,0.1f));
+			break;	//end case EOT_WAYPOINT
 		case EOT_BOX:
 			node = smgr->addCubeSceneNode(1.f);
 			node->setScale(vector3df(object->shapeDimensions.x(),object->shapeDimensions.y(),object->shapeDimensions.z()));
