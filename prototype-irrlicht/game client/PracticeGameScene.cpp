@@ -58,7 +58,7 @@ void PracticeGameScene::onEnter()
 	
 	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 
-	createPointParticle(0,0,0,255,255,25);
+	//createPointParticle(0,0,0,255,255,25);
 	//createPointParticle(1,0,0,255,255,25);
 	//createPointParticle(2,0,1,255,255,25);
 
@@ -118,7 +118,7 @@ void PracticeGameScene::createPointParticle(int one,int two,int three,int red,in
     pss->addAffector(pafs); // same goes for the affector
     pafs->drop();
 	
-	pss->setPosition(core::vector3df(0,0,0));
+	pss->setPosition(core::vector3df(one,two,three));
     pss->setScale(core::vector3df(2,2,2)); // size of squares
 	pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
     pss->setMaterialFlag(video::EMF_LIGHTING, false);
