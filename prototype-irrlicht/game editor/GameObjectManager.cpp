@@ -71,10 +71,10 @@ void GameObjectManagerClass::load(ObjectRecord* object)
 
 		
 			btVector3 position = object->position; 
-			node->setPosition(vector3df(position.x(),position.y(),position.y()));
+			node->setPosition(vector3df(position.x(),position.y(),position.z()));
 			
 			btVector3 rotation = object->rotation; 
-			node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.y()));
+			node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.z()));
 	}
 
 	int size = object->children.size();
