@@ -34,6 +34,10 @@ scene::ISceneNode* SkyBox = 0;
 
 scene::ICameraSceneNode * camera = 0;
 
+//which node is highligted, so we can disable that
+ISceneNode * highlighted = 0;
+
+//which action we are going to execute after load dialog is cloed
 eFileAction openAction; 
 
 
@@ -112,6 +116,20 @@ public:
 			case EMIE_RMOUSE_LEFT_UP:
 				camera->setInputReceiverEnabled(false);
 				Device->getCursorControl()->setVisible(true);
+				break;
+			case EMIE_MOUSE_MOVED:{
+				core::position2di cursor = core::position2di(event.MouseInput.X, event.MouseInput.Y);
+				scene::ISceneCollisionManager *collisionManager = Device->getSceneManager()->getSceneCollisionManager();
+				scene::ISceneNode *sceneNode = collisionManager->getSceneNodeFromScreenCoordinatesBB(cursor);
+
+				if(sceneNode && (highlighted != sceneNode) )
+				{
+					if(highlighted != 0) highlighted->setDebugDataVisible(EDS_OFF);
+					highlighted = sceneNode;
+					highlighted->setDebugDataVisible(EDS_FULL);
+				}
+
+				}
 				break;
 			default:
 				break;
