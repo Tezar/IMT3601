@@ -96,8 +96,8 @@ bool EditorEnvironmentClass::handleEvent(const SEvent& event)
 		case GUI_ID_LOAD_FILE:
 			showLoadSceneDialog();
 			break;
-		case GUI_ID_SHOW_TOOLBOX:
-			//createToolBox();
+		case GUI_TOOLBOX_SET:
+			currentToolbox->apply();
 			break;
 		}
 		break;

@@ -23,5 +23,7 @@ protected:
 public:
 	ToolBox(ISceneNode*);
 	~ToolBox(void);
+
+	void apply();
 };
 

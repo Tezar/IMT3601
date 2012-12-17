@@ -44,3 +44,8 @@ void ToolBox::populate()
 	env->addButton(core::rect<s32>(10,150,100,190), t1, GUI_TOOLBOX_SET, L"set");
 }
 
+
+void ToolBox::apply()
+{
+	return; 
+}
