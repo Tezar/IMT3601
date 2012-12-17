@@ -34,7 +34,6 @@ void PracticeGameScene::onEnter()
 
 	engine = new Engine();
 
-
 	//we have to create engine so soon, because otherwise the renderer cant react to creation of new bodies by inserting them to the scene
 	renderer = new GameRenderer(engine);
 	renderer->attach(device);
@@ -43,6 +42,7 @@ void PracticeGameScene::onEnter()
 	soundDevice->BackgroundMusic();
 
 	engine->loadSegment( GameManager::getInstance()->getReader()->getObject("boxes") );
+	renderer->addWaypoints();
 
 	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );

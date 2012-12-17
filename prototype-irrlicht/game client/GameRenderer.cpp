@@ -34,9 +34,6 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	//todo: make list of vehicle nodes
 	//createPointParticle(vehicleNodes[0],25,255,255);
 	//	createPointParticle(vehicleNodes[1],255,255,25);
-	//createPointParticle(0,0,0,255,255,25);
-	//createPointParticle(1,0,0,255,255,25);
-	//createPointParticle(2,0,1,255,255,25);
 
 	cameraNode = smgr->addCameraSceneNode(0, vector3df(0,10,-10), vector3df(0,5,0));
 	
@@ -46,10 +43,20 @@ void GameRenderer::attach(IrrlichtDevice * attachTo)
 	 smgr->setAmbientLight(video::SColor(255,60,60,60));
 }
 
-
 void GameRenderer::detach()
 {
 	//todo:
+}
+
+void GameRenderer::addWaypoints()
+{
+	core::array<btVector3> waypoints = engine->getWaypoints();
+	int count = waypoints.size();
+
+	for(int i=0; i< count ; i++){
+		btVector3 waypoint = waypoints[i];
+		createPointParticle(waypoint.x(),waypoint.y(),waypoint.z(),255,255,25);	
+	}
 }
 
 void GameRenderer::update()
@@ -197,7 +204,7 @@ void GameRenderer::createPointParticle(int one,int two,int three,int red,int gre
 	pss->setPosition(core::vector3df(one,two,three));
     pss->setScale(core::vector3df(2,2,2)); // size of squares
 	pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
-    pss->setMaterialFlag(video::EMF_LIGHTING, false);
-    pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
-    pss->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
+    //pss->setMaterialFlag(video::EMF_LIGHTING, false);
+    //pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
+ //   pss->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
 }

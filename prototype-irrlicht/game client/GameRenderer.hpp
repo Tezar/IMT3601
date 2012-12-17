@@ -34,6 +34,8 @@ public:
 	void attach(IrrlichtDevice* );
 	/** remove anything we have done to device*/
 	void detach();
+	
+	void addWaypoints();
 
 	//react to engine events
 	void GameRenderer::onShapeNew(btCollisionShape*, ObjectRecord*);

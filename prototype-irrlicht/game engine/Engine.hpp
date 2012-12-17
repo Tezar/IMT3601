@@ -68,7 +68,7 @@ public:
 	/* load single segment based on record */
 	void Engine::loadSegment(ObjectRecord* record);
 
-	core::array<btVector3>* getWaypoints(){ return &waypoints; }
+	core::array<btVector3>& getWaypoints(){ return waypoints; }
 
 protected:
 	core::list<EngineObserver*> observers;
