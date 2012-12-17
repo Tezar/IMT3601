@@ -5,12 +5,15 @@
 #include "Engine.hpp"
 #include "EngineBodyState.hpp"
 
+using namespace std;
+
 Engine::Engine(void)
 {
 	numVehicles = 0;
 
 	leadproduct = 1337;
 	leadNextWaypoint = 1337;
+	dead_vehicles = 0;
 
 	averagePosition.set(0,0,0);
 
@@ -278,7 +281,7 @@ inline void Engine::recalculatePosition()
 		v->position.set(pos.x(), pos.y(), pos.z());
 
 
-		checkWaypoint(v);
+		gameplayCheck(v);
 
 	}
 	averagePosition.set(posX/numVehicles, posY/numVehicles, posZ/numVehicles);
@@ -368,7 +371,7 @@ void Engine::removeObserver(EngineObserver* o)
 	//todo:
 }
 
-void Engine::checkWaypoint(Vehicle* vehicle)
+void Engine::gameplayCheck(Vehicle* vehicle)
 {
 	btVector3 vector = waypoints[vehicle->nextWaypoint];
 	// n
@@ -379,26 +382,39 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 	btVector3 pos = btVector3(vehicle->position.X, vehicle->position.Y, vehicle->position.Z);
 
 	float product = vector.dot(pos - waypoints[vehicle->nextWaypoint]);
-	// positiv = before, negative = behind
-
-	if(product > 0)
- 		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
 
 	//if its the first vehicle of the race then it sets the glabal leadNextWaypoint
 	//to the first waypoint
 	if(leadNextWaypoint == 1337 && leadproduct == 1337 && product != 0){
+		vehicle->leadVehicle = true;
 		leadNextWaypoint = vehicle->nextWaypoint;
 		leadproduct = product;
+		leadcar = vehicle;
 	}
 
-	if(vehicle->nextWaypoint == leadNextWaypoint && 
-		product < leadproduct)
+	if((vehicle->nextWaypoint == leadNextWaypoint && product > leadproduct) 
+		|| vehicle->nextWaypoint > leadNextWaypoint)
 	{
-		vehicle->leadVehicle = true; // wrong way to do this, if someone loses the lead they ares til marked as lead
+		vehicle->leadVehicle = true;
 		leadNextWaypoint = vehicle->nextWaypoint;
 		leadproduct = product;
+		leadcar = vehicle;
 	}else{
 		vehicle->leadVehicle = false;
+		if(vehicle->position.getDistanceFrom(leadcar->position) > 20){
+			vehicle->kill();
+			dead_vehicles++;
+			if(dead_vehicles == 3)
+				//game_over(leadcar);
+				dead_vehicles = 0;
+		}
 	}
 	//todo if procuct and nextwaypoint is to far behind, kill the car.
+
+	// positiv = before, negative = behind
+	if(product > 0)
+	{
+ 		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
+	}
+
 }

@@ -94,6 +94,4 @@ void Vehicle::updatePhysics()
 	wheelIndex = 1;
 	pointer->setSteeringValue(steering,wheelIndex);
 
-
 }
-

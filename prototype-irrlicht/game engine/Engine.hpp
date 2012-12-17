@@ -37,7 +37,8 @@ public:
 	//lead vehicle
 	float leadproduct;
 	int leadNextWaypoint;
-
+	int dead_vehicles;
+	Vehicle* leadcar;
 	
 	Engine(void);
 	~Engine(void);
@@ -89,7 +90,7 @@ protected:
 	/* loads segments*/
 	void loadSegments(int min, int max);
 	
-	void checkWaypoint(Vehicle* vehicle);
+	void gameplayCheck(Vehicle* vehicle);
 	/*void checkLeadvehicle(Vehicle* vehicle);*/
 
 	//physics system
