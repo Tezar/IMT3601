@@ -107,9 +107,11 @@ public:
 			{
 			case EMIE_RMOUSE_PRESSED_DOWN:
 				camera->setInputReceiverEnabled(true);
+				Device->getCursorControl()->setVisible(false);
 				break;
 			case EMIE_RMOUSE_LEFT_UP:
 				camera->setInputReceiverEnabled(false);
+				Device->getCursorControl()->setVisible(true);
 				break;
 			default:
 				break;
@@ -237,7 +239,7 @@ int main()
 	smgr->setAmbientLight(video::SColor(255,200,200,200));
 
 	// add a camera scene node 
-	camera = smgr->addCameraSceneNodeFPS(0,100.0F, 0.2F);
+	camera = smgr->addCameraSceneNodeFPS(0,100.0F, 0.05F);
 	camera->setTarget(core::vector3df(0,2,1));
 
 	smgr->addCubeSceneNode()->setPosition(core::vector3df(10,0,0));
