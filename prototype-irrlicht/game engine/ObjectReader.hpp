@@ -24,7 +24,7 @@ public:
 	ObjectReader(const char *, IrrlichtDevice* );
 	~ObjectReader(void);
 
-	/* get object from cache or read it if necessarily */
+	/* get object from cache or read it from file if necessarily */
 	ObjectRecord* getObject(const char *);
 
 	/* read object from file if given absolute path*/ 

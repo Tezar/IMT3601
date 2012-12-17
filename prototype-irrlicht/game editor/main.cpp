@@ -3,6 +3,7 @@
 
 #include "ObjectReader.hpp"
 #include "ObjectRecord.hpp"
+#include "GameObjectManager.hpp"
 
 using namespace irr;
 using namespace gui;
@@ -49,61 +50,6 @@ void showLoadSceneDialog()
 	env->addFileOpenDialog(L"Please select a model file to open", true, 0, -1, false, "../config/");
 }
 
-//load object itself
-void loadObject(ObjectRecord* object)
-{
-	ISceneManager* smgr = Device->getSceneManager();
-	video::IVideoDriver* driver = Device->getVideoDriver();
-	ISceneNode * node = 0;
-	
-	if( object->type != EOT_SEGMENT)
-	{
-
-		switch(object->type)
-		{
-			case EOT_BOX:
-				node = smgr->addCubeSceneNode(1.f);
-				node->setScale(vector3df(object->shapeDimensions.x(),object->shapeDimensions.y(),object->shapeDimensions.z()));
-				break;	//end case EOT_BOX
-
-			default:
-				IMesh* model = smgr->getMesh(object->getModel());
-				node = smgr->addMeshSceneNode( model );
-		}
-
-		const char * texturePath = object->getTexture();
-		if(texturePath){
-			video::ITexture* texture =  driver->getTexture(texturePath);
-
-			node->setMaterialTexture( 0, texture);
-	
-			node->getMaterial(0).AmbientColor.set(255,255,255,255);
-			node->getMaterial(0).DiffuseColor.set(255,255,255,255);
-			node->getMaterial(0).SpecularColor.set(255,255,255,255);
-			
-			node->setMaterialType(video::EMT_SOLID);
-		}
-
-		if(node != 0)
-		{
-			btVector3 position = object->position; 
-			node->setPosition(vector3df(position.x(),position.y(),position.y()));
-			
-			btVector3 rotation = object->rotation; 
-			node->setRotation(vector3df(rotation.x(),rotation.y(),rotation.y()));
-		}
-
-	}
-
-	int size = object->children.size();
-	if(size > 0){
-		for(core::list<ObjectRecord*>::ConstIterator it = object->children.begin(); it != object->children.end();it++)
-		{
-			ObjectRecord* child = (*it);
-			loadObject(child);
-		}
-	}
-}
 
 void loadScene(core::stringc path)
 {
@@ -116,8 +62,8 @@ void loadScene(core::stringc path)
 		return;
 	}
 
-
-	loadObject(object);
+	//GameObjectManager::getInstance()->clear();
+	GameObjectManager::getInstance()->load(object);
 
 }
 
@@ -238,6 +184,8 @@ int main()
 	MyEventReceiver receiver;
 	Device = createDevice(video::EDT_OPENGL, core::dimension2d<u32>(800, 600),
 		16, false, false, false, &receiver);
+
+	GameObjectManager::getInstance()->setDevice(Device);
 
 	if (Device == 0)
 		return 1;  // could not create selected driver.
