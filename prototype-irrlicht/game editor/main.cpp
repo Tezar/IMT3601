@@ -25,6 +25,14 @@ enum eFileAction
 	EOF_LOAD_TEXTURE,
 };
 
+enum eMouseMode
+{
+	EMM_SELECT,
+	EMM_CAMERA,
+	EMM_RULE42,
+};
+
+
 IrrlichtDevice *Device = 0;
 core::stringc StartUpModelFile;
 core::stringw MessageText;
@@ -37,8 +45,11 @@ scene::ICameraSceneNode * camera = 0;
 //which node is highligted, so we can disable that
 ISceneNode * highlighted = 0;
 
-//which action we are going to execute after load dialog is cloed
+//which action we are going to execute after load dialog is closed
 eFileAction openAction; 
+
+//which action we are going to execute after load dialog is cloed
+eMouseMode mouseMode; 
 
 
 void showInfoBox(core::stringw msg, const core::stringw title)
@@ -117,17 +128,28 @@ public:
 				camera->setInputReceiverEnabled(false);
 				Device->getCursorControl()->setVisible(true);
 				break;
-			case EMIE_MOUSE_MOVED:{
+			case EMIE_LMOUSE_PRESSED_DOWN:{
 				core::position2di cursor = core::position2di(event.MouseInput.X, event.MouseInput.Y);
 				scene::ISceneCollisionManager *collisionManager = Device->getSceneManager()->getSceneCollisionManager();
 				scene::ISceneNode *sceneNode = collisionManager->getSceneNodeFromScreenCoordinatesBB(cursor);
 
-				if(sceneNode && (highlighted != sceneNode) )
-				{
-					if(highlighted != 0) highlighted->setDebugDataVisible(EDS_OFF);
-					highlighted = sceneNode;
-					highlighted->setDebugDataVisible(EDS_FULL);
-				}
+				//we hit nothing
+				if(sceneNode == 0) break;
+				//we hit something without id
+				if(sceneNode->getID() == 0) break;
+
+				//we already highligted this node
+				if(highlighted == sceneNode ) break;
+				
+				int id = sceneNode->getID();
+				//it's not managed node
+				if(	id < 0) break;
+				
+				if(highlighted != 0) highlighted->setDebugDataVisible(EDS_OFF);
+				highlighted = sceneNode;
+				highlighted->setDebugDataVisible(EDS_BBOX | EDS_MESH_WIRE_OVERLAY | EDS_BBOX_BUFFERS | EDS_HALF_TRANSPARENCY );
+				createToolBox();
+				
 
 				}
 				break;
@@ -200,10 +222,9 @@ public:
 int main()
 {
 	// create device and exit if creation failed
-
 	MyEventReceiver receiver;
 	Device = createDevice(video::EDT_OPENGL, core::dimension2d<u32>(800, 600),
-		16, false, false, false, &receiver);
+		16, false, true, false, &receiver);
 
 	GameObjectManager::getInstance()->setDevice(Device);
 
@@ -216,6 +237,9 @@ int main()
 	video::IVideoDriver* driver = Device->getVideoDriver();
 	IGUIEnvironment* env = Device->getGUIEnvironment();
 	scene::ISceneManager* smgr = Device->getSceneManager();
+
+
+	smgr->getParameters()->setAttribute(scene::ALLOW_ZWRITE_ON_TRANSPARENT, true);
 
 	// create menu
 	gui::IGUIContextMenu* menu = env->addMenu();
@@ -259,9 +283,13 @@ int main()
 	// add a camera scene node 
 	camera = smgr->addCameraSceneNodeFPS(0,100.0F, 0.05F);
 	camera->setTarget(core::vector3df(0,2,1));
+	camera->setInputReceiverEnabled(false);
 
 	smgr->addCubeSceneNode()->setPosition(core::vector3df(10,0,0));
 	
+
+	mouseMode = EMM_SELECT;
+
 	// draw everything
 	while(Device->run() && driver)
 		if (Device->isWindowActive())
