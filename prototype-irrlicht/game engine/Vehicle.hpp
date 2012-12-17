@@ -40,6 +40,7 @@ public:
 	~Vehicle(void);
 
 	int nextWaypoint;
+	bool leadVehicle;
 
 	btRaycastVehicle* pointer;
 	

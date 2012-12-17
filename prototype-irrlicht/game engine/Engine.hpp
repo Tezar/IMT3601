@@ -34,6 +34,10 @@ public:
 	int numVehicles;
 	int currentSegment;
 
+	//lead vehicle
+	float leadproduct;
+	int leadNextWaypoint;
+
 	
 	Engine(void);
 	~Engine(void);
@@ -84,6 +88,7 @@ protected:
 	void loadSegments(int min, int max);
 	
 	void checkWaypoint(Vehicle* vehicle);
+	/*void checkLeadvehicle(Vehicle* vehicle);*/
 
 	//physics system
     btBroadphaseInterface* broadphase;

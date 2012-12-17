@@ -9,6 +9,9 @@ Engine::Engine(void)
 {
 	numVehicles = 0;
 
+	leadproduct = 1337;
+	leadNextWaypoint = 1337;
+
 	averagePosition.set(0,0,0);
 
 	// Build the broadphase
@@ -120,7 +123,8 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 			//now, this is crucial, rayVehicle is form of constrain and needs to be added to the world
 			dynamicsWorld->addVehicle(rayVehicle);
 
-
+			//all vehicles starts as not the lead car
+			vehicle->leadVehicle = false;
 
 			//is this necessary?
 			rayVehicle->setCoordinateSystem(0,1,2);
@@ -377,6 +381,19 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 	float product = vector.dot(pos - waypoints[vehicle->nextWaypoint]);
 	// positiv = before, negative = behind
 
-	if(product < 0)
+	if(product > 0)
 		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
+
+	//if its the first vehicle of the race then it sets the glabal leadNextWaypoint
+	//to the first waypoint
+	if(leadNextWaypoint == 1337 && leadproduct == 1337){
+		leadNextWaypoint = vehicle->nextWaypoint;
+		leadproduct = product;
+	}
+
+	if(vehicle->nextWaypoint == leadNextWaypoint && 
+		product > leadproduct)
+		vehicle->leadVehicle = true; // wrong way to do this, if someone loses the lead they ares til marked as lead
+
+	//todo if procuct and nextwaypoint is to far behind, kill the car.
 }
