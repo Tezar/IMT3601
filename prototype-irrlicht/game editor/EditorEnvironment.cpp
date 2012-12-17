@@ -6,7 +6,7 @@ EditorEnvironmentClass::EditorEnvironmentClass()
 }
 
 void EditorEnvironmentClass::populate(){
-	IGUIEnvironment* env = device->getGUIEnvironment();
+	IGUIEnvironment* env = getGUI();
 	video::IVideoDriver* driver = device->getVideoDriver();
 
 	// create menu
@@ -51,7 +51,7 @@ bool EditorEnvironmentClass::handleEvent(const SEvent& event)
 	if (event.EventType != EET_GUI_EVENT) return false;
 
 	s32 id = event.GUIEvent.Caller->getID();
-	IGUIEnvironment* env = device->getGUIEnvironment();
+	IGUIEnvironment* env = getGUI();
 
 	switch(event.GUIEvent.EventType)
 	{
@@ -109,7 +109,7 @@ bool EditorEnvironmentClass::handleEvent(const SEvent& event)
 
 void EditorEnvironmentClass::showLoadSceneDialog()
 {
-	IGUIEnvironment* env = device->getGUIEnvironment();
+	IGUIEnvironment* env = getGUI();
 	openAction =  EOF_LOAD_SCENE;
 	env->addFileOpenDialog(L"Please select a model file to open", true, 0, -1, false, "../config/");
 }
@@ -138,4 +138,9 @@ void EditorEnvironmentClass::showInfoBox(core::stringw msg, const core::stringw 
 {
 	device->getGUIEnvironment()->addMessageBox(
 		title.c_str(), msg.c_str());
+}
+
+IGUIEnvironment* EditorEnvironmentClass::getGUI()
+{
+	return  device->getGUIEnvironment()
 }

@@ -52,6 +52,8 @@ public:
 
 	void showInfoBox(core::stringw msg, const core::stringw title);
 
+	IGUIEnvironment* getGUI();
+
 	void setDevice(IrrlichtDevice* d){ device = d;};
 	IrrlichtDevice* getDevice(){ return device;};
 };
