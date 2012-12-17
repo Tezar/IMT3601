@@ -55,6 +55,7 @@ public:
 
 	void kill();
 	void revive();
+	bool isAlive(){ return alive; };
 
 	void updatePhysics();
 

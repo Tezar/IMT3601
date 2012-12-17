@@ -268,6 +268,9 @@ inline void Engine::recalculatePosition()
 
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
+
+		if(!v->isAlive()) continue;
+
 		btTransform trans;
 
 		v->chassis->getMotionState()->getWorldTransform(trans);
