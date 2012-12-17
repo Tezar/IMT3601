@@ -386,15 +386,17 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 
 	//if its the first vehicle of the race then it sets the glabal leadNextWaypoint
 	//to the first waypoint
-	if(leadNextWaypoint == 1337 && leadproduct == 1337){
+	if(leadNextWaypoint == 1337 && leadproduct == 1337 && product != 0){
 		leadNextWaypoint = vehicle->nextWaypoint;
 		leadproduct = product;
 	}
 
 	if(vehicle->nextWaypoint == leadNextWaypoint && 
-		product > leadproduct)
+		product < leadproduct)
 	{
 		vehicle->leadVehicle = true; // wrong way to do this, if someone loses the lead they ares til marked as lead
+		leadNextWaypoint = vehicle->nextWaypoint;
+		leadproduct = product;
 	}else{
 		vehicle->leadVehicle = false;
 	}

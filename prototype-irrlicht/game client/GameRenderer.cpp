@@ -58,7 +58,7 @@ void GameRenderer::addWaypoints()
 
 	for(int i=0; i< count ; i++){
 		btVector3 waypoint = waypoints[i];
-		createPointParticle(waypoint.x(),waypoint.y(),waypoint.z(),255,255,25);	
+		createPointParticle(waypoint.x(),waypoint.y(),waypoint.z(),rand()%255+1,rand()%255+1,rand()%255+1);	
 	}
 }
 
@@ -193,7 +193,7 @@ void GameRenderer::createPointParticle(int one,int two,int three,int red,int gre
                 8,10,                             // emit rate
                 video::SColor(0,0,0,0),       // darkest color
                 video::SColor(0,red,green,blue),       // brightest color /red,green,blue
-                800,2000,0,                         // min and max age, angle
+                400,1000,0,                         // min and max age, angle
                 core::dimension2df(1.f,1.f),         // min size
                 core::dimension2df(2.f,2.f));        // max size
 	
