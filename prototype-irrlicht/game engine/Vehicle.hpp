@@ -34,6 +34,7 @@ protected:
 	float steeringIncrement;
 	float steeringClamp;
 	
+	bool alive;
 
 public:
 	Vehicle(void);
@@ -52,6 +53,8 @@ public:
 	//list of turnable bodies
 	core::list<btRigidBody*> turnable;
 
+	void kill();
+	void revive();
 
 	void updatePhysics();
 

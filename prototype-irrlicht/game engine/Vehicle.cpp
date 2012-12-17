@@ -3,7 +3,7 @@
 
 
 
-Vehicle::Vehicle(void)
+Vehicle::Vehicle(void): alive(true)
 {
 	force = force_none;
 	turning = turning_none;
@@ -33,8 +33,25 @@ void Vehicle::addShape(btCollisionShape* shape)
 	shapes.push_back(shape);
 }
 
+
+void Vehicle::kill()
+{
+	force = force_none;
+	turning = turning_none;
+	updatePhysics();
+	alive = false;
+}
+
+void Vehicle::revive()
+{
+	alive  = true;
+}
+
 void Vehicle::updatePhysics()
 {
+		
+	if(!alive) return;
+
 	int engineForce = 0;
 
 	switch(force)
