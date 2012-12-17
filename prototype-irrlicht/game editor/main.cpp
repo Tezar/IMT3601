@@ -4,26 +4,15 @@
 #include "ObjectReader.hpp"
 #include "ObjectRecord.hpp"
 #include "GameObjectManager.hpp"
+#include "EditorEnvironment.hpp"
 
 using namespace irr;
 using namespace gui;
 
 #pragma comment(lib, "Irrlicht.lib")
 
-enum
-{
-	GUI_ID_LOAD_FILE,
-	GUI_ID_QUIT,
 
-	GUI_ID_SHOW_TOOLBOX,
-};
 
-enum eFileAction
-{
-	EOF_LOAD_SCENE,
-	EOF_LOAD_MODEL,
-	EOF_LOAD_TEXTURE,
-};
 
 enum eMouseMode
 {
@@ -34,53 +23,16 @@ enum eMouseMode
 
 
 IrrlichtDevice *Device = 0;
-core::stringc StartUpModelFile;
-core::stringw MessageText;
-core::stringw Caption;
-scene::IAnimatedMeshSceneNode* Model = 0;
-scene::ISceneNode* SkyBox = 0;
+
 
 scene::ICameraSceneNode * camera = 0;
 
 //which node is highligted, so we can disable that
 ISceneNode * highlighted = 0;
 
-//which action we are going to execute after load dialog is closed
-eFileAction openAction; 
 
 //which action we are going to execute after load dialog is cloed
 eMouseMode mouseMode; 
-
-
-void showInfoBox(core::stringw msg, const core::stringw title)
-{
-	Device->getGUIEnvironment()->addMessageBox(
-		title.c_str(), msg.c_str());
-}
-
-void showLoadSceneDialog()
-{
-	IGUIEnvironment* env = Device->getGUIEnvironment();
-	openAction =  EOF_LOAD_SCENE;
-	env->addFileOpenDialog(L"Please select a model file to open", true, 0, -1, false, "../config/");
-}
-
-
-void loadScene(core::stringc path)
-{
-	ObjectReader reader(0, Device);
-	ObjectRecord* object = reader.readObjectFromFile(path);
-
-	if(object->type != EOT_SEGMENT)
-	{
-		showInfoBox(core::stringw("unsupported format"), core::stringw("error"));
-		return;
-	}
-
-	//GameObjectManager::getInstance()->clear();
-	GameObjectManager::getInstance()->load(object);
-
-}
 
 
 void createToolBox()
@@ -159,57 +111,7 @@ public:
 		}
 		else if (event.EventType == EET_GUI_EVENT)
 		{
-			s32 id = event.GUIEvent.Caller->getID();
-			IGUIEnvironment* env = Device->getGUIEnvironment();
-			switch(event.GUIEvent.EventType)
-			{
-			case EGET_MENU_ITEM_SELECTED:
-				{
-					// a menu item was clicked
-					IGUIContextMenu* menu = (IGUIContextMenu*)event.GUIEvent.Caller;
-					s32 id = menu->getItemCommandId(menu->getSelectedItem());
-					
-					switch(id)
-					{
-					case GUI_ID_LOAD_FILE: // File -> Open Model
-						showLoadSceneDialog();
-						break;
-					case GUI_ID_QUIT: // File -> Quit
-						Device->closeDevice();
-						break;
-					}
-					break;
-				}
-			case EGET_FILE_SELECTED:
-				{
-					switch(openAction)
-					{
-					case EOF_LOAD_SCENE:
-						{
-							IGUIFileOpenDialog* dialog = (IGUIFileOpenDialog*)event.GUIEvent.Caller;
-							loadScene(core::stringc(dialog->getFileName()).c_str());
-
-						}
-						break;
-					default:
-
-						break;
-					}
-
-					break;
-				}
-			case EGET_BUTTON_CLICKED:
-				switch(id)
-				{
-				case GUI_ID_LOAD_FILE:
-					showLoadSceneDialog();
-					break;
-				case GUI_ID_SHOW_TOOLBOX:
-					createToolBox();
-					break;
-				}
-				break;
-			}
+			return EditorEnvironment::getInstance()->handleEvent(event);
 		}
 		return false;
 	}
@@ -226,58 +128,25 @@ int main()
 	Device = createDevice(video::EDT_OPENGL, core::dimension2d<u32>(800, 600),
 		16, false, true, false, &receiver);
 
-	GameObjectManager::getInstance()->setDevice(Device);
-
 	if (Device == 0)
 		return 1;  // could not create selected driver.
 
 	Device->setResizable(true);
-	Device->setWindowCaption(L"Irrlicht Engine - Loading...");
+	Device->setWindowCaption(L"GameEditor");
+
+	GameObjectManager::getInstance()->setDevice(Device);
+	EditorEnvironment::getInstance()->setDevice(Device);
+	
 
 	video::IVideoDriver* driver = Device->getVideoDriver();
-	IGUIEnvironment* env = Device->getGUIEnvironment();
 	scene::ISceneManager* smgr = Device->getSceneManager();
 
+	IGUIEnvironment* env = Device->getGUIEnvironment();	//for drawAll
 
+	//lets create ui
+	EditorEnvironment::getInstance()->populate();
+	//setting for graphics
 	smgr->getParameters()->setAttribute(scene::ALLOW_ZWRITE_ON_TRANSPARENT, true);
-
-	// create menu
-	gui::IGUIContextMenu* menu = env->addMenu();
-	menu->addItem(L"File", -1, true, true);
-
-	gui::IGUIContextMenu* submenu;
-	submenu = menu->getSubMenu(0);
-	submenu->addItem(L"Open Model File...", GUI_ID_LOAD_FILE);
-	submenu->addSeparator();
-	submenu->addItem(L"Quit", GUI_ID_QUIT);
-
-	// create toolbar
-	gui::IGUIToolBar* bar = env->addToolBar();
-	bar->addButton(GUI_ID_LOAD_FILE, 0,0, driver->getTexture("../media/editor/open.png"));
-
-	// disable alpha
-	for (s32 i=0; i<gui::EGDC_COUNT ; ++i)
-	{
-		video::SColor col = env->getSkin()->getColor((gui::EGUI_DEFAULT_COLOR)i);
-		col.setAlpha(255);
-		env->getSkin()->setColor((gui::EGUI_DEFAULT_COLOR)i, col);
-	}
-
-	// add a tabcontrol
-	//createToolBox();
-
-
-	// create fps text 
-	IGUIStaticText* fpstext =
-		env->addStaticText(L"", core::rect<s32>(210,26,270,41), true);
-
-	// set window caption
-	Caption += " - [";
-	Caption += driver->getName();
-	Caption += "]";
-	Device->setWindowCaption(Caption.c_str());
-
-
 	smgr->setAmbientLight(video::SColor(255,200,200,200));
 
 	// add a camera scene node 
@@ -294,12 +163,7 @@ int main()
 			driver->beginScene(true, true, video::SColor(150,50,50,50));
 			smgr->drawAll();
 			env->drawAll();
-		
 			driver->endScene();
-
-			core::stringw str = L"FPS: ";
-			str += driver->getFPS();
-			fpstext->setText(str.c_str());
 		}
 	Device->drop();
 	return 0;
