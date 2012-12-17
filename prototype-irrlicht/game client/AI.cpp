@@ -48,8 +48,8 @@ void ArtificialIntelligence::TraverseWaypoints()
 
 	if(i <= waypoints.size())
 	{
-		if((distanceToNextWaypoint_x <= 0.4) && (distanceToNextWaypoint_x >= -0.4) &&
-		   (distanceToNextWaypoint_y <= 0.4) && (distanceToNextWaypoint_y >= +0.4))
+		if((distanceToNextWaypoint_x <= 0.1) && (distanceToNextWaypoint_x >= -0.1) &&
+		   (distanceToNextWaypoint_y <= 0.1) && (distanceToNextWaypoint_y >= -0.1))
 		{
 			AssignWaypoints();
 		}
@@ -63,15 +63,15 @@ void ArtificialIntelligence::TraverseWaypoints()
 		if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
 		{
 			if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
-				AIvehicle->turning = turning_right;
+				AIvehicle->turning = turning_left;
 			else
 				AIvehicle->turning = turning_none;
 		}
 		
-		else if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
+		if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
 		{
 			if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
-				AIvehicle->turning = turning_left;
+				AIvehicle->turning = turning_right;
 			else
 				AIvehicle->turning = turning_none;
 		}
@@ -81,5 +81,9 @@ void ArtificialIntelligence::TraverseWaypoints()
 		previousPosition_y = currentPosition_y;
 	}
 	else
+	{
+		AIvehicle->force = force_none;
+		AIvehicle->turning = turning_none;
 		AIvehicle->breaking = true;
+	}
 }
