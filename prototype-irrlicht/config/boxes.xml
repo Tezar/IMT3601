@@ -2,14 +2,10 @@
 	<box shapeDimensions="50, 0.5, 50" texture="../media/wood1.png" bump="../media/wood1_normal.png" position="0,-2,0"/>
 	<box shapeDimensions="0.5, 0.5, 0.5" position="0,10,0" mass="1"/>
 
-	<waypoint position="0,0,0" />
-	<waypoint position="1,0,0" />
-	<waypoint position="2,0,1" />
-	<waypoint position="2,0,2" />
-	<waypoint position="2,0,3" />
-	<waypoint position="1,0,4" />
-	<waypoint position="1,0,3" />
-	<waypoint position="1,0,2" />
+	<waypoint position="0,2,2" />
+	<waypoint position="0,2,7" />
+	<waypoint position="0,2,12" />
 
-	
-</segment>
+
+	<waypoint position="5,2,15" />  <waypoint position="10,2,12" />  <waypoint position="10,2,7" />  <waypoint position="10,2,2" />  <waypoint position="10,2,-3" />  <waypoint position="10,2,-8" />  
+<waypoint position="5,2,-11" />  <waypoint position="0,2,-8" />  <waypoint position="0,2,-3" />  </segment>
