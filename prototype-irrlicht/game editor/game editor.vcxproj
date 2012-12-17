@@ -69,8 +69,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EditorEnvironment.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ToolBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\game engine\game engine.vcxproj">
@@ -78,7 +80,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditorEnvironment.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
+    <ClInclude Include="ToolBox.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
