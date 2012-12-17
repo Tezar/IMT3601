@@ -382,7 +382,7 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 	// positiv = before, negative = behind
 
 	if(product > 0)
-		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
+ 		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
 
 	//if its the first vehicle of the race then it sets the glabal leadNextWaypoint
 	//to the first waypoint
@@ -393,7 +393,10 @@ void Engine::checkWaypoint(Vehicle* vehicle)
 
 	if(vehicle->nextWaypoint == leadNextWaypoint && 
 		product > leadproduct)
+	{
 		vehicle->leadVehicle = true; // wrong way to do this, if someone loses the lead they ares til marked as lead
-
+	}else{
+		vehicle->leadVehicle = false;
+	}
 	//todo if procuct and nextwaypoint is to far behind, kill the car.
 }
