@@ -75,7 +75,8 @@ public:
 				if(highlighted != 0) highlighted->setDebugDataVisible(EDS_OFF);
 				highlighted = sceneNode;
 				highlighted->setDebugDataVisible(EDS_BBOX | EDS_MESH_WIRE_OVERLAY | EDS_BBOX_BUFFERS | EDS_HALF_TRANSPARENCY );
-				createToolBox();
+				
+				EditorEnvironment::getInstance()->createToolBox(sceneNode);
 				
 
 				}

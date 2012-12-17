@@ -1,7 +1,7 @@
 #include "EditorEnvironment.hpp"
 
 
-EditorEnvironmentClass::EditorEnvironmentClass()
+EditorEnvironmentClass::EditorEnvironmentClass(): currentToolbox(0)
 {
 }
 
@@ -140,7 +140,14 @@ void EditorEnvironmentClass::showInfoBox(core::stringw msg, const core::stringw 
 		title.c_str(), msg.c_str());
 }
 
+void EditorEnvironmentClass::createToolBox(ISceneNode * node){
+	if(currentToolbox != 0){
+		delete currentToolbox;
+	}
+	currentToolbox = new ToolBox(node);
+}
+
 IGUIEnvironment* EditorEnvironmentClass::getGUI()
 {
-	return  device->getGUIEnvironment()
+	return  device->getGUIEnvironment();
 }

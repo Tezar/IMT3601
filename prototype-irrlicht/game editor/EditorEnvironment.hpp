@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Singleton.hpp>
 
+#include "Toolbox.hpp"
 #include "ObjectReader.hpp"
 #include "ObjectRecord.hpp"
 #include "GameObjectManager.hpp"
@@ -17,6 +18,12 @@ enum
 	GUI_ID_QUIT,
 
 	GUI_ID_SHOW_TOOLBOX,
+
+	GUI_TOOLBOX_WINDOWS_ID,
+	GUI_TOOLBOX_SET,
+
+	//make sure there is always enough space for each items
+	GUI_TOOLBOX_ITEMS=6969,
 };
 
 
@@ -34,7 +41,7 @@ protected:
 
 	//which action we are going to execute after load dialog is closed
 	eFileAction openAction; 
-
+	ToolBox* currentToolbox;
 public:
 	EditorEnvironmentClass();
 	~EditorEnvironmentClass(void);
@@ -51,6 +58,7 @@ public:
 	
 
 	void showInfoBox(core::stringw msg, const core::stringw title);
+	void createToolBox(ISceneNode *);
 
 	IGUIEnvironment* getGUI();
 
