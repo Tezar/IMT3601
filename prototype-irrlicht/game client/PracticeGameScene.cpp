@@ -5,6 +5,7 @@
 #include "Vehicle.hpp"
 #include "Controller.hpp"
 #include "EventManager.hpp"
+#include "AI.hpp"
 
 //todo: remove unused
 using namespace core;
@@ -44,11 +45,13 @@ void PracticeGameScene::onEnter()
 	engine->loadSegment( GameManager::getInstance()->getReader()->getObject("boxes") );
 	renderer->addWaypoints();
 
-	//engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-	//engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-
+	Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	
+	AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
+	AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
 	
 	receiver = new Controller(vehicle1, soundDevice, false);
 
@@ -77,6 +80,8 @@ int PracticeGameScene::onFrame(int toDo){
 	toDo = engine->step(toDo);
 	renderer->update();
 	soundDevice->UpdateListenerPosition(engine);
+	AIvehicle1->TraverseWaypoints();
+	AIvehicle2->TraverseWaypoints();
 
 	return toDo;
 }
