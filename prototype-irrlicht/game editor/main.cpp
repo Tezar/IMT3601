@@ -285,9 +285,6 @@ int main()
 	camera->setTarget(core::vector3df(0,2,1));
 	camera->setInputReceiverEnabled(false);
 
-	smgr->addCubeSceneNode()->setPosition(core::vector3df(10,0,0));
-	
-
 	mouseMode = EMM_SELECT;
 
 	// draw everything
