@@ -1,6 +1,7 @@
 #include <Singleton.hpp>
 #include <Engine.hpp>
 #include "AI.hpp"
+#include <cmath>
 
 using namespace irr;
 
@@ -45,82 +46,94 @@ void ArtificialIntelligence::GoToNextWaypoint()
 
 void ArtificialIntelligence::TraverseWaypoints()
 {
+	
+//	vehicleRotation = ((ISceneNode*)( AIvehicle->chassis->getUserPointer() ))->getRotation().Y;
+
+	irr::core::matrix4 matr;
+	btTransform trans;
+
+	AIvehicle->chassis->getMotionState()->getWorldTransform(trans);
+	trans.getOpenGLMatrix(matr.pointer());
+	vehicleRotation = (matr.getRotationDegrees().Y/180)*PI;
+
+ 
 
 	if(currentWaypointNr <= waypoints.size())
 	{
-		if((distanceToNextWaypoint_x <= 0.1f) && (distanceToNextWaypoint_x >= -0.1f) &&
-		   (distanceToNextWaypoint_y <= 0.1f) && (distanceToNextWaypoint_y >= -0.1f))
-		{
-			AssignWaypoints();
-		}
-
+		//if((distanceToNextWaypoint_x <= 3.0f) && (distanceToNextWaypoint_x >= -3.0f) &&
+		//   (distanceToNextWaypoint_z <= 3.0f) && (distanceToNextWaypoint_z >= -3.0f))
+		//{
+		//	AssignWaypoints();
+		//}
+		NextWaypoint = waypoints[AIvehicle->nextWaypoint];
 
 		currentPosition_x = AIvehicle->position.X;
-		currentPosition_y = AIvehicle->position.Y;
+		currentPosition_z = AIvehicle->position.Z;
 		distanceToNextWaypoint_x = currentPosition_x - NextWaypoint.x();
-		distanceToNextWaypoint_y = currentPosition_y - NextWaypoint.y();
+		distanceToNextWaypoint_z = currentPosition_z - NextWaypoint.z();
 		previousDistanceToNextWaypoint_x = previousPosition_x - NextWaypoint.x();
-		previousDistanceToNextWaypoint_y = previousPosition_y - NextWaypoint.y();
+		previousDistanceToNextWaypoint_z = previousPosition_z - NextWaypoint.z();
 
+		direction = atan2(distanceToNextWaypoint_x, distanceToNextWaypoint_z);
+		
+		float diff = vehicleRotation - direction;
 
-		if(previousDistanceToNextWaypoint_x < 0)
+		if(abs(diff) > 0.1)
 		{
-			if(previousDistanceToNextWaypoint_y < 0)
+			if( diff >  0)
 			{
-				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
-					AIvehicle->turning = turning_left;
-				else
-					AIvehicle->turning = turning_none;
-			}
-			else if(previousDistanceToNextWaypoint_y > 0)
-			{
-				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
-					AIvehicle->turning = turning_right;
-				else
-					AIvehicle->turning = turning_none;
-			}
-			/*if(previousDistanceToNextWaypoint_x < distanceToNextWaypoint_x)
-				AIvehicle->turning = turning_left;
-			else
-				AIvehicle->turning = turning_none;*/
-		}
-		else if(previousDistanceToNextWaypoint_x > 0)
-		{
-			if(previousDistanceToNextWaypoint_y < 0)
-			{
-				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
-					AIvehicle->turning = turning_left;
-				else
-					AIvehicle->turning = turning_none;
-			}
-			else if(previousDistanceToNextWaypoint_y > 0)
-			{
-				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
-					AIvehicle->turning = turning_right;
-				else
-					AIvehicle->turning = turning_none;
-			}
-			/*if(previousDistanceToNextWaypoint_x < distanceToNextWaypoint_x)
 				AIvehicle->turning = turning_right;
-			else
-				AIvehicle->turning = turning_none;*/
-		}
+			}else
+			{
+				AIvehicle->turning = turning_left;
+			}
+		}else
+			AIvehicle->turning = turning_none;
 
 
-//		if(previousDistanceToNextWaypoint_y < 0)
+//		if(previousDistanceToNextWaypoint_x < 0)
 //		{
-//			if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
-//				AIvehicle->turning = turning_left;
+//			if(previousDistanceToNextWaypoint_x < distanceToNextWaypoint_x)
+//			{
+//		//		if(AIvehicle->turning != turning_right)
+//					AIvehicle->turning = turning_left;
+//			}
 //			else
 //				AIvehicle->turning = turning_none;
 //		}
-//		else if(previousDistanceToNextWaypoint_y > 0)
+//		else if(previousDistanceToNextWaypoint_x > 0)
 //		{
-//			if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
-//				AIvehicle->turning = turning_right;
+//			if(previousDistanceToNextWaypoint_x < distanceToNextWaypoint_x)
+//			{
+//		//		if(AIvehicle->turning != turning_left)
+//					AIvehicle->turning = turning_right;
+//			}
 //			else
 //				AIvehicle->turning = turning_none;
 //		}
+//
+//		if(previousDistanceToNextWaypoint_z < 0)
+//		{
+//			if(previousDistanceToNextWaypoint_z < distanceToNextWaypoint_z)
+//			{
+//		//		if(AIvehicle->turning != turning_right)
+//					AIvehicle->turning = turning_left;
+//			}
+//			else
+//				AIvehicle->turning = turning_none;
+//		}
+//		else if(previousDistanceToNextWaypoint_z > 0)
+//		{
+//			if(previousDistanceToNextWaypoint_z < distanceToNextWaypoint_z)
+//			{
+//		//		if(AIvehicle->turning != turning_left)
+//					AIvehicle->turning = turning_right;
+//			}
+//			else
+//				AIvehicle->turning = turning_none;
+//		}
+
+
 
 //		if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
 //		{
@@ -161,7 +174,7 @@ void ArtificialIntelligence::TraverseWaypoints()
 		
 		
 		previousPosition_x = currentPosition_x;
-		previousPosition_y = currentPosition_y;
+		previousPosition_z = currentPosition_z;
 	}
 	else
 	{

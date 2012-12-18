@@ -10,16 +10,18 @@ using namespace irr;
 
 class ArtificialIntelligence
 {
-private:
+protected:
 	int currentWaypointNr;
+	float direction;
+	float vehicleRotation;
 	float currentPosition_x;
-	float currentPosition_y;
+	float currentPosition_z;
 	float previousPosition_x;
-	float previousPosition_y;
+	float previousPosition_z;
 	float distanceToNextWaypoint_x;
-	float distanceToNextWaypoint_y;
+	float distanceToNextWaypoint_z;
 	float previousDistanceToNextWaypoint_x;
-	float previousDistanceToNextWaypoint_y;
+	float previousDistanceToNextWaypoint_z;
 
 	core::array<btVector3> waypoints;
 	btVector3 LastWaypointVisited;

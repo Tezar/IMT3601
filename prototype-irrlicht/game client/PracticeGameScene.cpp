@@ -45,21 +45,21 @@ void PracticeGameScene::onEnter()
 	engine->loadSegment( GameManager::getInstance()->getReader()->getObject("boxes") );
 	renderer->addWaypoints();
 
-	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+//	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+//	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+//	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
 	AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
 	//AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
 	
-	receiver = new Controller(vehicle1, soundDevice, false);
-
-	EventManager::getInstance()->addEventReceiver(receiver);
-
-	receiver = new Controller(vehicle2, soundDevice, true);
-	
-	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
+//	receiver = new Controller(vehicle3, soundDevice, false);
+//
+	//EventManager::getInstance()->addEventReceiver(receiver);
+//
+//	receiver = new Controller(vehicle2, soundDevice, true);
+//	
+//	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 
 	//createPointParticle(0,0,0,255,255,25);
 	//createPointParticle(1,0,0,255,255,25);
