@@ -38,6 +38,7 @@ void Vehicle::kill()
 {
 	force = force_none;
 	turning = turning_none;
+	breaking = true;
 	updatePhysics();
 	alive = false;
 }
