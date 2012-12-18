@@ -51,7 +51,7 @@ void PracticeGameScene::onEnter()
 	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
 	AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
-	AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
+	//AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
 	
 	receiver = new Controller(vehicle1, soundDevice, false);
 
@@ -81,7 +81,7 @@ int PracticeGameScene::onFrame(int toDo){
 	renderer->update();
 	soundDevice->UpdateListenerPosition(engine);
 	AIvehicle1->TraverseWaypoints();
-	AIvehicle2->TraverseWaypoints();
+//	AIvehicle2->TraverseWaypoints();
 
 	return toDo;
 }

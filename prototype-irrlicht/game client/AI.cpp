@@ -6,7 +6,7 @@ using namespace irr;
 
 ArtificialIntelligence::ArtificialIntelligence(Vehicle * vehicleReference, AudioManagerClass * soundManager, Engine * e)
 {
-	i = 0;
+	currentWaypointNr = 0;
 
 	engine = e;
 	AIvehicle = vehicleReference;
@@ -21,19 +21,19 @@ ArtificialIntelligence::ArtificialIntelligence(Vehicle * vehicleReference, Audio
 
 void ArtificialIntelligence::AssignWaypoints()
 {
-	if(i >= waypoints.size()-1)
-		i = 0;
+	if(currentWaypointNr >= waypoints.size()-1)
+		currentWaypointNr = 0;
 	
-	if(i == 0)
+	if(currentWaypointNr == 0)
 	{
-		NextWaypoint = waypoints[i];
-		i++;
+		NextWaypoint = waypoints[currentWaypointNr];
+		currentWaypointNr++;
 	}
 	else
 	{
-		NextWaypoint = waypoints[i];
-		LastWaypointVisited = waypoints[i-1];
-		i++;
+		NextWaypoint = waypoints[currentWaypointNr];
+		LastWaypointVisited = waypoints[currentWaypointNr-1];
+		currentWaypointNr++;
 	}
 }
 
@@ -46,35 +46,118 @@ void ArtificialIntelligence::GoToNextWaypoint()
 void ArtificialIntelligence::TraverseWaypoints()
 {
 
-	if(i <= waypoints.size())
+	if(currentWaypointNr <= waypoints.size())
 	{
-		if((distanceToNextWaypoint_x <= 0.1) && (distanceToNextWaypoint_x >= -0.1) &&
-		   (distanceToNextWaypoint_y <= 0.1) && (distanceToNextWaypoint_y >= -0.1))
+		if((distanceToNextWaypoint_x <= 0.1f) && (distanceToNextWaypoint_x >= -0.1f) &&
+		   (distanceToNextWaypoint_y <= 0.1f) && (distanceToNextWaypoint_y >= -0.1f))
 		{
 			AssignWaypoints();
 		}
 
-//		btVector3 waypoint = waypoints[i];
+
 		currentPosition_x = AIvehicle->position.X;
 		currentPosition_y = AIvehicle->position.Y;
 		distanceToNextWaypoint_x = currentPosition_x - NextWaypoint.x();
 		distanceToNextWaypoint_y = currentPosition_y - NextWaypoint.y();
+		previousDistanceToNextWaypoint_x = previousPosition_x - NextWaypoint.x();
+		previousDistanceToNextWaypoint_y = previousPosition_y - NextWaypoint.y();
 
-		if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
+
+		if(previousDistanceToNextWaypoint_x < 0)
 		{
-			if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
+			if(previousDistanceToNextWaypoint_y < 0)
+			{
+				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
+					AIvehicle->turning = turning_left;
+				else
+					AIvehicle->turning = turning_none;
+			}
+			else if(previousDistanceToNextWaypoint_y > 0)
+			{
+				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
+					AIvehicle->turning = turning_right;
+				else
+					AIvehicle->turning = turning_none;
+			}
+			/*if(previousDistanceToNextWaypoint_x < distanceToNextWaypoint_x)
 				AIvehicle->turning = turning_left;
 			else
-				AIvehicle->turning = turning_none;
+				AIvehicle->turning = turning_none;*/
 		}
-		
-		if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
+		else if(previousDistanceToNextWaypoint_x > 0)
 		{
-			if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
+			if(previousDistanceToNextWaypoint_y < 0)
+			{
+				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
+					AIvehicle->turning = turning_left;
+				else
+					AIvehicle->turning = turning_none;
+			}
+			else if(previousDistanceToNextWaypoint_y > 0)
+			{
+				if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
+					AIvehicle->turning = turning_right;
+				else
+					AIvehicle->turning = turning_none;
+			}
+			/*if(previousDistanceToNextWaypoint_x < distanceToNextWaypoint_x)
 				AIvehicle->turning = turning_right;
 			else
-				AIvehicle->turning = turning_none;
+				AIvehicle->turning = turning_none;*/
 		}
+
+
+//		if(previousDistanceToNextWaypoint_y < 0)
+//		{
+//			if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
+//				AIvehicle->turning = turning_left;
+//			else
+//				AIvehicle->turning = turning_none;
+//		}
+//		else if(previousDistanceToNextWaypoint_y > 0)
+//		{
+//			if(previousDistanceToNextWaypoint_y < distanceToNextWaypoint_y)
+//				AIvehicle->turning = turning_right;
+//			else
+//				AIvehicle->turning = turning_none;
+//		}
+
+//		if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
+//		{
+//			if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
+//				AIvehicle->turning = turning_left;
+//			else if((previousPosition_y-NextWaypoint.y()) > distanceToNextWaypoint_y)
+//				AIvehicle->turning = turning_right;
+//			/*else
+//				AIvehicle->turning = turning_right;*/
+//		}
+//		//else
+//		//	AIvehicle->turning = turning_none;
+//
+//		else if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y)
+//		{
+//			if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
+//				AIvehicle->turning = turning_right;
+//			else if((previousPosition_x-NextWaypoint.x()) > distanceToNextWaypoint_x)
+//				AIvehicle->turning = turning_left;
+//			/*else
+//				AIvehicle->turning = turning_left;*/
+//		}
+//		else
+//			AIvehicle->turning = turning_none;
+
+		
+		
+//		if((previousPosition_y-NextWaypoint.y()) < distanceToNextWaypoint_y ||
+//		   (previousPosition_y-NextWaypoint.y()) > distanceToNextWaypoint_y)
+//		{
+//			if((previousPosition_x-NextWaypoint.x()) < distanceToNextWaypoint_x)
+//				AIvehicle->turning = turning_left;
+//			else if((previousPosition_x-NextWaypoint.x()) > distanceToNextWaypoint_x)
+//				AIvehicle->turning = turning_right;
+//			else
+//				AIvehicle->turning = turning_none;
+//		}
 		
 		
 		previousPosition_x = currentPosition_x;
