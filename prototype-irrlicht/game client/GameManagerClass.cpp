@@ -10,7 +10,7 @@
 #include "StartMenuUi.h"
 
 
-#pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
+//for no console version #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
 
