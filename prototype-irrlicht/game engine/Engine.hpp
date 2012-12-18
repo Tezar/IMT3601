@@ -36,10 +36,9 @@ public:
 
 	//lead vehicle
 	float leadproduct;
-	int leadNextWaypoint;
-	int dead_vehicles;
 	Vehicle* leadcar;
-	
+	int dead_vehicles;
+
 	Engine(void);
 	~Engine(void);
 
@@ -59,7 +58,8 @@ public:
 	int step(int);
 
 	/** resets state of engine to initial conditions */
-	void reset();
+	void reset(btVector3* position);
+	
 
 
 	//rigid body is needed for extracting transform matrix for first update of static body
@@ -92,6 +92,9 @@ protected:
 	
 	void gameplayCheck(Vehicle* vehicle);
 	/*void checkLeadvehicle(Vehicle* vehicle);*/
+
+	void givePoint();
+	void game_over();
 
 	//physics system
     btBroadphaseInterface* broadphase;

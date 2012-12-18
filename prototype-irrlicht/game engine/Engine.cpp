@@ -11,10 +11,6 @@ Engine::Engine(void)
 {
 	numVehicles = 0;
 
-	leadproduct = 1337;
-	leadNextWaypoint = 1337;
-	dead_vehicles = 0;
-
 	averagePosition.set(0,0,0);
 
 	// Build the broadphase
@@ -61,6 +57,8 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 
 	int currentVehicle = numVehicles++;
 	vehicles[currentVehicle] = vehicle;
+
+	vehicle->score = 5;
 
 	//tuning 
 	btRaycastVehicle::btVehicleTuning vehicleTuning;
@@ -223,7 +221,7 @@ int Engine::step(int toDo)
 }
 
 
-void Engine::reset()
+void Engine::reset(btVector3* position)
 {
 	currentSegment = -1;
 
@@ -237,9 +235,9 @@ void Engine::reset()
 			point1
 			* = vehicle
 	*/
+	leadproduct = 1337;
+	dead_vehicles = 0;
 
-	btVector3 pos;
-	pos.setZero();
 	btTransform trans;
 
 	btScalar offset = -numVehicles*0.5;
@@ -248,8 +246,8 @@ void Engine::reset()
 		Vehicle* v = vehicles[nVehicle];
 		
 		trans.setIdentity();
-		pos.setX(offset+2*nVehicle);
-		trans.setOrigin(pos);
+		position->setX(offset+2*nVehicle);
+		trans.setOrigin(btVector3(position->x(),position->y(),position->z()));
 		v->chassis->setWorldTransform(trans);
 	}
 
@@ -388,36 +386,64 @@ void Engine::gameplayCheck(Vehicle* vehicle)
 
 	//if its the first vehicle of the race then it sets the glabal leadNextWaypoint
 	//to the first waypoint
-	if(leadNextWaypoint == 1337 && leadproduct == 1337 && product != 0){
+	if(leadproduct == 1337 && product != 0){
 		vehicle->leadVehicle = true;
-		leadNextWaypoint = vehicle->nextWaypoint;
 		leadproduct = product;
 		leadcar = vehicle;
 	}
-
-	if((vehicle->nextWaypoint == leadNextWaypoint && product > leadproduct) 
-		|| vehicle->nextWaypoint > leadNextWaypoint)
-	{
-		vehicle->leadVehicle = true;
-		leadNextWaypoint = vehicle->nextWaypoint;
-		leadproduct = product;
-		leadcar = vehicle;
-	}else{
-		vehicle->leadVehicle = false;
-		if(vehicle->position.getDistanceFrom(leadcar->position) > 20){
-			vehicle->kill();
-			dead_vehicles++;
-			if(dead_vehicles == 3)
-				//game_over(leadcar);
-				dead_vehicles = 0;
-		}
-	}
-	//todo if procuct and nextwaypoint is to far behind, kill the car.
 
 	// positiv = before, negative = behind
 	if(product > 0)
 	{
- 		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
+		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
 	}
 
+	if((vehicle->nextWaypoint == leadcar->nextWaypoint && product > leadproduct) 
+		|| vehicle->nextWaypoint > leadcar->nextWaypoint)
+	{
+		vehicle->leadVehicle = true;
+		leadproduct = product;
+		leadcar = vehicle;
+	}else{
+		vehicle->leadVehicle = false;
+		if(vehicle->position.getDistanceFrom(leadcar->position) > 12){
+			vehicle->kill();
+			dead_vehicles++;
+			if(dead_vehicles == 1)
+				givePoint();
+		}
+	}
+	//todo if procuct and nextwaypoint is to far behind, kill the car.
+
+
+
+}
+
+void Engine::givePoint()
+{
+	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
+		Vehicle* v = vehicles[nVehicle];
+
+		if(!v->isAlive()){
+			if(v->score >= 1){v->score = v->score - 1;}else{v->score = 0;}
+			v->revive();
+			v->nextWaypoint = leadcar->nextWaypoint;
+		}else{
+			v->score = v->score + 1;
+			v->nextWaypoint = leadcar->nextWaypoint;
+			if(v->score >= 10)
+				game_over();
+		}
+	}
+	if(leadcar->nextWaypoint == 0){
+		reset(&waypoints[waypoints.size()]);
+	}else{
+		reset(&waypoints[leadcar->nextWaypoint - 1]);
+	}
+}
+
+
+void Engine::game_over()
+{
+	//blowup;
 }

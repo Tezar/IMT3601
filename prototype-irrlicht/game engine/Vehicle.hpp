@@ -41,6 +41,8 @@ public:
 	~Vehicle(void);
 
 	int nextWaypoint;
+	int score;
+	
 	bool leadVehicle;
 
 	btRaycastVehicle* pointer;
@@ -56,6 +58,7 @@ public:
 	void kill();
 	void revive();
 	bool isAlive(){ return alive; };
+	bool isLead(){ return leadVehicle; };
 
 	void updatePhysics();
 

@@ -50,7 +50,7 @@ void PracticeGameScene::onEnter()
 	Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 //	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
-	AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
+	//AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
 	//AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
 	
 //	receiver = new Controller(vehicle3, soundDevice, false);
@@ -68,8 +68,9 @@ void PracticeGameScene::onEnter()
 	
 
 //	device->setEventReceiver(receiver);
-
-	engine->reset();
+	btVector3 startpos;
+	startpos.setZero();
+	engine->reset(&startpos);
 	
 	
 	
@@ -80,7 +81,7 @@ int PracticeGameScene::onFrame(int toDo){
 	toDo = engine->step(toDo);
 	renderer->update();
 	soundDevice->UpdateListenerPosition(engine);
-	AIvehicle1->TraverseWaypoints();
+//	AIvehicle1->TraverseWaypoints();
 //	AIvehicle2->TraverseWaypoints();
 
 	return toDo;
