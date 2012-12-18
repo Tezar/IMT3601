@@ -38,6 +38,7 @@ public:
 	float leadproduct;
 	Vehicle* leadcar;
 	int dead_vehicles;
+	btVector3 leadvector;
 
 	Engine(void);
 	~Engine(void);

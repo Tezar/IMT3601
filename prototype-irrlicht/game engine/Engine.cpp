@@ -240,14 +240,15 @@ void Engine::reset(btVector3* position)
 
 	btTransform trans;
 
-	btScalar offset = -numVehicles*0.5;
+	float spacing  = 2;
+	btScalar offset = -numVehicles*0.5*spacing;
 	
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
 		
 		trans.setIdentity();
-		position->setX(offset+2*nVehicle);
-		trans.setOrigin(btVector3(position->x(),position->y(),position->z()));
+	
+		trans.setOrigin(btVector3(position->x()+offset+spacing*nVehicle,position->y(),position->z()));
 		v->chassis->setWorldTransform(trans);
 	}
 
@@ -389,6 +390,7 @@ void Engine::gameplayCheck(Vehicle* vehicle)
 	if(leadproduct == 1337 && product != 0){
 		vehicle->leadVehicle = true;
 		leadproduct = product;
+		leadvector = pos - waypoints[vehicle->nextWaypoint];
 		leadcar = vehicle;
 	}
 
@@ -399,7 +401,8 @@ void Engine::gameplayCheck(Vehicle* vehicle)
 	}
 
 	if((vehicle->nextWaypoint == leadcar->nextWaypoint && product > leadproduct) 
-		|| vehicle->nextWaypoint > leadcar->nextWaypoint)
+		|| vehicle->nextWaypoint > leadcar->nextWaypoint
+		|| (vehicle->nextWaypoint == 0 && leadcar->nextWaypoint == (waypoints.size()-1)))
 	{
 		vehicle->leadVehicle = true;
 		leadproduct = product;
@@ -436,7 +439,7 @@ void Engine::givePoint()
 		}
 	}
 	if(leadcar->nextWaypoint == 0){
-		reset(&waypoints[waypoints.size()]);
+		reset(&waypoints[waypoints.size() - 1]);
 	}else{
 		reset(&waypoints[leadcar->nextWaypoint - 1]);
 	}
