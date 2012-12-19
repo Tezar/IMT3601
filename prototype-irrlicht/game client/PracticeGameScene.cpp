@@ -47,8 +47,8 @@ void PracticeGameScene::onEnter()
 
 	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-//	Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-//	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	//Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	//Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
 	//AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
 	//AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
@@ -70,7 +70,7 @@ void PracticeGameScene::onEnter()
 //	device->setEventReceiver(receiver);
 	btVector3 startpos;
 	startpos.setZero();
-	engine->reset(&startpos);
+	engine->reset(&startpos, &startpos, &startpos);
 	
 	
 	

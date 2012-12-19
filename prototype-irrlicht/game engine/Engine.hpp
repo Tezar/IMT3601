@@ -39,6 +39,7 @@ public:
 	Vehicle* leadcar;
 	int dead_vehicles;
 	btVector3 leadvector;
+	float main_rot_angle;
 
 	Engine(void);
 	~Engine(void);
@@ -59,7 +60,7 @@ public:
 	int step(int);
 
 	/** resets state of engine to initial conditions */
-	void reset(btVector3* position);
+	void reset(btVector3* position, btVector3* nextWaypoint, btVector3* prevWaypoint);
 	
 
 

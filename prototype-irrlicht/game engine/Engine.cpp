@@ -1,17 +1,22 @@
+#pragma once
 #include <assert.h>
 #include <windows.h>
 #include <stdio.h>
 #include <functional>
 #include "Engine.hpp"
 #include "EngineBodyState.hpp"
+#include <cmath>
 
 using namespace std;
+using namespace irr;
 
 Engine::Engine(void)
 {
 	numVehicles = 0;
 
 	averagePosition.set(0,0,0);
+
+	main_rot_angle = 0;
 
 	// Build the broadphase
     broadphase = new btDbvtBroadphase();
@@ -221,7 +226,7 @@ int Engine::step(int toDo)
 }
 
 
-void Engine::reset(btVector3* position)
+void Engine::reset(btVector3* spawnPoint, btVector3* nextWaypoint, btVector3* prevWaypoint)
 {
 	currentSegment = -1;
 
@@ -229,7 +234,7 @@ void Engine::reset(btVector3* position)
 	/*	placeVehicles( point 1 , point 2)
 	
 			point2
-					|
+				    |
 					|
 				*  *  *  *
 			point1
@@ -240,15 +245,60 @@ void Engine::reset(btVector3* position)
 
 	btTransform trans;
 
-	float spacing  = 2;
-	btScalar offset = -numVehicles*0.5*spacing;
+	float angle = 0;
+	btVector3* basepoint1 = &waypoints[0];
+	btVector3* basepoint2 = &waypoints[1];
 	
+	if(spawnPoint != nextWaypoint){
+		btVector3 vector1 = btVector3(nextWaypoint->x(),nextWaypoint->y(),nextWaypoint->z()) - btVector3(spawnPoint->x(),spawnPoint->y(),spawnPoint->z());
+		btVector3 vector2 = btVector3(spawnPoint->x(),spawnPoint->y(),spawnPoint->z()) - btVector3(prevWaypoint->x(),prevWaypoint->y(),prevWaypoint->z());
+		btVector3 baseVector = btVector3(basepoint2->x(),basepoint2->y(),basepoint2->z()) - btVector3(basepoint1->x(),basepoint1->y(),basepoint1->z());
+		//vector2 = vector2 * -1;
+		/*xs og ys fra spawn point
+		xn og yn  fra nextpoint
+		x= xn-xs
+		y= --||--
+		xy vector mellom s og n
+		*/
+		vector1.normalize();
+		vector2.normalize();
+		baseVector.normalize();
+
+		float dot = vector1.dot(baseVector);
+		angle = acos(dot);
+	//	btQuaternion cur_rot = trans.getRotation();
+
+		
+		//btScalar angle = acos(btVector3(0, 1, 0).dot(vector1));
+		//btVector3 axis = btVector3(0, 1, 0).cross(vector1);
+		//float angle = vector1.dot(vector2);
+			
+		/*     vector1  /
+					   /)angle
+					  / _) _ vector2
+		*/
+	}
+
+	//main_rot_angle = angle + main_rot_angle;
+
+	float spacing = 2;
+	btScalar offset = -numVehicles*0.5*spacing;
+
+
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
-		
 		trans.setIdentity();
-	
-		trans.setOrigin(btVector3(position->x()+offset+spacing*nVehicle,position->y(),position->z()));
+
+		if(spawnPoint == nextWaypoint){
+			trans.setOrigin(btVector3(spawnPoint->x()+offset+spacing*nVehicle,spawnPoint->y(),spawnPoint->z()));
+		}else{
+			trans.setRotation(btQuaternion(btVector3(0, 1, 0), (angle/*-cur_rot.getAngle()*/)));
+			if(angle == 1.5707964 || angle == -1.5707964){
+				trans.setOrigin(btVector3(spawnPoint->x(),spawnPoint->y(),spawnPoint->z()+offset+spacing*nVehicle));
+			}else{
+				trans.setOrigin(btVector3(spawnPoint->x()+offset+spacing*nVehicle,spawnPoint->y(),spawnPoint->z()));
+			}
+		}
 		v->chassis->setWorldTransform(trans);
 	}
 
@@ -401,24 +451,22 @@ void Engine::gameplayCheck(Vehicle* vehicle)
 	}
 
 	if((vehicle->nextWaypoint == leadcar->nextWaypoint && product > leadproduct) 
-		|| vehicle->nextWaypoint > leadcar->nextWaypoint
-		|| (vehicle->nextWaypoint == 0 && leadcar->nextWaypoint == (waypoints.size()-1)))
+		|| (vehicle->nextWaypoint > leadcar->nextWaypoint)
+		|| (vehicle->nextWaypoint == 0 && leadcar->nextWaypoint == (waypoints.size() - 1)))
 	{
 		vehicle->leadVehicle = true;
 		leadproduct = product;
 		leadcar = vehicle;
 	}else{
 		vehicle->leadVehicle = false;
-		if(vehicle->position.getDistanceFrom(leadcar->position) > 12){
+		if(vehicle->position.getDistanceFrom(leadcar->position) > 10){
 			vehicle->kill();
 			dead_vehicles++;
-			if(dead_vehicles == 1)
+			if(dead_vehicles == 1) // make 1 if you want to test with just 2 cars
 				givePoint();
+				dead_vehicles = 0;
 		}
 	}
-	//todo if procuct and nextwaypoint is to far behind, kill the car.
-
-
 
 }
 
@@ -439,9 +487,11 @@ void Engine::givePoint()
 		}
 	}
 	if(leadcar->nextWaypoint == 0){
-		reset(&waypoints[waypoints.size() - 1]);
+		reset(&waypoints[waypoints.size() - 1], &waypoints[0], &waypoints[waypoints.size() - 2]);
+	}else if(leadcar->nextWaypoint == 1) {
+		reset(&waypoints[0], &waypoints[1], &waypoints[waypoints.size() - 1]);
 	}else{
-		reset(&waypoints[leadcar->nextWaypoint - 1]);
+		reset(&waypoints[leadcar->nextWaypoint - 1], &waypoints[leadcar->nextWaypoint], &waypoints[leadcar->nextWaypoint - 2]);
 	}
 }
 
