@@ -46,7 +46,7 @@ void PracticeGameScene::onEnter()
 	renderer->addWaypoints();
 
 	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	//Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	//Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	//Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
@@ -57,9 +57,9 @@ void PracticeGameScene::onEnter()
 
 	EventManager::getInstance()->addEventReceiver(receiver);
 
-	receiver = new Controller(vehicle2, soundDevice, true);
-
-	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
+	//receiver = new Controller(vehicle2, soundDevice, true);
+	//
+	//EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 
 	
 	//tells the engine to make ready for the start

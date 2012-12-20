@@ -1,6 +1,32 @@
 <segment>
 	<box shapeDimensions="500, 0.5, 500" texture="../media/wood1.png" bump="../media/wood1_normal.png" position="0,-2,0"/>
-	<box shapeDimensions="0.5, 0.5, 0.5" position="0,10,0" mass="1"/>
+  <!-- These boxes are general rubble -->
+	<box shapeDimensions="0.5, 0.5, 0.5" position="0,10,18" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="2,10,15" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="4,10,13" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="11,10,10" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="14,10,8" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="16,10,4" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="18,10,1" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="12,10,-6" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="3,10,-8" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 0.5" position="15,10,-10" mass="1"/>
+  <box shapeDimensions="0.5, 4, 0.5" position="0,0,-2" mass="1"/>
+  <box shapeDimensions="0.5, 4, 0.5" position="7.5,0,15" mass="1"/>
+  <box shapeDimensions="0.5, 4, 0.5" position="7.5,0,-9" mass="1"/>
+  <box shapeDimensions="4, 0.5, 0.5" position="1,10,-5" mass="1"/>
+  <box shapeDimensions="4, 0.5, 0.5" position="14,10,-6" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 4" position="6,10,17" mass="1"/>
+  <box shapeDimensions="0.5, 0.5, 4" position="8,10,-12" mass="1"/>
+  <!-- Boxes below are the walls -->
+  <box shapeDimensions="5, 10, 18" position="7.5, 0, 3" mass="20"/>
+  <box shapeDimensions="2, 4, 36" position="-7.5, 0, 3" mass="20"/>
+  <box shapeDimensions="29, 4, 2" position="7.5, 0, 22" mass="20"/>
+  <box shapeDimensions="2, 4, 36" position="22.5, 0, 3" mass="20"/>
+  <box shapeDimensions="29, 4, 2" position="7.5, 0, -16" mass="20"/>
+  <!-- A jump -->
+  <box shapeDimensions="3, 0.1, 3" position="-1, 1, 12" mass="20"/>
+  <box shapeDimensions="3, 1, 1" position="-1, 0, 13" mass="20"/>
     <waypoint position="0,2,7" />
 	<waypoint position="0,2,12" />
 	<waypoint position="5,2,17" />
