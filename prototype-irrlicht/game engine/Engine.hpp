@@ -60,7 +60,7 @@ public:
 	int step(int);
 
 	/** resets state of engine to initial conditions */
-	void reset(btVector3* position, btVector3* nextWaypoint, btVector3* prevWaypoint);
+	void reset(btVector3* position, btVector3* nextWaypoint);
 	
 
 
@@ -91,10 +91,9 @@ protected:
 	void checkLoadedSegments(); 
 	/* loads segments*/
 	void loadSegments(int min, int max);
-	
-	void gameplayCheck(Vehicle* vehicle);
-	/*void checkLeadvehicle(Vehicle* vehicle);*/
 
+	/* checks all aspects of gameplay */
+	void gameplayCheck(Vehicle* vehicle);
 	void givePoint();
 	void game_over();
 
