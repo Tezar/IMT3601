@@ -17,6 +17,8 @@ class ToolBox
 protected:
 	ISceneNode* node;
 
+	VectorEditElement* position;
+
 	//creates all that fancy stuff
 	void populate();
 
@@ -25,5 +27,8 @@ public:
 	~ToolBox(void);
 
 	void apply();
+
+	//refresh the values from the current state of node
+	void refesh();
 };
 

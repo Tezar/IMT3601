@@ -73,6 +73,7 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ToolBox.cpp" />
+    <ClCompile Include="VectorEditElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\game engine\game engine.vcxproj">
@@ -83,6 +84,7 @@
     <ClInclude Include="EditorEnvironment.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
     <ClInclude Include="ToolBox.hpp" />
+    <ClInclude Include="VectorEditElement.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
