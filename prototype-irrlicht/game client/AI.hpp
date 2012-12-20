@@ -16,15 +16,15 @@ protected:
 	float vehicleRotation;
 	float currentPosition_x;
 	float currentPosition_z;
-	float previousPosition_x;
-	float previousPosition_z;
+//	float previousPosition_x;
+//	float previousPosition_z;
 	float distanceToNextWaypoint_x;
 	float distanceToNextWaypoint_z;
-	float previousDistanceToNextWaypoint_x;
-	float previousDistanceToNextWaypoint_z;
+//	float previousDistanceToNextWaypoint_x;
+//	float previousDistanceToNextWaypoint_z;
 
 	core::array<btVector3> waypoints;
-	btVector3 LastWaypointVisited;
+//	btVector3 LastWaypointVisited;
 	btVector3 NextWaypoint;
 
 	Vehicle * AIvehicle;
@@ -37,7 +37,7 @@ protected:
 public:
 	ArtificialIntelligence(Vehicle * vehicleReference, AudioManagerClass * soundManager, Engine * e);
 
-	void AssignWaypoints();
-	void GoToNextWaypoint();
+//	void AssignWaypoints();
+//	void GoToNextWaypoint();
 	void TraverseWaypoints();
 };

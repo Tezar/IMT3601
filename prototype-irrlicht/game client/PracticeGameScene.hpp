@@ -23,7 +23,7 @@ public:
 
 	Controller* receiver;
 
-	void createPointParticle(int one,int two,int three,int red,int green,int blue);
+	void createPointParticle(int x,int y,int z,int red,int green,int blue);
 
 	void onEnter();
 	int onFrame(int);

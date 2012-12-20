@@ -24,7 +24,7 @@ private:
 	irr::EKEY_CODE HandBreak;
 	irr::EKEY_CODE Fire;
 
-	AudioManagerClass * sounds; //Trying to use this won't let me use any functions...
+	AudioManagerClass * sounds; 
 	Vehicle * ControllerVehicle;
 
 public:
@@ -33,10 +33,5 @@ public:
 	Controller(Vehicle * vehicleReference, AudioManagerClass * soundManager, bool player2);
 
 	void ChangeKeySettings(int direction, irr::EKEY_CODE keyboardKey);
-
-	/*************************************************************************
-	 *	Make the Controller class detect if the input is coming from the	 *
-	 *	keyboard, AI, or network and have the class behave accordingly.		 *
-	 *************************************************************************/
 
 };

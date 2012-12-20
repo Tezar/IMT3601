@@ -1,17 +1,23 @@
+#pragma once
 #include <assert.h>
 #include <windows.h>
 #include <stdio.h>
 #include <functional>
 #include "Engine.hpp"
 #include "EngineBodyState.hpp"
+#include <cmath>
 
 using namespace std;
+using namespace irr;
 
 Engine::Engine(void)
 {
+	//some values start points
 	numVehicles = 0;
-
 	averagePosition.set(0,0,0);
+	main_rot_angle = 0;
+	leadproduct = 1337;
+	dead_vehicles = 0;
 
 	// Build the broadphase
     broadphase = new btDbvtBroadphase();
@@ -37,9 +43,6 @@ Engine::~Engine(void)
     delete dispatcher;
     delete collisionConfiguration;
     delete broadphase;
-
-	//todo: delete bodies, shapes, motionstates...
-
 }
 
 
@@ -197,8 +200,6 @@ Vehicle* Engine::addVehicle(ObjectRecord* record)
 
 int Engine::step(int toDo)
 {
-	//todo:physics
-	//todo:collisions
 	int i = 0;
 	while(toDo > ENGINE_STEP)
 	{
@@ -214,40 +215,69 @@ int Engine::step(int toDo)
 	}
 	
 	recalculatePosition();
-	//that can be done not so often, maybe 0.5s?
-	//checkLoadedSegments();
 
 	return toDo;
 }
 
 
-void Engine::reset(btVector3* position)
+void Engine::reset(btVector3* spawnPoint, btVector3* nextWaypoint)
 {
-	currentSegment = -1;
-
 	//todo:
 	/*	placeVehicles( point 1 , point 2)
 	
 			point2
-					|
+				    |
 					|
 				*  *  *  *
 			point1
 			* = vehicle
 	*/
-	leadproduct = 1337;
-	dead_vehicles = 0;
-
+	//make the translocateor
 	btTransform trans;
 
-	btScalar offset = -numVehicles*0.5;
+	//variables needed for the matchs
+	float angle = 0;
+	btVector3* basepoint1 = &waypoints[0];
+	btVector3* basepoint2 = &waypoints[1];
 	
+	if(spawnPoint != nextWaypoint){
+		btVector3 vector = btVector3(nextWaypoint->x(),nextWaypoint->y(),nextWaypoint->z()) - btVector3(spawnPoint->x(),spawnPoint->y(),spawnPoint->z());
+		btVector3 baseVector = btVector3(basepoint2->x(),basepoint2->y(),basepoint2->z()) - btVector3(basepoint1->x(),basepoint1->y(),basepoint1->z());
+
+		vector.normalize();
+		baseVector.normalize();
+		//calculates the angle i need to turn the cars, so they are facing the net waypoint
+		//by using the angle the point is from the base line
+		float dot = vector.dot(baseVector);
+		angle = acos(dot);
+			
+		/*     vector   /
+					   /)angle
+					  / _) _ baseVector
+		*/
+	}
+
+	//spacing made so cars spawn next to each other on the given vector
+	float spacing = 2;
+	btScalar offset = -numVehicles*0.5*spacing;
+
+
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
-		
+		//sets the new spawn point and rotates each car
 		trans.setIdentity();
-		position->setX(offset+2*nVehicle);
-		trans.setOrigin(btVector3(position->x(),position->y(),position->z()));
+
+		if(spawnPoint == nextWaypoint){
+			trans.setOrigin(btVector3(spawnPoint->x()+offset+spacing*nVehicle,spawnPoint->y(),spawnPoint->z()));
+		}else{
+			if(angle > 2){
+				//when the waypoints is on the other side of the base vector, they need to be turned
+				trans.setRotation(btQuaternion(btVector3(0, 1, 0), (-angle)));
+			}else{
+				trans.setRotation(btQuaternion(btVector3(0, 1, 0), (angle)));
+			}
+			trans.setOrigin(btVector3(spawnPoint->x()+offset+spacing*nVehicle,spawnPoint->y(),spawnPoint->z()));
+		}
 		v->chassis->setWorldTransform(trans);
 	}
 
@@ -354,13 +384,6 @@ void Engine::notifyShapeUpdate(btCollisionShape* shape, const btTransform &trans
 	ENGINE_NOTIFY(onShapeUpdate(shape, transform));	
 }
 
-/*
-void Engine::notifyVehicleUpdate(const btTransform){
-	
-}
-*/
-
-
 void Engine::addObserver(EngineObserver* o)
 {
 	observers.push_back(o);
@@ -374,74 +397,92 @@ void Engine::removeObserver(EngineObserver* o)
 
 void Engine::gameplayCheck(Vehicle* vehicle)
 {
+	//normaly this will be atleast 2 more induvidual functions for
+	//a easyer look, but they mostly calculate and use the same variable
+	//so was easyer in testing just to have all under one
+
+	//calculates the vector between the Next waypoint and the one after that
+	//then finds the vector that is perpendecular to that vector
+	//then using the cars posision finds if the car is
+	//infront or behind this vector (its in the waypoint)
+
+	//we do it this way so that you can drive way on the left/right side of the point
+	//and take short cuts inside the game
 	btVector3 vector = waypoints[vehicle->nextWaypoint];
-	// n
 	btVector3 nextVector = waypoints[(vehicle->nextWaypoint + 1) % waypoints.size()];
-	// n+1
 	vector = nextVector - vector;
-	// First vector
 	btVector3 pos = btVector3(vehicle->position.X, vehicle->position.Y, vehicle->position.Z);
 
 	float product = vector.dot(pos - waypoints[vehicle->nextWaypoint]);
 
-	//if its the first vehicle of the race then it sets the glabal leadNextWaypoint
-	//to the first waypoint
+	//if its the first vehicle of the race then it sets the glabal leadcar
+	//to current leader. we use a global so it can be accsesed inside all our functions
+	//no matter what car we are curently working on
 	if(leadproduct == 1337 && product != 0){
 		vehicle->leadVehicle = true;
 		leadproduct = product;
+		leadvector = pos - waypoints[vehicle->nextWaypoint];
 		leadcar = vehicle;
 	}
 
-	// positiv = before, negative = behind
+	// positiv = after, negative = before
 	if(product > 0)
 	{
+		//waypoint pased, so it gets its waypoint updated
 		vehicle->nextWaypoint = (vehicle->nextWaypoint + 1) % waypoints.size();
 	}
 
 	if((vehicle->nextWaypoint == leadcar->nextWaypoint && product > leadproduct) 
-		|| vehicle->nextWaypoint > leadcar->nextWaypoint)
+		|| (vehicle->nextWaypoint > leadcar->nextWaypoint)
+		|| (vehicle->nextWaypoint == 0 && leadcar->nextWaypoint == (waypoints.size() - 1)))
 	{
+		//checks to see if this vehicle passed the current leadcar
 		vehicle->leadVehicle = true;
 		leadproduct = product;
 		leadcar = vehicle;
 	}else{
 		vehicle->leadVehicle = false;
-		if(vehicle->position.getDistanceFrom(leadcar->position) > 12){
+		//if this falls to far behind, its killed
+		if(vehicle->position.getDistanceFrom(leadcar->position) > 10){
 			vehicle->kill();
 			dead_vehicles++;
-			if(dead_vehicles == 1)
+			//when all vehicles other than the lead are dead
+			//points are given out
+			if(dead_vehicles == 1) //make 1 if you want to test with just 2 cars
+								   //normaly = 3
 				givePoint();
+				dead_vehicles = 0;
 		}
 	}
-	//todo if procuct and nextwaypoint is to far behind, kill the car.
-
-
 
 }
 
 void Engine::givePoint()
 {
+	//point of the game is to get too 10 points
 	for (int nVehicle = 0; nVehicle < numVehicles; nVehicle++){
 		Vehicle* v = vehicles[nVehicle];
-
+		//all cars gets checked, if this is dead, it loses a point
 		if(!v->isAlive()){
 			if(v->score >= 1){v->score = v->score - 1;}else{v->score = 0;}
 			v->revive();
 			v->nextWaypoint = leadcar->nextWaypoint;
 		}else{
+			//if its stil alive, it most be the leader and so it gets a point
 			v->score = v->score + 1;
 			v->nextWaypoint = leadcar->nextWaypoint;
 			if(v->score >= 10)
+				//if the current leader hitts 10 points, the game is over
 				game_over();
 		}
 	}
+	//resets all cars back to the last passed waypoint of the leading car
 	if(leadcar->nextWaypoint == 0){
-		reset(&waypoints[waypoints.size()]);
+		reset(&waypoints[waypoints.size() - 1], &waypoints[0]);
 	}else{
-		reset(&waypoints[leadcar->nextWaypoint - 1]);
+		reset(&waypoints[leadcar->nextWaypoint - 1], &waypoints[leadcar->nextWaypoint]);
 	}
 }
-
 
 void Engine::game_over()
 {

@@ -1,6 +1,5 @@
 #pragma once
 #include "GameManagerClass.hpp"
-//#include "MultiplayerGameScene.h"
 
 using namespace irr;
 
@@ -49,17 +48,20 @@ public:
                         s32 id = event.GUIEvent.Caller->getID();
                         IGUIEnvironment* env = Context.device->getGUIEnvironment();
 
+						//Switch to look for what ui element got clicked
                         switch(event.GUIEvent.EventType)
                         {
 						case EGET_BUTTON_CLICKED:
                                 switch(id)
                                 {
+									//kills the program
                                 case GUI_ID_QUIT_BUTTON:
                                         Context.device->closeDevice();
                                         return true;
 
                                 case GUI_ID_SINGLE_BUTTON:
                                         {
+											//starts the singleplayer mode
 											GameManager::getInstance()->changeState(practiceGame);
 											return 0;
                                         }
@@ -67,33 +69,15 @@ public:
 
 								case GUI_ID_MULTY_BUTTON:
 										{
+											//Opens our multiplayer window, were you can see created lobbies
 											GameManager::getInstance()->changeState(multiPlayerGame);
-											return 0;
-										}
-										return true;
-
-								case GUI_ID_MULTY_JOIN_BUTTON:
-										{
-											return 0;
-										}
-										return true;
-
-								case GUI_ID_MULTY_CREATE_BUTTON:
-										{
-												
-											return 0;
-										}
-										return true;
-
-								case GUI_ID_MULTY_BACK_BUTTON:
-										{
-											GameManager::getInstance()->changeState(menu);
 											return 0;
 										}
 										return true;
 
                                 case GUI_ID_SETTINGS_BUTTON:
 									{
+										//opens a new window, and created new buttons there.
                                         IGUIWindow* settingsWindow = env->addWindow(
                                                 rect<s32>(100, 50, 550, 400),
                                                 false,
@@ -108,16 +92,12 @@ public:
 										env->addButton(rect<s32>(50, 20 + 20 + 160, 400, 100 + 160), settingsWindow, GUI_ID_HOTKEY_BUTTON,
 										L"Hotkey menu", L"Opens the Hotkey menu window");
 
-                                        //env->addStaticText(L"Please close me",
-                                        //        rect<s32>(35,35,140,50),
-                                        //        false, // border?
-                                        //        true, // wordwrap?
-                                        //        window);
 									}
 										return true;
 
 								case GUI_ID_GAME_ENGINE_BUTTON:
 									{
+										//Video setings, not implemented
                                         IGUIWindow* gameEnginWindow = env->addWindow(
                                                 rect<s32>(100, 50, 550, 400),
                                                 false,
@@ -127,6 +107,7 @@ public:
 
 								case GUI_ID_AUDIO_BUTTON:
 									{
+										//Audio settings, not implemented
                                         IGUIWindow* audiosWindow = env->addWindow(
                                                 rect<s32>(100, 50, 550, 400),
                                                 false,
@@ -136,6 +117,7 @@ public:
 
 								case GUI_ID_HOTKEY_BUTTON:
 									{
+										//keybindings settings, not implemented
                                         IGUIWindow* hotkeyWindow = env->addWindow(
                                                 rect<s32>(100, 50, 550, 400),
                                                 false,

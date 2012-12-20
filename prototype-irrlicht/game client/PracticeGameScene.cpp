@@ -45,32 +45,27 @@ void PracticeGameScene::onEnter()
 	engine->loadSegment( GameManager::getInstance()->getReader()->getObject("boxes") );
 	renderer->addWaypoints();
 
-//	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-//	Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-	Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
-//	Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	Vehicle * vehicle1 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	//Vehicle * vehicle2 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	//Vehicle * vehicle3 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
+	//Vehicle * vehicle4 = engine->addVehicle( GameManager::getInstance()->getReader()->getObject("vehicle")  );
 	
 	//AIvehicle1 = new ArtificialIntelligence(vehicle3, soundDevice, engine);
 	//AIvehicle2 = new ArtificialIntelligence(vehicle4, soundDevice, engine);
 	
-//	receiver = new Controller(vehicle3, soundDevice, false);
-//
-	//EventManager::getInstance()->addEventReceiver(receiver);
-//
-//	receiver = new Controller(vehicle2, soundDevice, true);
-//	
-//	EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
+	receiver = new Controller(vehicle1, soundDevice, false);
 
-	//createPointParticle(0,0,0,255,255,25);
-	//createPointParticle(1,0,0,255,255,25);
-	//createPointParticle(2,0,1,255,255,25);
+	EventManager::getInstance()->addEventReceiver(receiver);
+
+	//receiver = new Controller(vehicle2, soundDevice, true);
+	//
+	//EventManager::getInstance()->addEventReceiver(receiver);	//	Adds a new event receiver to the list, for the controller.
 
 	
-
-//	device->setEventReceiver(receiver);
+	//tells the engine to make ready for the start
 	btVector3 startpos;
 	startpos.setZero();
-	engine->reset(&startpos);
+	engine->reset(&startpos, &startpos);
 	
 	
 	
@@ -96,15 +91,14 @@ bool PracticeGameScene::onExit()
 	return true;
 }
 
-/*void GameRenderer::createPointParticle(IMeshSceneNode * vehicleNodes,int red,int green,int blue) {*/
-void PracticeGameScene::createPointParticle(int one,int two,int three,int red,int green,int blue) {
-    
+void PracticeGameScene::createPointParticle(int x,int y,int z,int red,int green,int blue) {
+    //creats the particle system and adds a particle emitor to the given
+	//point, of the given color
 	IrrlichtDevice *device = GameManager::getInstance()->getDevice();
 
 	ISceneManager* smgr = device->getSceneManager();
 
 	IParticleSystemSceneNode* pss =
-		//smgr->addParticleSystemSceneNode(false,vehicleNodes);
 		smgr->addParticleSystemSceneNode(false);
 
     IParticleEmitter* ems = pss->createBoxEmitter(
@@ -124,10 +118,7 @@ void PracticeGameScene::createPointParticle(int one,int two,int three,int red,in
     pss->addAffector(pafs); // same goes for the affector
     pafs->drop();
 	
-	pss->setPosition(core::vector3df(one,two,three));
+	pss->setPosition(core::vector3df(x,y,y));
     pss->setScale(core::vector3df(2,2,2)); // size of squares
 	pss->setParticleSize(dimension2d<f32>((0.5f), (0.5f)));
-    pss->setMaterialFlag(video::EMF_LIGHTING, false);
-    pss->setMaterialFlag(video::EMF_ZWRITE_ENABLE, false);
-	pss->setMaterialType(video::EMT_TRANSPARENT_VERTEX_ALPHA);
 }

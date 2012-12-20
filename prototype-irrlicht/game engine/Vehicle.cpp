@@ -46,6 +46,7 @@ void Vehicle::kill()
 void Vehicle::revive()
 {
 	alive  = true;
+	breaking = false;
 }
 
 void Vehicle::updatePhysics()

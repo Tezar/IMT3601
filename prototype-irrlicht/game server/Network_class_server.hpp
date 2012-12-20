@@ -1,21 +1,9 @@
-/*
-Welcome to the simple, introductory tutorial for irrNetLite. This will show you the
-very basics of setting up a client and server, and sending and receiving packets.
-Because irrNetLite is so easy to use, I think you will not find many actual lines of
-code in this example, rather most of it is documentation.
-
-For much more sophisticated use of irrNetLite, I recommend taking a look in the 
-examples subdirectory.
-*/
+//we used a framework for Irrlicj called irrNetLige to help us with the networking
 
 // Include the main irrNet.h header for irrNetLite.
 #include <irrNet.h>
 #include <iostream>
 
-// irrNetLite resides within the irr::net:: namespace, therefore,
-// we use "using namespace irr" here to simplify things.
-// Alternatively you can add "using namespace net" after
-// this so that net:: doesn't have to be used either.
 using namespace irr;
 
 // These pragmas are for MSVC users, they ease the linking of librarys.
@@ -26,11 +14,7 @@ using namespace irr;
 #pragma comment(lib, "irrNetLite.lib")
 #pragma comment(lib, "ws2_32.lib")
 
-// You must derive a class from INetCallback and override the
-// "handlePacket" method. When a packet is received it will be
-// passed to this function, and you may dissect it as you wish.
-// If this is the server you may retrieve the player ID using
-// packet.getPlayerId().
+//main network call back for the server
 class MyNetCallback : public net::INetCallback
 {
 private:
@@ -43,19 +27,24 @@ public:
 
 	virtual void handlePacket(net::SInPacket& packet)
 	{
+		//when a packety is recived
 		core::stringc str;
 		net::SOutPacket opacket;
+		//sees if any games are created
 		if(ant_game > 0){}else{ant_game = 0;}
-		//ant_game = 0;
+		//takes the first line of the packed
 		packet >> str;
 		if (str == "blue"){
+			//blue means that the current client is a first time client
 			if(ant_game == 0){
+				//if there are no lobbyes, it gets told that
 				if(netManager->getConnectionStatus() != net::EICS_FAILED){
 					opacket << "No active games!";
 					netManager->sendOutPacket(opacket);
 					netManager->update();
 				}
 			}else{
+				//if there are some, the name of the lobbys and the nr of them are sent back
 				if(netManager->getConnectionStatus() != net::EICS_FAILED){
 					opacket << ant_game;
 					for(f32 i = 0; ant_game > i; i++){
@@ -67,8 +56,11 @@ public:
 			}
 		}else{
 			if(ant_game != 0){++ant_game;}else{ant_game = 1;}
+			//first line tells the user, what the server now sees the client
+			//as, so its its client nr
 			opacket << "1";
 			if(netManager->getConnectionStatus() != net::EICS_FAILED){
+				//all the games gets sent
 				opacket << ant_game;
 				for(int i = 0; ant_game > i; i++){
 					opacket << i;

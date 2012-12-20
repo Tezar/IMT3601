@@ -15,66 +15,70 @@ ArtificialIntelligence::ArtificialIntelligence(Vehicle * vehicleReference, Audio
 
 	waypoints = engine->getWaypoints();
 
-	AssignWaypoints();
+//	AssignWaypoints();
 
-	AIvehicle->force = force_forward;
+//	AIvehicle->force = force_forward;
 }
 
-void ArtificialIntelligence::AssignWaypoints()
-{
-	if(currentWaypointNr >= waypoints.size()-1)
-		currentWaypointNr = 0;
-	
-	if(currentWaypointNr == 0)
-	{
-		NextWaypoint = waypoints[currentWaypointNr];
-		currentWaypointNr++;
-	}
-	else
-	{
-		NextWaypoint = waypoints[currentWaypointNr];
-		LastWaypointVisited = waypoints[currentWaypointNr-1];
-		currentWaypointNr++;
-	}
-}
+//void ArtificialIntelligence::AssignWaypoints()
+//{
+//	if(currentWaypointNr >= waypoints.size()-1)
+//		currentWaypointNr = 0;
+//	
+//	if(currentWaypointNr == 0)
+//	{
+//		//NextWaypoint = waypoints[currentWaypointNr];
+//		currentWaypointNr++;
+//	}
+//	else
+//	{
+//		//NextWaypoint = waypoints[currentWaypointNr];
+//		//LastWaypointVisited = waypoints[currentWaypointNr-1];
+//		currentWaypointNr++;
+//	}
+//}
 
-void ArtificialIntelligence::GoToNextWaypoint()
-{
-	
-	//AIvehicle->force = force_forward;
-}
+//void ArtificialIntelligence::GoToNextWaypoint()
+//{
+//	
+//	//AIvehicle->force = force_forward;
+//}
 
 void ArtificialIntelligence::TraverseWaypoints()
 {
 	
+	AIvehicle->force = force_forward;
+
 //	vehicleRotation = ((ISceneNode*)( AIvehicle->chassis->getUserPointer() ))->getRotation().Y;
 
 	irr::core::matrix4 matr;
 	btTransform trans;
 
-	AIvehicle->chassis->getMotionState()->getWorldTransform(trans);
+	AIvehicle->chassis->getMotionState()->getWorldTransform(trans);	//Sets the look direction of the vehicle.
 	trans.getOpenGLMatrix(matr.pointer());
-	vehicleRotation = (matr.getRotationDegrees().Y/180)*PI;
+	vehicleRotation = matr.getRotationDegrees().Y * PI / 180;
 
  
 
 	if(currentWaypointNr <= waypoints.size())
 	{
-		//if((distanceToNextWaypoint_x <= 3.0f) && (distanceToNextWaypoint_x >= -3.0f) &&
-		//   (distanceToNextWaypoint_z <= 3.0f) && (distanceToNextWaypoint_z >= -3.0f))
-		//{
-		//	AssignWaypoints();
-		//}
+		if((distanceToNextWaypoint_x <= 1.0f) && (distanceToNextWaypoint_x >= -1.0f) &&
+		   (distanceToNextWaypoint_z <= 1.0f) && (distanceToNextWaypoint_z >= -1.0f))
+		{
+			currentWaypointNr++;
+			if(currentWaypointNr > waypoints.size())	//To make it keep driving around the track.
+				currentWaypointNr = 0;
+		}
 		NextWaypoint = waypoints[AIvehicle->nextWaypoint];
 
 		currentPosition_x = AIvehicle->position.X;
 		currentPosition_z = AIvehicle->position.Z;
 		distanceToNextWaypoint_x = currentPosition_x - NextWaypoint.x();
 		distanceToNextWaypoint_z = currentPosition_z - NextWaypoint.z();
-		previousDistanceToNextWaypoint_x = previousPosition_x - NextWaypoint.x();
-		previousDistanceToNextWaypoint_z = previousPosition_z - NextWaypoint.z();
+//		previousDistanceToNextWaypoint_x = previousPosition_x - NextWaypoint.x();
+//		previousDistanceToNextWaypoint_z = previousPosition_z - NextWaypoint.z();
 
-		direction = atan2(distanceToNextWaypoint_x, distanceToNextWaypoint_z);
+		direction = atan2(distanceToNextWaypoint_z, distanceToNextWaypoint_x);
 		
 		float diff = vehicleRotation - direction;
 
@@ -90,6 +94,8 @@ void ArtificialIntelligence::TraverseWaypoints()
 		}else
 			AIvehicle->turning = turning_none;
 
+
+		//These are earlier attempts without using look direction.
 
 //		if(previousDistanceToNextWaypoint_x < 0)
 //		{
@@ -173,12 +179,12 @@ void ArtificialIntelligence::TraverseWaypoints()
 //		}
 		
 		
-		previousPosition_x = currentPosition_x;
-		previousPosition_z = currentPosition_z;
+//		previousPosition_x = currentPosition_x;
+//		previousPosition_z = currentPosition_z;
 	}
 	else
 	{
-		AIvehicle->force = force_none;
+		AIvehicle->force = force_none;		//To make it stop when it reaches the goal.
 		AIvehicle->turning = turning_none;
 		AIvehicle->breaking = true;
 	}
