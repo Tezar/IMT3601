@@ -136,6 +136,15 @@ bool MultiplayerGameScene::OnEvent(const SEvent& event)
 								return 0;
 							}
 								return true;
+
+						case GUI_ID_MULTY_BACK_BUTTON:
+							{
+								//changes back to the main menu
+								//broken atm
+								//GameManager::getInstance()->changeState(menu);
+								return 0;
+							}
+								return true;
 								
 						default:
 							return false;
