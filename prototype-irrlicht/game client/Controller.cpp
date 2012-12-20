@@ -44,11 +44,6 @@ bool Controller::OnEvent(const SEvent& event)
 	return false;
 }
 
-/*****************************************************************************
- *	Probably need to add a check to see whether the key being held down is	 *
- *	on a keyboard or from the network or AI and adjust accoringly.			 *
- *****************************************************************************/
-
 bool Controller::IsKeyDown(EKEY_CODE keyCode) const
 {											//	Checks if key is being
 	return KeyIsDown[keyCode];				//	held down.
