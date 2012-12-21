@@ -1,5 +1,5 @@
 <segment>
-	<box shapeDimensions="500, 0.5, 500" texture="../media/wood1.png" bump="../media/wood1_normal.png" position="0,-2,0"/>
+	<box shapeDimensions="50, 0.5, 50" texture="../media/wood1.png" bump="../media/wood1_normal.png" position="0,-2,0"/>
   <!-- These boxes are general rubble -->
 	<box shapeDimensions="0.5, 0.5, 0.5" texture="../media/Brick tiles - Grey.jpg" position="0,10,18" mass="1"/>
   <box shapeDimensions="0.5, 0.5, 0.5" texture="../media/Brick tiles - Grey.jpg" position="2,10,15" mass="1"/>
