@@ -15,7 +15,7 @@ protected:
 
 	gui::IGUISpinBox* boX;
 	gui::IGUISpinBox* boY;
-	gui::IGUISpinBox* boZ	;
+	gui::IGUISpinBox* boZ;
 
 public:
 	VectorEditElement(gui::IGUIElement*, int x, int y, const vector3df&);

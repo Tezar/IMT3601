@@ -6,6 +6,7 @@
 #include "ObjectReader.hpp"
 #include "ObjectRecord.hpp"
 #include "GameObjectManager.hpp"
+//#include "VectorEditElement.hpp"
 
 using namespace irr;
 using namespace gui;
@@ -17,7 +18,7 @@ class ToolBox
 protected:
 	ISceneNode* node;
 
-	VectorEditElement* position;
+	//VectorEditElement position;
 
 	//creates all that fancy stuff
 	void populate();
