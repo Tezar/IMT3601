@@ -448,7 +448,7 @@ void Engine::gameplayCheck(Vehicle* vehicle)
 			dead_vehicles++;
 			//when all vehicles other than the lead are dead
 			//points are given out
-			if(dead_vehicles == 1) //make 1 if you want to test with just 2 cars
+			if(dead_vehicles == 3) //make 1 if you want to test with just 2 cars
 								   //normaly = 3
 				givePoint();
 				dead_vehicles = 0;
